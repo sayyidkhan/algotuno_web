@@ -1,0 +1,15 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  postgres:
+    container_name: prefyp_postgres
+    image: postgres:12
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - 5480:5432
+    env_file:
+      - .env_template

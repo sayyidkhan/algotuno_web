@@ -1,0 +1,48 @@
+{
+  "name": "prefyp-v2",
+  "version": "0.0.0",
+  "private": true,
+  "description": "An example project for NextAuth.js",
+  "repository": "https://github.com/nextauthjs/next-auth-example.git",
+  "homepage": "http://next-auth-example.now.sh",
+  "scripts": {
+    "del:node_modules": "rm -rf node_modules",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "sayyid khan",
+  "contributors": [
+    "sayyid khan"
+  ],
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.5",
+    "@mui/material": "^5.2.7",
+    "@mui/styles": "^5.2.3",
+    "@next-auth/prisma-adapter": "^1.0.1",
+    "@prisma/client": "^3.7.0",
+    "@types/bcryptjs": "^2.4.2",
+    "axios": "^0.24.0",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "next": "^12.0.7",
+    "next-auth": "^4.0.6",
+    "nodemailer": "^6.6.3",
+    "pg": "^8.7.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-toastify": "^8.1.0",
+    "ts-node": "^10.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.5",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "eslint": "8.5.0",
+    "eslint-config-next": "12.0.7",
+    "prisma": "^3.7.0",
+    "typescript": "^4.5.4"
+  }
+}
