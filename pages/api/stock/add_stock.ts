@@ -11,13 +11,13 @@ export default async (req, res) => {
         const exchange_name = req.body.exchange;
 
         async function add (tickerSymbol, companyName, exchange) {
-            const stock_details = {
+            const query = {
                 "tickerSymbol"  : tickerSymbol,
                 "companyName"   : companyName, 
                 "exchange"      : exchange
             }
 
-            const _add = await prisma.stock.create({data:stock_details});
+            const _add = await prisma.stock.create({data:query});
             return _add;
         }
 

@@ -17,7 +17,7 @@ export default async (req, res) => {
                 }
             })
 
-            const successMsg = `Deleted all stocks successfully`;
+            const successMsg = `Deleted ${ticker_symbol} data successfully`;
             console.log(successMsg);
             res.status(200).json({"message" : successMsg});
 

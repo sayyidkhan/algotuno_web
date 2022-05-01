@@ -80,7 +80,7 @@ model Stock {
 
   historicalStockPrice    Historical_Stock_Price[]
   MLStockPrice            ML_Stock_Price[]
-  inWatchlist             Watchlist? @relation(fields:[stockID], references: [watchlistID])   
+  inWatchlists            Watchlist[]
 
 }
 
@@ -93,23 +93,27 @@ model Watchlist {
 }
 
 model Historical_Stock_Price {
-  stockID       Int  @unique
+  stockID       Int  
   Date          DateTime
   Open          Float
   High          Float
   Low           Float
   Close         Float
   Volume        Int
+
+  @@id([stockID, Date])
   stock         Stock     @relation(fields:[stockID], references:[stockID])
 }
 
 model ML_Stock_Price {
-  stockID       Int @unique
-  Date          DateTime
+  stockID       Int 
+  Date          @db.Date
   Open          Float
   High          Float
   Low           Float
   Close         Float
   Volume        Int
+
+  @@id([stockID, Date])
   Stock         Stock     @relation(fields:[stockID], references: [stockID])
 }
