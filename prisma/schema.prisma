@@ -71,3 +71,42 @@ model UserGroup {
   user_id   String
   user      User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
+
+model Stock {
+  stockID       Int       @id @default(autoincrement())
+  tickerSymbol  String    
+  companyName   String 
+  exchange      String
+
+  historicalStockPrice  Historical_Stock_Price[]
+  MLStockPrice          ML_Stock_Price[]
+
+}
+
+model Watchlist {
+  watchlistID   Int       @id @default(autoincrement())
+  stockID       Int 
+  tickerSymbol  String
+}
+
+model Historical_Stock_Price {
+  stockID       Int  @unique
+  Date          DateTime
+  Open          Float
+  High          Float
+  Low           Float
+  Close         Float
+  Volume        Int
+  stock         Stock     @relation(fields:[stockID], references:[stockID])
+}
+
+model ML_Stock_Price {
+  stockID       Int @unique
+  Date          DateTime
+  Open          Float
+  High          Float
+  Low           Float
+  Close         Float
+  Volume        Int
+  Stock         Stock     @relation(fields:[stockID], references: [stockID])
+}
