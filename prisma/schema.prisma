@@ -74,19 +74,22 @@ model UserGroup {
 
 model Stock {
   stockID       Int       @id @default(autoincrement())
-  tickerSymbol  String    
-  companyName   String 
+  tickerSymbol  String    @unique
+  companyName   String    @unique
   exchange      String
 
-  historicalStockPrice  Historical_Stock_Price[]
-  MLStockPrice          ML_Stock_Price[]
+  historicalStockPrice    Historical_Stock_Price[]
+  MLStockPrice            ML_Stock_Price[]
+  inWatchlist             Watchlist? @relation(fields:[stockID], references: [watchlistID])   
 
 }
 
 model Watchlist {
   watchlistID   Int       @id @default(autoincrement())
-  stockID       Int 
+  stockID       Int       
   tickerSymbol  String
+
+  stocks        Stock[]
 }
 
 model Historical_Stock_Price {
