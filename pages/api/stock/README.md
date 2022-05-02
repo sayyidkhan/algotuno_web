@@ -9,20 +9,20 @@ Added the following scripts:
 
 #### Usage
 ## add_stock.ts
-To add a new stock into the Stock table, send a POST request to the /api/stock/add_stock endpoint with the body contents as such:
+To add a new stock into the Stock table, send a POST request to the **/api/stock/add_stock** endpoint with the body contents as such:
 
 Example: 
 
 ```
 {
-    "ticker_symbol" :   "GOOG",
-    "company_name"  :   "Google",
-    "exchange"      :   "NYSE"
+    "ticker_symbol" 	:   "GOOG",
+    "company_name"  	:   "Google",
+    "exchange"     		:   "NYSE"
 }
 ```
 
 ## delete_stock.ts
-To delete an existing stock from the Stock table, send a POST request to the /api/stock/delete_stock endpoint with the body contents:
+To delete an existing stock from the Stock table, send a POST request to the **/api/stock/delete_stock** endpoint with the body contents:
 
 Example:
 
@@ -33,10 +33,10 @@ Example:
 ```
 
 ## get_all_stocks.ts
-To get all stocks from the Stock table, send a GET request to the /api/stock/get_all_stocks endpoint.
+To get all stocks from the Stock table, send a GET request to the **/api/stock/get_all_stocks** endpoint.
 
 ## populate_hsp.ts
-To populate a stock with historical stock prices, send a POST request to the /api/stock/populate_hsp endpoint with the body contents:
+To populate a stock with historical stock prices, send a POST request to the **/api/stock/populate_hsp** endpoint with the body contents:
 
 Example:
 ```
@@ -54,7 +54,7 @@ Notes:
 - The start and end dates **must** be specified in the format **YYYY-MM-DD**. Not specifying the start/end dates will result in an error. 
 
 ## get_historical_stock_price.ts
-To get the historical stock price for a stock, send a POST request to the /api/stock/get_hsp endpoint with the body contents:
+To get the historical stock price for a stock, send a POST request to the **/api/stock/get_hsp** endpoint with the body contents:
 
 Example:
 ```
@@ -77,7 +77,7 @@ Notes:
    - If left empty, the query will return results ordered by date in ascending order by default.
 
 ## delete_hsp.ts
-To delete the historical stock price for a stock, send a POST request to the /api/stock/delete_hsp endpoint with the body contents:
+To delete the historical stock price for a stock, send a POST request to the **/api/stock/delete_hsp** endpoint with the body contents:
 
 Example:
 
