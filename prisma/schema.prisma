@@ -107,7 +107,7 @@ model Historical_Stock_Price {
 
 model ML_Stock_Price {
   stockID       Int 
-  Date          @db.Date
+  Date          DateTime
   Open          Float
   High          Float
   Low           Float
