@@ -52,24 +52,6 @@ export default async (req, res) => {
             hsp_start_date = new Date(req.body.start_date);
             hsp_end_date   = new Date(req.body.end_date);
 
-            // // check if HSP start and end dates are specified
-            // if(req.body.start_date && req.body.end_date){
-
-            //     if (isNaN(hsp_start_date)) {
-            //         console.log("Invalid start date specified")
-            //         return res.status(406).json({
-            //             "message" : "Invalid start date specified"
-            //         });
-            //     } else if (isNaN(hsp_end_date)) {
-            //         console.log("Invalid end date specified")
-            //         return res.status(406).json({
-            //             "message" : "Invalid end date specified"
-            //         });
-            //     }
-            // } else {
-            //     console.log("No specified dates");
-            // }
-
             // check if sort type (asc/desc) is specified
             if(req.body.sort) {
                 sort = req.body.sort.toLowerCase();
