@@ -11,12 +11,6 @@ Added the following scripts:
 ## add_stock.ts
 To add a new stock into the Stock table, send a POST request to the /api/stock/add_stock endpoint with the body contents as such:
 
-{
-	"ticker_symbol"	: 	"<stock ticker symbol>",
-	"company_name"	: 	"<stock company name>",
-	"exchange"		: 	"<stock exchange name>"
-}
-
 Example: 
 
 ```
@@ -29,10 +23,6 @@ Example:
 
 ## delete_stock.ts
 To delete an existing stock from the Stock table, send a POST request to the /api/stock/delete_stock endpoint with the body contents:
-
-{
-	"ticker_symbol"	:	"<stock ticker symbol>"
-}
 
 Example:
 
@@ -47,12 +37,6 @@ To get all stocks from the Stock table, send a GET request to the /api/stock/get
 
 ## populate_hsp.ts
 To populate a stock with historical stock prices, send a POST request to the /api/stock/populate_hsp endpoint with the body contents:
-
-{
-	"ticker_symbol"	:	"<stock ticker symbol>",
-	"start_date"	:	"<start date of historical data>",
-	"end_date"		:	"<end date of historical data>"
-}
 
 Example:
 ```
@@ -71,13 +55,6 @@ Notes:
 
 ## get_historical_stock_price.ts
 To get the historical stock price for a stock, send a POST request to the /api/stock/get_hsp endpoint with the body contents:
-
-{
-	"ticker_symbol"	:	"<stock ticker symbol>",
-	"start_date"	:	"<start date of historical data>",
-	"end_date"		:	"<end date of historical data>",
-	"sort"			:	"asc/desc"
-}
 
 Example:
 ```
@@ -101,10 +78,6 @@ Notes:
 
 ## delete_hsp.ts
 To delete the historical stock price for a stock, send a POST request to the /api/stock/delete_hsp endpoint with the body contents:
-
-{
-	"ticker_symbol"	:	"<stock ticker symbol>"
-}
 
 Example:
 
