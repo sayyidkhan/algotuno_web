@@ -1,4 +1,3 @@
-import { Quickreply } from "@mui/icons-material"
 import { PrismaClient } from "@prisma/client"
 
 let prisma
@@ -96,11 +95,15 @@ export default async (req, res) => {
                     "Volume"    :   hsp_data_vol
                 });
 
-            }).on("done", async (err) => {
-                if (err) res.status(406).json({"message" : err});
-                else if (result.length == 0) {res.status(406).json({"message" : "query returned no data"})}
-                else console.log(`Successfully pulled ${ticker_symbol} data; data length ${result.length}`);    
-                
+            }).on("end", async (err) => {
+                if (err) {
+                    return res.status(406).json({"message" : err});
+                } else if (result.length == 0) {
+                    return  res.status(406).json({"message" : "query returned no data"}); 
+                } else {
+                    console.log(`Successfully pulled ${ticker_symbol} data; data length ${result.length}`);    
+                }
+
                 const populate_hsp_results = await prisma.historical_Stock_Price.createMany({data:result});
                 const successMsg = `Inserted ${populate_hsp_results.count} records for ${ticker_symbol}`
                 console.log(successMsg);
