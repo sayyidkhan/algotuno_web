@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client"
 
 let prisma
 
@@ -14,7 +14,9 @@ if (process.env.NODE_ENV === "production") {
 
 export default async (req, res) => {
 
-    if (req.method === "GET"){
+    if (req.method === "POST"){
+
+        var ticker_symbol, stock_id;
 
         // check if ticker symbol exists in body
         if(!req.body.ticker_symbol){
@@ -24,36 +26,37 @@ export default async (req, res) => {
             return
         }
 
-        var ticker_symbol;
-
-
+        // check if ticker symbol exists in Stock database
         try{
-
-            // check if ticker symbol exists in Stock database
             ticker_symbol = req.body.ticker_symbol;
-
+            
             const stock_record = await prisma.stock.findFirst({
-                where: {
+                where:{
                     tickerSymbol : ticker_symbol
                 }
-            });
+            })
 
             // return the corresponding stockID
-            const stock_id = stock_record.stockID;
+            stock_id = stock_record.stockID
 
-            // return the HSP for the stock
-            const all_records = await prisma.historical_Stock_Price.findMany({
+        } catch (error) {
+            const errorMsg = error.message;
+            console.error(errorMsg)
+            res.status(406).json({"message" : errorMsg});
+            return
+        }
+
+        try{
+            // delete the HSP for the ticker_symbol
+            const delete_hsp_results = await prisma.historical_Stock_Price.deleteMany({
                 where:{
                     stockID : stock_id
                 }
             })
 
-            const successMsg = `Found ${all_records.length} records for ${ticker_symbol}`;
-            console.log(successMsg);
-            res.status(200).json({
-                "message" : successMsg,
-                "results" : all_records
-            });
+            const successMsg = `Deleted ${delete_hsp_results.count} records for ${ticker_symbol}`
+            console.log(successMsg)
+            res.status(200).json({"message" : successMsg});
 
         } catch (error) {
             const errorMsg = error.message;
@@ -62,7 +65,7 @@ export default async (req, res) => {
         }
        
     } else {
-        res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts GET methods`});
+        res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
     
 

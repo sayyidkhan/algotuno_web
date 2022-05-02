@@ -1,31 +1,47 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+let prisma
+
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient()
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient()
+  }
+
+  prisma = global.prisma
+}
 
 export default async (req, res) => {
 
     if (req.method === "POST"){
 
-        const ticker_symbol = req.body.ticker_symbol;
-        const company_name = req.body.company_name;
-        const exchange_name = req.body.exchange;
+        let query;
 
-        async function add (tickerSymbol, companyName, exchange) {
-            const query = {
-                "tickerSymbol"  : tickerSymbol,
-                "companyName"   : companyName, 
-                "exchange"      : exchange
+        // check if ticker_symbol, company_name and exchange name is specified
+        try{
+            query = {
+                "tickerSymbol"  : req.body.ticker_symbol,
+                "companyName"   : req.body.company_name, 
+                "exchange"      : req.body.exchange
             }
-
-            const _add = await prisma.stock.create({data:query});
-            return _add;
+        } catch (error) {
+            const exceptionMsg = error.message;
+            console.error(exceptionMsg)
+            res.status(406).json({
+                "message" : "Specify the ticker_symbol, company_name and exchange_name",
+                "exception" : exceptionMsg
+            });
         }
 
         try{
-            const result = await add(ticker_symbol, company_name, exchange_name);
-            const successMsg = `Stock for ${company_name} added successfully`;
+            const add_stock_result = await prisma.stock.create({data:query});
+            const successMsg = `Inserted stock ${req.body.ticker_symbol}, ${req.body.company_name}, ${req.body.exchange}`;
             console.log(successMsg);
-            res.status(200).json({"message" : successMsg});
+            res.status(200).json({
+                "message" : successMsg,
+                "result" : add_stock_result
+            });
 
         } catch (error) {
             const errorMsg = error.message;

@@ -18,9 +18,12 @@ export default async (req, res) => {
 
         try{
             const all_stocks = await prisma.stock.findMany();
-            const successMsg = `Listed all stocks successfully`;
+            const successMsg = `Found ${all_stocks.count} stocks`;
             console.log(successMsg);
-            res.status(200).json({"message" : all_stocks});
+            res.status(200).json({
+              "message" : successMsg,
+              "result"  : all_stocks 
+            });
 
         } catch (error) {
             const errorMsg = error.message;

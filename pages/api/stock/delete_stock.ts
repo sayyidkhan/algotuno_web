@@ -1,25 +1,39 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+let prisma
+
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient()
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient()
+  }
+
+  prisma = global.prisma
+}
 
 export default async (req, res) => {
 
     if (req.method === "POST"){
 
-        const ticker_symbol = req.body.ticker_symbol;
+        let ticker_symbol;
 
         try{
-            const all_stocks = await prisma.stock.deleteMany({
+            ticker_symbol = req.body.ticker_symbol;
+
+            // delete all instances where the ticker_symbol matches
+            const delete_stock_result = await prisma.stock.deleteMany({
                 where:{
-                    tickerSymbol:{
-                        contains: ticker_symbol
-                    }
+                    tickerSymbol: ticker_symbol
                 }
             })
 
-            const successMsg = `Deleted ${ticker_symbol} data successfully`;
+            const successMsg = `Deleted stock ${ticker_symbol}`;
             console.log(successMsg);
-            res.status(200).json({"message" : successMsg});
+            res.status(200).json({
+                "message" : successMsg,
+                "result"  : delete_stock_result
+            });
 
         } catch (error) {
             const errorMsg = error.message;
