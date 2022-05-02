@@ -8,7 +8,7 @@ Added the following scripts:
 - delete_hsp.ts
 
 #### Usage
-##add_stock.ts
+## add_stock.ts
 To add a new stock into the Stock table, send a POST request to the /api/stock/add_stock endpoint with the body contents as such:
 
 {
@@ -93,11 +93,11 @@ Notes:
 - The stock that you wish to retrieve historical prices with must already exist in the Stock table
 - The stock that you wish to retrieve historical prices of must already contain historical stock prices in the historical_stock_price table.
 - The **start_date** and **end_date** fields are optional. If left empty, the query will return all available historical stock prices.
--- The **start_date** and **end_date** fields **must** be specified in the format **YYYY-MM-DD**. 
--- If the **start_date** field is left empty, the query will return all historical stock prices up until the specified **end_date**.
--- If the **end_date** field is left empty, the query will return all historical stock prices since the specified **start_date**.
+   - The **start_date** and **end_date** fields **must** be specified in the format **YYYY-MM-DD**. 
+   - If the **start_date** field is left empty, the query will return all historical stock prices up until the specified **end_date**.
+   - If the **end_date** field is left empty, the query will return all historical stock prices since the specified **start_date**.
 - The **sort** field is optional. 
--- If left empty, the query will return results ordered by date in ascending order by default.
+   - If left empty, the query will return results ordered by date in ascending order by default.
 
 ## delete_hsp.ts
 To delete the historical stock price for a stock, send a POST request to the /api/stock/delete_hsp endpoint with the body contents:
