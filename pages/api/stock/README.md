@@ -53,7 +53,7 @@ Notes:
 - [Yahoo! Finance ](https://sg.finance.yahoo.com/) must have the historical stock prices for the specified date range
 - The start and end dates **must** be specified in the format **YYYY-MM-DD**. Not specifying the start/end dates will result in an error. 
 
-## get_historical_stock_price.ts
+## get_hsp.ts
 To get the historical stock price for a stock, send a POST request to the **/api/stock/get_hsp** endpoint with the body contents:
 
 Example:
