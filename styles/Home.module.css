@@ -1,9 +1,10 @@
 .container {
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
+  padding: 0 0;
 }
 
 .main {
-  min-height: 100vh;
+  min-height: 50vh;
   padding: 4rem 0;
   flex: 1;
   display: flex;
@@ -108,9 +109,9 @@
   margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .grid {
     width: 100%;
     flex-direction: column;
   }
-}
+} */

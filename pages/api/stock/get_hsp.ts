@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "production") {
 
 export default async (req, res) => {
 
-    if (req.method === "GET"){
+    if (req.method === "POST"){
 
         // check if ticker symbol exists in body
         if(!req.body.ticker_symbol){
@@ -137,7 +137,7 @@ export default async (req, res) => {
         }
        
     } else {
-        res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts GET methods`});
+        res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
     
 
