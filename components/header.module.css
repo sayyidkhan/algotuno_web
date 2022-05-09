@@ -2,6 +2,8 @@
 
 .navbar{
   display:inline-block;
+  position: fixed;
+  top:0;
   background-color: black;
   width: 100%;
 }
@@ -19,7 +21,7 @@
   padding: 0;
   list-style: none;
   float: right;
-  margin-right: 2rem;
+  margin-right: 1rem;
 }
 
 .navItem {
@@ -34,11 +36,13 @@
   padding: 14px 16px;
   text-decoration: none;
   margin-right: 1rem;
+  
 }
 
 .navItem a:hover{
-  background-color: rgb(54, 54, 54);
+  /* background-color: rgb(54, 54, 54); */
   transition: 0.3s;
+  font-weight: bold;
 }
 
 /* .signedInStatus {
