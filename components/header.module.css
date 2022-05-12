@@ -1,20 +1,22 @@
 /* Set min-height to avoid page reflow while session loading */
-
+@import url(https://fonts.googleapis.com/css?family=Raleway:500);
 .navbar{
   display:inline-block;
   position: fixed;
   top:0;
   background-color: black;
   width: 100%;
+  height: 60px;
 }
 
 .logo{
-  color: white;
+  color: rgb(200, 200, 200);
   font-size: 25pt;
-  font-family: system-ui;
+  font-family: 'Raleway', Arial, sans-serif;
   font-weight: bold;
   float: left;
   margin-left: 2rem;
+  padding-top: 7px;
 }
 
 .navItems {
@@ -31,11 +33,11 @@
 
 .navItem a {
   
-  color: white;
+  color: rgb(200, 200, 200);
   text-align: center;
   padding: 15px 16px;
   text-decoration: none;
-  margin-right: 1rem;
+  margin-right: 0.8rem;
   
 }
 

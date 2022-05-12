@@ -75,7 +75,7 @@ export default function Header() {
         </p>
       </div> */}
       <div className={styles.navbar}>
-        <span className={styles.logo}>Algotuno.io</span>
+        <span className={styles.logo}>algotuno.io</span>
         <nav>
           <ul className={styles.navItems}>
             <li className={styles.navItem}>
@@ -84,8 +84,8 @@ export default function Header() {
               </Link>
             </li>
             <li className={styles.navItem}>
-              <Link href="/welcome">
-                <a>Welcome</a>
+              <Link href="/trending">
+                <a>Trending</a>
               </Link>
             </li>
             <li className={styles.navItem}>
