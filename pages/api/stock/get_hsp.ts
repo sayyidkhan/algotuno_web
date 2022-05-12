@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 let prisma
 
@@ -56,9 +56,9 @@ export default async (req, res) => {
             if(req.body.sort) {
                 sort = req.body.sort.toLowerCase();
                 if(sort == "desc" || sort == "asc"){
-                    //pass
+                    //pass; keep sort type as specified
                 } else {
-                    sort = "asc";
+                    // invalid sort type specified
                     console.log("Invalid sort type specified, results will be sorted based on ASC order");
                 }
             } else {
@@ -67,61 +67,43 @@ export default async (req, res) => {
 
             var successMsg, all_records;
 
+            var where = {};
+            const orderBy = {Date : sort}
+
             // both start and end dates invalid / not specified
             if(isNaN(hsp_start_date) && isNaN(hsp_end_date)){
-                console.log("Start and end dates invalid");
-                all_records = await prisma.historical_Stock_Price.findMany({
-                    where:{
-                        stockID : stock_id
-                    },
-                    orderBy: {
-                        Date : sort
-                    }
-                });
+                where =  {
+                    stockID : stock_id
+                }
             } else if (isNaN(hsp_end_date)){
                 // only start date is valid; get all records newer than start date
-                console.log("End dates invalid");
-                all_records = await prisma.historical_Stock_Price.findMany({
-                    where:{
-                        stockID : stock_id,
-                        Date : {
-                            gte: hsp_start_date
-                        }
-                    },
-                    orderBy: {
-                        Date : sort
+                where = {
+                    stockID : stock_id,
+                    Date : {
+                        gte : hsp_start_date
                     }
-                });
+                }
             } else if (isNaN(hsp_start_date)){
                 // only end date is valid
-                console.log("Start dates invalid");
-                all_records = await prisma.historical_Stock_Price.findMany({
-                    where:{
-                        stockID : stock_id,
-                        Date : {
-                            lte: hsp_end_date
-                        }
-                    },
-                    orderBy: {
-                        Date : sort
+                where = {
+                    stockID : stock_id,
+                    Date : {
+                        lte: hsp_end_date
                     }
-                });
+                }
             } else {
-                //both start and end dates are valid
-                console.log("Start and end dates valid");
-                all_records = await prisma.historical_Stock_Price.findMany({
-                    where:{
-                        stockID : stock_id,
-                        Date : {
-                            gte: hsp_start_date,
-                            lte: hsp_end_date
-                        }
-                    },
-                    orderBy: {
-                        Date : sort
+                // both start and end dates are valid
+                where = {
+                    stockID : stock_id,
+                    Date : {
+                        gte : hsp_start_date,
+                        lte : hsp_end_date
                     }
-                });
+                }
             }
+
+            const filter = {where, orderBy}
+            all_records = await prisma.historical_Stock_Price.findMany(filter);
 
             successMsg = `Found ${all_records.length} records for ${ticker_symbol}`;
             console.log(successMsg);
