@@ -1,16 +1,4 @@
-import { PrismaClient } from "@prisma/client"
-
-let prisma
-
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient()
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient()
-  }
-
-  prisma = global.prisma
-}
+import prisma from '../../../lib/prisma';
 
 export default async (req, res) => {
 
@@ -68,16 +56,19 @@ export default async (req, res) => {
             var query_url = `https://query1.finance.yahoo.com/v7/finance/download/${ticker_symbol}?period1=${hsp_start_epoch}&period2=${hsp_end_epoch}&interval=1d&events=history&includeAdjustedClose=true`
             console.log(`Pulling ${ticker_symbol} data from ${query_url}`)
 
+            const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
             const csvParser = require("csv-parser");
             const needle = require("needle");
 
             let result = [];
+            
             
             // uses Needle to get the HTTP request and CSV-Parser to transform the incoming data 
             needle.get(query_url).pipe(csvParser()).on("data", (data) => {
                 
                 // parse each data field as a new variable
                 const hsp_data_date = new Date(data.Date);
+                const hsp_data_datestring = hsp_data_date.getDate() + "-" + months[hsp_data_date.getMonth()] + "-" + hsp_data_date.getFullYear();
                 const hsp_data_open = parseFloat(data.Open);
                 const hsp_data_high = parseFloat(data.High);
                 const hsp_data_low = parseFloat(data.Low);
@@ -88,6 +79,7 @@ export default async (req, res) => {
                 result.push({
                     "stockID"   :   stock_id,
                     "Date"      :   hsp_data_date,
+                    "DateString":   hsp_data_datestring,
                     "Open"      :   hsp_data_open,
                     "High"      :   hsp_data_high, 
                     "Low"       :   hsp_data_low,
