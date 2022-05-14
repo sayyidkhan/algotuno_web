@@ -6,10 +6,10 @@ type Props ={
     data: Types[];
 };
 //if its static use this one , if its variable =>useMemo
-const columns = [
-    Header:"Id",
-    accessor:"Id"
-];
+// const columns = [
+//     Header:"Id",
+//     accessor:"Id"
+// ];
 
 function Table(props:Props){
     //catching the data. Purpose is to only have 1 instance
