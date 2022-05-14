@@ -84,6 +84,14 @@ cp .env.local.example .env.local
 
 Add details for one or more providers (e.g. Google, Twitter, GitHub, Email, etc).
 
+then copy the .env.local file after u have added the credentials and move it to the `/prisma/migrations/` directory
+and rename to `.env`
+
+```
+cp .env.local /prisma/.env
+mv ./prisma/.env.local ./prisma/.env
+```
+
 #### Database
 
 A database is needed to persist user accounts and to support email sign in. However, you can still use NextAuth.js for authentication without a database by using OAuth for authentication. If you do not specify a database, [JSON Web Tokens](https://jwt.io/introduction) will be enabled by default.
