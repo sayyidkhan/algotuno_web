@@ -13,14 +13,14 @@ type Props ={
 
 function Table(props:Props){
     //catching the data. Purpose is to only have 1 instance
-    const data = useMemo(()=> props.data, [props.data]);
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({columns,data});
+    // const data = useMemo(()=> props.data, [props.data]);
+    // const {
+    //     getTableProps,
+    //     getTableBodyProps,
+    //     headerGroups,
+    //     rows,
+    //     prepareRow,
+    // } = useTable({columns,data});
 
     return 
         // <table>
