@@ -1,0 +1,12 @@
+.table{
+    background-color: rgb(151, 151, 151);
+    border-collapse: collapse;
+    max-width: 900px;
+    width:100%;
+    margin: 2rem auto;
+}
+
+.table th,table td{
+    border: 1px solid rgb(0, 0, 0);
+    padding:8px;
+}
