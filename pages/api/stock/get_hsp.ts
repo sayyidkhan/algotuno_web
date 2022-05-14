@@ -1,16 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-
-let prisma
-
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient()
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient()
-  }
-
-  prisma = global.prisma
-}
+import prisma from '../../../lib/prisma';
 
 export default async (req, res) => {
 
@@ -39,7 +27,7 @@ export default async (req, res) => {
                 }
             });
 
-            if (stock_record.length != 0) {
+            if (stock_record) {
                 // return the corresponding stockID
                 stock_id = stock_record.stockID;
             } else {
