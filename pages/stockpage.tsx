@@ -77,7 +77,6 @@ class MyChart extends React.Component {
 
 const MyFunctionalComponent = (props) => {
     const detail = props.detail;
-
     return (
         <div>
             <h2>{props.title} : {props.detail}</h2>
