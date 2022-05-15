@@ -5,7 +5,7 @@ import Layout from '../components/layout';
 //import styles from '../styles/Home.module.css';
 import styles from '../styles/stockpage.module.css';
 import * as React from "react"
-
+import Table from '../components/predictiontable'
 
 const Plot =dynamic(()=> import ('react-plotly.js'),{ssr:false});
 
@@ -17,58 +17,93 @@ class MyChart extends React.Component{
     }
     render(){
         const title = this.state['title'];
-        const Myfunctionalcomponent = this.state['myfunctionalcomponent'];    
+        const Myfunctionalcomponent = this.state['myfunctionalcomponent'];
+        const StockPredictionTable = this.state['stockTable']    
         return(
             <div>
                 <Myfunctionalcomponent title={'S&P 500'} detail={''}/>
-                <Plot
+                <Plot 
                     // @ts-ignore
                     data={[
                         {
-                            x: [1, 2, 3, 4],
-                            y: [2, 3, 4, 5],
+
+                            x: ["14/5/2021",
+                            "17/5/2021",
+                            "18/5/2021",
+                            "19/5/2021",
+                            "20/5/2021"
+                            ],
+                            y: [126.25,
+                                126.82,
+                                126.55,
+                                123.16,
+                                125.23   
+                            ],
                             type: 'scatter',
                             mode: 'lines+markers',
                             marker: {color: 'red'},
                             name: "actual",
                         },
                         {
-                            x: [1, 2, 3, 4],
-                            y: [1.5, 3, 4.5, 6],
+                            y: [127.25,
+                                128.82,
+                                125.55,
+                                126.16,
+                                129.23    
+                            ],
+                            x: ["14/5/2021",
+                            "17/5/2021",
+                            "18/5/2021",
+                            "19/5/2021",
+                            "20/5/2021"
+                            ],
                             type: 'scatter',
                             mode: 'lines+markers',
-                            marker: {color: 'blue'},
+                            marker: {color: 'green'},
                             name: "predicted",
                         },
                     ]}
-                    layout={{width: 500, height: 400, title: 'Test Chart'}}
+                    layout={{width: 800, height: 600}}
                 />
+                
+                
+
+
             </div>
         );
     }
 }
 const MyFunctionalComponent = (props) => {
     const detail = props.detail;
+    
     return (
         <div>
-            <h1>{props.title} : {props.detail}</h1>
+            <h2>{props.title} : {props.detail}</h2>
         </div>
-    );
+    )
 };
-
+const StockPredictionTable = (props) => {
+    const detail = props.detail;
+    
+    return (
+        <div>
+            <h2>{props.title} : {props.detail}</h2>
+        </div>
+    )
+};
 const StockPage = ()=> (
     <Layout>
         <div className={styles.chartarea}>
             <h1>Stock Analysis</h1>
             <MyChart
-                // @ts-ignore
-                title = {'S&P 500'}
+                //@ts-ignore
                 myfunctionalcomponent = {MyFunctionalComponent}
-
+                stockTable = {StockPredictionTable}
             />
-            
         </div>
-        
+        <div className='stock-price-table'>
+            <Table/>
+        </div>
     </Layout>
 )
 

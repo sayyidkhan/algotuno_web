@@ -30,7 +30,7 @@ export default function Page (props){
       </p>
       <p>
         {/* {JSON.stringify(props.stocks.result)} */}
-        {JSON.stringify(props.stocks.result)}
+        {/* {JSON.stringify(props.stocks.result)} */}
       </p>
       <DataTable data={props}/>
 
