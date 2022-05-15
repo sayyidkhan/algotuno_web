@@ -100,12 +100,10 @@ const StockPage = ()=> (
                 myfunctionalcomponent = {MyFunctionalComponent}
                 stockTable = {StockPredictionTable}
             />
-            <div className={styles.table}>
-                <Table/>
-            </div>
-            
         </div>
-        
+        <div className='stock-price-table'>
+            <Table/>
+        </div>
     </Layout>
 )
 
