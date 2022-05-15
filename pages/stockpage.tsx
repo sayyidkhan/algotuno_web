@@ -5,7 +5,7 @@ import Layout from '../components/layout';
 //import styles from '../styles/Home.module.css';
 import styles from '../styles/stockpage.module.css';
 import * as React from "react"
-import Table from '../components/predictiontable'
+import ColumnGroupingTable from './table'
 
 const Plot =dynamic(()=> import ('react-plotly.js'),{ssr:false});
 
@@ -102,7 +102,7 @@ const StockPage = ()=> (
             />
         </div>
         <div className='stock-price-table'>
-            <Table/>
+        <ColumnGroupingTable/>
         </div>
     </Layout>
 )

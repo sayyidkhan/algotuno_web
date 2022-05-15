@@ -1,6 +1,7 @@
 import Layout from '../components/layout'
 import styles from '../styles/Home.module.css'
 import Head from 'next/head'
+import ColumnGroupingTable from './table'
 export default function Page () {
   return (
     <Layout>
@@ -15,6 +16,8 @@ export default function Page () {
       </p>
       <a href='/stockpage'>Stockpage Example</a>
       <a href='/testpage'>Test Page</a>
+
+      
       </div>
     </Layout>
   )
