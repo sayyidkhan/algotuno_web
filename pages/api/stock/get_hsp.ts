@@ -91,7 +91,7 @@ export default async (req, res) => {
             }
 
             const filter = {where, orderBy};
-            // all_records = await prisma.historical_Stock_Price.findMany(filter);
+            all_records = await prisma.historical_Stock_Price.findMany(filter);
 
             successMsg = `Found ${all_records.length} records for ${ticker_symbol}`;
             console.log(successMsg);
