@@ -4,16 +4,26 @@ export default async (req, res) => {
 
     if (req.method === "POST"){
 
-        let ticker_symbol, stock_id;
+        // check if ticker symbol exists in body
+        if(!req.body.ticker_symbol){
+            const errorMsg = "ticker_symbol Null or undefined";
+            console.error(errorMsg);
+            res.status(406).json({"message" : errorMsg});
+            return
+        }
+
+        var ticker_symbol, stock_id;
 
         try{
+
+            // check if ticker symbol exists in Stock database
             ticker_symbol = req.body.ticker_symbol;
-            
+
             const stock_record = await prisma.stock.findFirst({
-                where:{
+                where: {
                     tickerSymbol : ticker_symbol
                 }
-            })
+            });
 
             if (stock_record) {
                 // return the corresponding stockID
@@ -23,20 +33,21 @@ export default async (req, res) => {
                 return res.status(406).json({
                     "message" : `Stock ${ticker_symbol} does not exist`
                 });
-            }  
-            
-            // delete all instances where the ticker_symbol matches
-            const delete_stock_result = await prisma.stock.deleteMany({
-                where:{
-                    tickerSymbol: ticker_symbol
-                }
-            })
+            }
 
-            const successMsg = `Deleted stock ${ticker_symbol}`;
+            var successMsg;
+
+            const hsp_range  = await prisma.historical_Stock_Price.aggregate({
+                _max : {Date: true},
+                _min : {Date: true},
+                where:{stockID : stock_id}
+            });
+            
+            successMsg = `Found the HSP range for ${ticker_symbol}`;
             console.log(successMsg);
             res.status(200).json({
                 "message" : successMsg,
-                "result"  : delete_stock_result
+                "results" : hsp_range
             });
 
         } catch (error) {
