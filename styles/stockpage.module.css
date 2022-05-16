@@ -9,4 +9,9 @@ min-height: 100vh;
 
 }
 
+.mychart MyChart{
+  top:20%;
+  position: inherit;
+  display: hide;
+}
 
