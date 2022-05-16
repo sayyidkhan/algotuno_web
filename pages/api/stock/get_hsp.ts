@@ -54,23 +54,23 @@ export default async (req, res) => {
             }
 
             var successMsg, all_records;
-
-            var where = {};
-            const orderBy = {Date: sort}
+            var where, orderBy;
+            orderBy = {Date: sort};
 
             // both start and end dates invalid / not specified
             if (isNaN(hsp_start_date) && isNaN(hsp_end_date)) {
                 where = {
                     stockID: stock_id
-                }
+                };
             } else if (isNaN(hsp_end_date)) {
+
                 // only start date is valid; get all records newer than start date
                 where = {
                     stockID: stock_id,
                     Date: {
                         gte: hsp_start_date
                     }
-                }
+                };
             } else if (isNaN(hsp_start_date)) {
                 // only end date is valid
                 where = {
@@ -78,7 +78,7 @@ export default async (req, res) => {
                     Date: {
                         lte: hsp_end_date
                     }
-                }
+                };
             } else {
                 // both start and end dates are valid
                 where = {
@@ -87,7 +87,7 @@ export default async (req, res) => {
                         gte: hsp_start_date,
                         lte: hsp_end_date
                     }
-                }
+                };
             }
 
             const filter = {where, orderBy};
