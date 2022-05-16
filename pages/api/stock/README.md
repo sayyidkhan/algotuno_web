@@ -5,6 +5,7 @@ Added the following scripts:
 - get_all_stocks.ts
 - populate_hsp.ts
 - get_hsp.ts
+- get_hsp_range.ts
 - delete_hsp.ts
 
 #### Usage
@@ -75,6 +76,20 @@ Notes:
    - If the **end_date** field is left empty, the query will return all historical stock prices since the specified **start_date**.
 - The **sort** field is optional. 
    - If left empty, the query will return results ordered by date in ascending (asc) order by default.
+
+## get_hsp_range.ts
+To get the historical stock price range for a stock, send a POST request to the **/api/stock/get_hsp_range** endpoint with the body contents:
+
+Example:
+```
+{
+	"ticker_symbol" : 	"GOOG",
+}
+```
+
+Notes:
+- The stock that you wish to retrieve historical prices with must already exist in the Stock table
+- The stock that you wish to retrieve historical prices of must already contain historical stock prices in the historical_stock_price table.
 
 ## delete_hsp.ts
 To delete the historical stock price for a stock, send a POST request to the **/api/stock/delete_hsp** endpoint with the body contents:
