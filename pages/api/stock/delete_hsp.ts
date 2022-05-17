@@ -1,16 +1,4 @@
-import { PrismaClient } from "@prisma/client"
-
-let prisma
-
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient()
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient()
-  }
-
-  prisma = global.prisma
-}
+import prisma from '../../../lib/prisma';
 
 export default async (req, res) => {
 
@@ -36,8 +24,15 @@ export default async (req, res) => {
                 }
             })
 
-            // return the corresponding stockID
-            stock_id = stock_record.stockID
+            if (stock_record) {
+                // return the corresponding stockID
+                stock_id = stock_record.stockID;
+            } else {
+                console.log(`Stock ${ticker_symbol} does not exist`)
+                return res.status(406).json({
+                    "message" : `Stock ${ticker_symbol} does not exist`
+                });
+            }
 
         } catch (error) {
             const errorMsg = error.message;

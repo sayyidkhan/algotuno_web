@@ -1,16 +1,4 @@
-import { PrismaClient } from "@prisma/client"
-
-let prisma
-
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient()
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient()
-  }
-
-  prisma = global.prisma
-}
+import prisma from '../../../lib/prisma';
 
 export default async (req, res) => {
 
@@ -18,7 +6,7 @@ export default async (req, res) => {
 
         try{
             const all_stocks = await prisma.stock.findMany();
-            const successMsg = `Found ${all_stocks.count} stocks`;
+            const successMsg = `Found ${all_stocks.length} stocks`;
             console.log(successMsg);
             res.status(200).json({
               "message" : successMsg,
