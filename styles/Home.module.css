@@ -109,6 +109,10 @@
   margin-left: 0.5rem;
 }
 
+.myh {
+  text-align: left;
+  font-size: 0.7rem;
+}
 /* @media (max-width: 600px) {
   .grid {
     width: 100%;
