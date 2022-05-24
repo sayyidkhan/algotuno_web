@@ -84,7 +84,7 @@ const StickyHeadTable=({rows})=> {
           </TableHead>
           <TableBody>
             {rows 
-              //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: { [x: string]: any; code: React.Key; }) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
