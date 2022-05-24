@@ -65,8 +65,7 @@ export default class MyChart extends React.Component {
                             name: "predicted",
                         },
                     ]}
-                    layout={{autosize: false, width: 800, height: 600, title:"NASDAQ - AAPL - 7d", paper_bgcolor: '#7f7f7f',
-                    plot_bgcolor: '#c7c7c7'}}
+                    layout={{autosize: false, width: 800, height: 600, title:"NASDAQ - AAPL - 7d"}}
                 />
             </div>
 

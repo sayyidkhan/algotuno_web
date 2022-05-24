@@ -25,8 +25,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/protected.js"
-  ],
+    "pages/protected.js",  "components/about/section4.js", "components/about/section3.js", "components/about/section1.js", "components/about/section2.js"  ],
   "exclude": [
     "node_modules"
   ]
