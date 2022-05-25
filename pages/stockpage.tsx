@@ -2,7 +2,7 @@ import Layout from "../components/layout"
 import styles from '../styles/stockpage.module.css'
 import MyChart from '../components/stockpagecomponents'
 import MyFunctionalComponent from '../components/stockpagecomponents'
-import StickyHeadTable from './table'
+//import StickyHeadTable from './table'
 import * as React from 'react'
 import Error from 'next/error'
 
@@ -90,7 +90,7 @@ const StockPage = ({errorCode,message, stockList, count}) => {
             </div>   
         
         
-         <StickyHeadTable rows={rows}/> 
+         {/* <StickyHeadTable rows={rows}/>  */}
         
 
         </div>
