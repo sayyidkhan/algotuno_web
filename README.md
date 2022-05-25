@@ -24,7 +24,7 @@
 
 NextAuth.js is a complete open source authentication solution for [Next.js](http://nextjs.org/) applications.
 
-This is an example application which shows how `next-auth` is applied to a basic Next.js app. It is also used in many of our CI workflows and other places where a concrete usage example is necessary. 
+This is an example application which shows how `next-auth` is applied to a basic Next.js app. It is also used in many of our CI workflows and other places where a concrete usage example is necessary.
 
 It can be found at [`next-auth-example.vercel.app`](https://next-auth-example.vercel.app/)
 
@@ -39,11 +39,9 @@ It can be found at [`next-auth-example.vercel.app`](https://next-auth-example.ve
   1. Vercel - Hosting the backend and frontend
   2. AWS - AWS RDS, For database storage
 
-
 #### Additional Documentation
 
 - [API Documentation - (POSTMAN)](https://www.postman.com/dark-comet-642715/workspace/prefyp-v3/)
-
 
 #### About NextAuth.js
 
@@ -51,20 +49,18 @@ NextAuth.js is an easy to implement, full-stack (client/server) open source auth
 
 Go to [next-auth.js.org](https://next-auth.js.org) for more information and documentation.
 
-> *NextAuth.js is not officially associated with Vercel or Next.js.*
-
-
+> _NextAuth.js is not officially associated with Vercel or Next.js._
 
 ## Getting Started
 
 #### programs to install
-- node.js v10.16.3 and above (Please check ur node.js and install the latest version, as this version came in NOV 2021)
-- Docker *(Optional: it depends if you are going to run local database, otherwise docker is not required)
 
+- node.js v10.16.3 and above (Please check ur node.js and install the latest version, as this version came in NOV 2021)
+- Docker \*(Optional: it depends if you are going to run local database, otherwise docker is not required)
 
 #### NPM global files to install
-- npm i -g typeorm
 
+- npm i -g typeorm
 
 ### 1. Clone the repository and install dependencies
 
@@ -100,15 +96,17 @@ You **can** skip configuring a database and come back to it later if you want.
 
 For more information about setting up a database, please check out the following links:
 
-* Docs: [next-auth.js.org/adapters/overview](https://next-auth.js.org/adapters/overview)
-* Adapters Repo: [nextauthjs/adapters](https://github.com/nextauthjs/adapters)
-* PrismaDB: [Prisma Client](https://www.prisma.io/)
+- Docs: [next-auth.js.org/adapters/overview](https://next-auth.js.org/adapters/overview)
+- Adapters Repo: [nextauthjs/adapters](https://github.com/nextauthjs/adapters)
+- PrismaDB: [Prisma Client](https://www.prisma.io/)
 
 ###### Setup Locally
-1. you will need docker installed
-2. 
 
-###### Connect to cloud (Prisma or AWS as a online database provider) *recommended approach if an cloud instance is available
+1. you will need docker installed
+2. f
+
+###### Connect to cloud (Prisma or AWS as a online database provider) \*recommended approach if an cloud instance is available
+
 1. copy .env.local.example to .env.local
 2. update the `DATABASE_URL` accordingly
 3. before starting the application run
@@ -123,15 +121,16 @@ For more information about setting up a database, please check out the following
 
 2. When setting up OAuth, in the developer admin page for each of your OAuth services, you should configure the callback URL to use a callback path of `{server}/api/auth/callback/{provider}`.
 
-  e.g. For Google OAuth you would use: `http://localhost:3000/api/auth/callback/google`
+e.g. For Google OAuth you would use: `http://localhost:3000/api/auth/callback/google`
 
-  A list of configured providers and their callback URLs is available from the endpoint `/api/auth/providers`. You can find more information at https://next-auth.js.org/configuration/providers
+A list of configured providers and their callback URLs is available from the endpoint `/api/auth/providers`. You can find more information at https://next-auth.js.org/configuration/providers
 
 3. You can also choose to specify an SMTP server for passwordless sign in via email.
 
 ### 4. Start the application
 
 > Important: before running the app, run this command at least once
+
 ```
 npx prisma generate
 ```
@@ -150,6 +149,7 @@ npm run start
 ```
 
 ### 5. Database configuration
+
 For this project we are using the `postgres` database for the database storage.
 A database adapter is required to provide ORM(object relation mapping) to automatically
 map records in the database with the classes & objects in the server.
@@ -160,6 +160,7 @@ map records in the database with the classes & objects in the server.
 - heroku & AWS (cloud hosting provider)
 
 use this command to sync the `prisma.schema` with the cloud
+
 ```bash
 npx prisma db push
 ```
@@ -169,11 +170,12 @@ todo: need to look for a workaround to address this issue
 
 ### 6. Additional configuration
 
-the additional configuration is optional to perform but covers additional information, which u may require as u progress 
+the additional configuration is optional to perform but covers additional information, which u may require as u progress
 to expand on building on the application.
 
 ###### how to create superuser
-we need superuser so you have access to all parts of the application. basic user only do not 
+
+we need superuser so you have access to all parts of the application. basic user only do not
 have administrator benefits.
 
 there is two ways to be a superuser.
@@ -189,12 +191,14 @@ eg. localhost:3000
 ### 7. Preparing for Production
 
 **An overview on how the deployment happens in this project**
+
 1. we use GITHUB for the code repository (u can choose to migrate it to another repository of your choice)
 2. we use GITHUB CI / CD functionality for the deployment of the code
 3. the code gets deployed in VERCEL (digital service provider)
 4. VERCEL will spin up an instance and expose the web application to the internet once the deployment is complete.
 
 ##### Environment Variables required for production
+
 - SECRET
 - NEXT_PUBLIC_NEXTAUTH_URL
 - DATABASE_URL
@@ -212,6 +216,7 @@ To do this with Vercel, you can use the [Vercel project dashboard](https://verce
 ```
 vc env add NEXT_PUBLIC_NEXTAUTH_URL production
 ```
+
 Do not forget to set the environment variables for the Client ID and Client Secret values for all your configured authentication providers in your hosting providers dashboard, i.e. with Vercel as described above.
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
@@ -219,26 +224,34 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 ## Superuser Access
+
 Superuser Access is basically an access given to user that have all access in the system.
 To create a superuser access, the user will need to run a query on the terminal in order to be able to create a new user.
 
 > Steps to create a superuser:
 > Firstly, the app must be running with a database connected to either -> AWS / HEROKU / PRISMA.IO / DOCKER / POSTGRES
 > Secondly, run the command below
+
 ```
 npx ts-node config/superuser/create_superuser.ts
 ```
 
 ## Github code deployment
-In July 2020, Github announced its deprecation of user passwords for all Git operations.
-From August 13, 2021, Github will no longer accept passwords when authenticating Git operations. 
-Once the GitHub passwords get deprecated, Git operations that use authentication will require 
-the use of token-based (GitHub User Access Token). 
 
-*BASICLY THE TLDR is you need to login on terminal using token authentication instead of password authentication.*
+In July 2020, Github announced its deprecation of user passwords for all Git operations.
+From August 13, 2021, Github will no longer accept passwords when authenticating Git operations.
+Once the GitHub passwords get deprecated, Git operations that use authentication will require
+the use of token-based (GitHub User Access Token).
+
+_BASICLY THE TLDR is you need to login on terminal using token authentication instead of password authentication.
 
 [How to login with token authentication for github login on terminal](https://www.youtube.com/watch?v=PMP3RmhkzkA)
 
+## Running Cron Jobs on vercel
+
+remember to `API_SECRET_KEY` in the github secrets and vercel during the use of the cron job.
+- [How to setup cron job on Vercel](https://vercel.com/docs/concepts/solutions/cron-jobs)
+- [Youtube Tutorial](https://www.youtube.com/watch?v=4DCfeXDnWSw)
 
 ## Acknowledgements
 
@@ -255,5 +268,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-
