@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, Box, Flex, Heading, Text, Image as Img, ThemeUICSSObject,ThemeUIStyleObject  } from 'theme-ui';
+import { Container, Box, Flex, Heading, Text, Image as Img } from 'theme-ui';
 import icon1 from '../images/why-choose-1.svg';
 import icon2 from '../images/why-choose-2.svg';
 import icon3 from '../images/why-choose-3.svg';
 import icon4 from '../images/why-choose-4.svg';
-//const makeTheme = <T extends Theme>(t: T) => t
+
 
 const WHY_CHOOSE_DATA = {
   blockTitle: {

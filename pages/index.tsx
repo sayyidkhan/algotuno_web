@@ -8,7 +8,7 @@ import {BASE_URL} from "../lib/db_prod_checker";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Spinner } from 'theme-ui'
 
-const DataTable = loadable(() => import('../components/Table'));
+const DataTable = loadable(() => import('../components/index/Table'));
 
 export const getServerSideProps = async () => {
 try{

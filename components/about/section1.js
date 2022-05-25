@@ -7,7 +7,8 @@ import BannerImage from '../images/banner-1.png';
 const BANNER_DATA = {
   title: 'Welcome to the next level of financial forecasting.',
   text:
-    'Why second guess where the market is going towards when you can able to do forecasting of the financial markets through the use of AI ? Here at algotuno, we do predictive analysis through the use of AI so that you can trade more intelligently.',
+    'Why second guess where the market is going towards when you can able to do forecasting of the financial markets through the use of AI ?\
+     Here at algotuno, we do predictive analysis through the use of AI so that you can trade more intelligently.',
   bannerImage: BannerImage,
 };
 

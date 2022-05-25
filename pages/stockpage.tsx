@@ -1,7 +1,7 @@
 import Layout from "../components/layout"
 import styles from '../styles/stockpage.module.css'
-import MyChart from '../components/stockpagecomponents'
-import MyFunctionalComponent from '../components/stockpagecomponents'
+import MyChart from '../components/stockpage/pricechart'
+import MyFunctionalComponent from '../components/stockpage/pricechart'
 //import StickyHeadTable from './table'
 import {BASE_URL} from "../lib/db_prod_checker";
 import * as React from 'react'
