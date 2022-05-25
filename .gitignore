@@ -116,4 +116,3 @@ config/docker/data/
 
 # intellij
 .idea
-package-lock.json
