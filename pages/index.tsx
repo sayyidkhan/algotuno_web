@@ -11,12 +11,17 @@ import { Spinner } from 'theme-ui'
 const DataTable = loadable(() => import('../components/Table'));
 
 export const getServerSideProps = async () => {
-  console.log(BASE_URL);
+try{
   const res = await fetch(BASE_URL + '/api/stock/get_all_stocks');
   const stocks = await res.json();
   return {
       props: {stocks, length: stocks.result.length}
-  };
+  }
+}catch (error)
+{
+    return{ props:{errorCode:500,message: 'Failed to fetch DB data'}}
+}
+
 };
 
 export default function Page (props){

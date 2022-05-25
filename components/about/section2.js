@@ -53,7 +53,7 @@ const WhyChoose = () => {
           {posts.map(({ icon, text, title }, index) => (
             <Box key={`why-choose-post-key-${index}`} sx={styles.post}>
               <Box sx={styles.imageWrap}>
-                <Img src={icon} alt="icon image" />
+                {/* <Img src={icon} alt="icon image" /> */}
               </Box>
 
               <Heading as="h3">{title}</Heading>

@@ -3,6 +3,7 @@ import styles from '../styles/stockpage.module.css'
 import MyChart from '../components/stockpagecomponents'
 import MyFunctionalComponent from '../components/stockpagecomponents'
 //import StickyHeadTable from './table'
+import {BASE_URL} from "../lib/db_prod_checker";
 import * as React from 'react'
 import Error from 'next/error'
 
@@ -46,7 +47,7 @@ const postreq ={
 
 export const getServerSideProps = async ()=>{
     try{
-            const response = await fetch ("http://localhost:3000/api/stock/get_hsp", {
+            const response = await fetch (BASE_URL + "/api/stock/get_hsp", {
                 method:'POST',
                 body:JSON.stringify(postreq),
                 headers:{
