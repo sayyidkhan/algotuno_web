@@ -11,6 +11,7 @@ import ContactSupport from '../components/about/section4';
 import theme from '../styles/theme';
 
 const AboutPage = () => (
+  
   //@ts-ignore
   <ThemeProvider theme={theme}>
   <Layout>
