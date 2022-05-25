@@ -8,13 +8,12 @@ export default async (req, res) => {
 
         try{
             ticker_symbol = req.body.ticker_symbol;
-            
+
             const stock_record = await prisma.stock.findFirst({
                 where:{
                     tickerSymbol : ticker_symbol
                 }
             })
-
 
             if (stock_record) {
                 // return the corresponding stockID
@@ -24,9 +23,7 @@ export default async (req, res) => {
                 return res.status(406).json({
                     "message" : `Stock ${ticker_symbol} does not exist`
                 });
-
-            }  
-            
+            }
 
             // delete all instances where the ticker_symbol matches
             const delete_stock_result = await prisma.stock.deleteMany({
