@@ -243,9 +243,15 @@ From August 13, 2021, Github will no longer accept passwords when authenticating
 Once the GitHub passwords get deprecated, Git operations that use authentication will require
 the use of token-based (GitHub User Access Token).
 
-_BASICLY THE TLDR is you need to login on terminal using token authentication instead of password authentication._
+_BASICLY THE TLDR is you need to login on terminal using token authentication instead of password authentication.
 
 [How to login with token authentication for github login on terminal](https://www.youtube.com/watch?v=PMP3RmhkzkA)
+
+## Running Cron Jobs on vercel
+
+remember to `API_SECRET_KEY` in the github secrets and vercel during the use of the cron job.
+- [How to setup cron job on Vercel](https://vercel.com/docs/concepts/solutions/cron-jobs)
+- [Youtube Tutorial](https://www.youtube.com/watch?v=4DCfeXDnWSw)
 
 ## Acknowledgements
 
