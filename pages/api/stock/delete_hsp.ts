@@ -17,7 +17,7 @@ export default async (req, res) => {
         // check if ticker symbol exists in Stock database
         try{
             ticker_symbol = req.body.ticker_symbol;
-            
+
             const stock_record = await prisma.stock.findFirst({
                 where:{
                     tickerSymbol : ticker_symbol
