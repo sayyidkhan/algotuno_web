@@ -25,7 +25,7 @@ export default async (req, res) => {
                     tickerSymbol : ticker_symbol
                 }
             })
-            
+
             if (stock_record) {
                 // return the corresponding stockID
                 stock_id = stock_record.stockID;
@@ -34,7 +34,9 @@ export default async (req, res) => {
                 return res.status(406).json({
                     "message" : `Stock ${ticker_symbol} does not exist`
                 });
+
             } 
+
 
         } catch (error) {
             const errorMsg = error.message;
@@ -69,8 +71,10 @@ export default async (req, res) => {
 
             let result = [];
             
+
             
             // uses Needle to get the HTTP request and CSV-Parser to transform the incoming data 
+
             needle.get(query_url).pipe(csvParser()).on("data", (data) => {
                 
                 // parse each data field as a new variable

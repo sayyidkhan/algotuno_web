@@ -32,7 +32,7 @@ export default async (req, res) => {
                 return res.status(406).json({
                     "message" : `Stock ${ticker_symbol} does not exist`
                 });
-            }  
+
 
         } catch (error) {
             const errorMsg = error.message;

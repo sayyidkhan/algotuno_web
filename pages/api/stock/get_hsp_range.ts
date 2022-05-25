@@ -42,7 +42,7 @@ export default async (req, res) => {
                 _min : {Date: true},
                 where:{stockID : stock_id}
             });
-            
+
             successMsg = `Found the HSP range for ${ticker_symbol}`;
             console.log(successMsg);
             res.status(200).json({
@@ -55,10 +55,12 @@ export default async (req, res) => {
             console.error(errorMsg)
             res.status(406).json({"message" : errorMsg});
         }
+
        
     } else {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
     
+
 
 }
