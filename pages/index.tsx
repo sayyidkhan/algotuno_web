@@ -3,14 +3,13 @@ import Layout from '../components/layout'
 import styles from '../styles/Home.module.css'
 import * as React from "react"
 import Head from 'next/head'
-import db_url from '../lib/db_prod_checker';
+import {BASE_URL} from '../config/db_prod_checker';
 
 import DataTable from '../components/Table';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 export const getServerSideProps = async () => {
-
-  const res = await fetch(db_url+'/api/stock/get_all_stocks');
+  const res = await fetch(BASE_URL+'/api/stock/get_all_stocks');
   const stocks = await res.json();
   return {
     props : { stocks, length:stocks.result.length}
