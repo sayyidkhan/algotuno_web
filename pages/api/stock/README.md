@@ -7,6 +7,7 @@ Added the following scripts:
 - get_hsp.ts
 - get_hsp_range.ts
 - delete_hsp.ts
+- daily_hsp.ts
 
 #### Usage
 ## add_stock.ts
@@ -102,3 +103,14 @@ Example:
 }
 ```
 
+
+## daily_hsp.ts
+To update the historical stock price for a stock on a daily basis, send a POST request to the **/api/stock/daily_hsp** endpoint with the body contents:
+
+Example:
+
+```
+{
+	"ticker_symbol"	:	"GOOG"
+}
+```
