@@ -4,6 +4,7 @@ export default async (req, res) => {
 
     if (req.method === "POST"){
 
+        
         var ticker_symbol, stock_id;
 
         // check if ticker symbol exists in body
