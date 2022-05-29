@@ -8,6 +8,7 @@ Added the following scripts:
 - get_hsp_range.ts
 - delete_hsp.ts
 - daily_hsp.ts
+- populate_ml_prices.ts
 
 #### Usage
 ## add_stock.ts
@@ -112,5 +113,19 @@ Example:
 ```
 {
 	"ticker_symbol"	:	"GOOG"
+}
+```
+
+## populate_ml_prices.ts
+To update the ML prices for a stock, send a POST request to the **/api/stock/populate_ml_prices** endpoint with the body contents:
+
+Example:
+
+```
+input =  {
+    "ticker_symbol" : "GLD",
+    "predictions"   : [ {"Date":"epochtime", "Price":10},
+						{"Date":"epochtime", "Price":15},
+			        	{"Date":"epochtime", "Price":20} ]
 }
 ```
