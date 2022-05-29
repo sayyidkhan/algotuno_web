@@ -1,4 +1,5 @@
 import {BASE_URL} from '../../../config/db_prod_checker';
+import {authorization_check} from '../../../config/auth_check'
 
 
 export default async (req, res) => {
@@ -6,6 +7,19 @@ export default async (req, res) => {
     let result_message = [];
 
     if (req.method === "GET"){
+
+        if (authorization_check(req.headers.authorization)) {
+
+            const date_time_now = new Date().toLocaleString("en-US", {
+                timeZone: 'Asia/Singapore',
+            });
+            console.log(date_time_now);
+        } else {
+            return res.status(400).json({
+                "message": `Not authorised`,
+            });
+        }
+
 
         const result = await fetch(BASE_URL+'/api/stock/get_all_stocks');
         const content = await result.json();

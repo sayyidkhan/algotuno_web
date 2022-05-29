@@ -11,6 +11,9 @@ Added the following scripts:
 - daily_hsp_all.ts
 - populate_ml_prices.ts
 
+#### NOTICE
+All endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
+
 #### Usage
 ## add_stock.ts
 To add a new stock into the Stock table, send a POST request to the **/api/stock/add_stock** endpoint with the body contents as such:
