@@ -1,0 +1,17 @@
+name: 1-minute-cron
+on:
+  push:
+# uncomment to automate workflow
+#     branches:
+#       - master
+#   schedule:
+#     - cron: '*/5 * * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call our API route
+        run: |
+          curl --request GET \
+          --url 'https://algotuno-web3.vercel.app/api/welcome' \
+          --header 'Authorization: Bearer ${{ secrets.NEXT_PUBLIC_API_SECRET_KEY }}'

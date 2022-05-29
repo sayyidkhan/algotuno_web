@@ -5,6 +5,7 @@ Added the following scripts:
 - get_all_stocks.ts
 - populate_hsp.ts
 - get_hsp.ts
+- get_hsp_range.ts
 - delete_hsp.ts
 
 #### Usage
@@ -17,7 +18,7 @@ Example:
 {
     "ticker_symbol" 	:   "GOOG",
     "company_name"  	:   "Google",
-    "exchange"     		:   "NYSE"
+    "exchange"     	:   "NYSE"
 }
 ```
 
@@ -49,11 +50,11 @@ Example:
 
 Notes:
 - The stock that you wish to populate historical prices with must already exist in the Stock table
-- The stock that you wish to populate historical prices with must not already have historical prices (PK constraint where PK=(StockID, Date))
+- The stock that you wish to populate historical prices with must not already have historical prices (historical_stock_price table has a PK constraint where PK=(StockID, Date))
 - [Yahoo! Finance ](https://sg.finance.yahoo.com/) must have the historical stock prices for the specified date range
 - The start and end dates **must** be specified in the format **YYYY-MM-DD**. Not specifying the start/end dates will result in an error. 
 
-## get_historical_stock_price.ts
+## get_hsp.ts
 To get the historical stock price for a stock, send a POST request to the **/api/stock/get_hsp** endpoint with the body contents:
 
 Example:
@@ -74,7 +75,21 @@ Notes:
    - If the **start_date** field is left empty, the query will return all historical stock prices up until the specified **end_date**.
    - If the **end_date** field is left empty, the query will return all historical stock prices since the specified **start_date**.
 - The **sort** field is optional. 
-   - If left empty, the query will return results ordered by date in ascending order by default.
+   - If left empty, the query will return results ordered by date in ascending (asc) order by default.
+
+## get_hsp_range.ts
+To get the historical stock price range for a stock, send a POST request to the **/api/stock/get_hsp_range** endpoint with the body contents:
+
+Example:
+```
+{
+	"ticker_symbol" : 	"GOOG",
+}
+```
+
+Notes:
+- The stock that you wish to retrieve historical prices with must already exist in the Stock table
+- The stock that you wish to retrieve historical prices of must already contain historical stock prices in the historical_stock_price table.
 
 ## delete_hsp.ts
 To delete the historical stock price for a stock, send a POST request to the **/api/stock/delete_hsp** endpoint with the body contents:
