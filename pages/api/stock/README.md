@@ -125,7 +125,7 @@ Example:
 input =  {
     "ticker_symbol" : "GLD",
     "predictions"   : [ {"Date":"epochtime", "Price":10},
-						{"Date":"epochtime", "Price":15},
-			        	{"Date":"epochtime", "Price":20} ]
+			{"Date":"epochtime", "Price":15},
+		    	{"Date":"epochtime", "Price":20} ]
 }
 ```
