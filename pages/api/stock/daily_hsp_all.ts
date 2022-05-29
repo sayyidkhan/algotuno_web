@@ -1,10 +1,9 @@
-import prisma from '../../../config/prisma';
 import {BASE_URL} from '../../../config/db_prod_checker';
-import { json } from 'stream/consumers';
-import { makeStyles } from '@mui/material';
 
 
 export default async (req, res) => {
+
+    let result_message = [];
 
     if (req.method === "GET"){
 
@@ -25,7 +24,6 @@ export default async (req, res) => {
             return []
         }
 
-        let status = true;
         ticker_symbols.forEach(async e=>{
             const call_api = await fetch(BASE_URL+`/api/stock/daily_hsp`,
                 {
@@ -36,8 +34,10 @@ export default async (req, res) => {
                     }
                 });
             console.log(await call_api.json());
+            result_message.push(await call_api.json());
         });
         
+        return res.status(200).json({"message" : "Completed running the script.", "result" : result_message});
        
     } else {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts GET methods`});
