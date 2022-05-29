@@ -107,15 +107,17 @@ model Historical_Stock_Price {
 }
 
 model ML_Stock_Price {
-  stockID       Int 
+  stockID       Int
   Date          DateTime
   DateString    String
-  Open          Float
-  High          Float
-  Low           Float
-  Close         Float
-  Volume        Int
+  Price         Float
+  MLModelID     Int
 
-  @@id([stockID, Date])
-  Stock         Stock     @relation(fields:[stockID], references: [stockID])
+  @@id([stockID, DateString, MLModelID])
+  stock         Stock     @relation(fields:[stockID], references: [stockID])
+}
+
+model ML_types {
+  modelID       Int   @id @default(autoincrement())
+  modelType     String
 }
