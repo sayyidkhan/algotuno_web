@@ -1,8 +1,21 @@
-import prisma from '../../../lib/prisma';
+import { authorization_check } from '../../../config/auth_check';
+import prisma from '../../../config/prisma';
 
 export default async (req, res) => {
 
     if (req.method === "POST"){
+
+        if (authorization_check(req.headers.authorization)) {
+
+            const date_time_now = new Date().toLocaleString("en-US", {
+                timeZone: 'Asia/Singapore',
+            });
+            console.log(date_time_now);
+        } else {
+            return res.status(400).json({
+                "message": `Not authorised`,
+            });
+        }
 
         var ticker_symbol, stock_id;
 
@@ -17,7 +30,7 @@ export default async (req, res) => {
         // check if ticker symbol exists in Stock database
         try{
             ticker_symbol = req.body.ticker_symbol;
-            
+
             const stock_record = await prisma.stock.findFirst({
                 where:{
                     tickerSymbol : ticker_symbol
@@ -32,7 +45,7 @@ export default async (req, res) => {
                 return res.status(406).json({
                     "message" : `Stock ${ticker_symbol} does not exist`
                 });
-            }  
+            }
 
         } catch (error) {
             const errorMsg = error.message;

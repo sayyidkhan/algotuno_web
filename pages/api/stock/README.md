@@ -7,6 +7,12 @@ Added the following scripts:
 - get_hsp.ts
 - get_hsp_range.ts
 - delete_hsp.ts
+- daily_hsp.ts
+- daily_hsp_all.ts
+- populate_ml_prices.ts
+
+#### NOTICE
+All endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
 
 #### Usage
 ## add_stock.ts
@@ -102,3 +108,31 @@ Example:
 }
 ```
 
+
+## daily_hsp.ts
+To update the historical stock price for a stock on a daily basis, send a POST request to the **/api/stock/daily_hsp** endpoint with the body contents:
+
+Example:
+
+```
+{
+	"ticker_symbol"	:	"GOOG"
+}
+```
+
+## daily_hsp_all.ts
+To update all the historical stock prices on a daily basis, send a GET request to the **/api/stock/daily_hsp_all.ts** endpoint.
+
+## populate_ml_prices.ts
+To update the ML prices for a stock, send a POST request to the **/api/stock/populate_ml_prices** endpoint with the body contents:
+
+Example:
+
+```
+input =  {
+    "ticker_symbol" : "GLD",
+    "predictions"   : [ {"Date":"epochtime", "Price":10},
+			{"Date":"epochtime", "Price":15},
+		    	{"Date":"epochtime", "Price":20} ]
+}
+```

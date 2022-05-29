@@ -1,8 +1,21 @@
-import prisma from '../../../lib/prisma';
+import { authorization_check } from '../../../config/auth_check';
+import prisma from '../../../config/prisma';
 
 export default async (req, res) => {
 
     if (req.method === "POST"){
+
+        if (authorization_check(req.headers.authorization)) {
+
+            const date_time_now = new Date().toLocaleString("en-US", {
+                timeZone: 'Asia/Singapore',
+            });
+            console.log(date_time_now);
+        } else {
+            return res.status(400).json({
+                "message": `Not authorised`,
+            });
+        }
 
         // check if ticker symbol exists in body
         if(!req.body.ticker_symbol){
@@ -42,7 +55,7 @@ export default async (req, res) => {
                 _min : {Date: true},
                 where:{stockID : stock_id}
             });
-            
+
             successMsg = `Found the HSP range for ${ticker_symbol}`;
             console.log(successMsg);
             res.status(200).json({
@@ -55,10 +68,10 @@ export default async (req, res) => {
             console.error(errorMsg)
             res.status(406).json({"message" : errorMsg});
         }
-       
+
     } else {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
-    
+
 
 }
