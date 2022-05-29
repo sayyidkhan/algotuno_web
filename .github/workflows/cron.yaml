@@ -1,11 +1,10 @@
 name: 1-minute-cron
 on:
   push:
-# uncomment to automate workflow
-#     branches:
-#       - master
-#   schedule:
-#     - cron: '*/5 * * * *'
+    branches:
+      - master
+  schedule:
+    - cron: '*/1 * * * *'
 jobs:
   cron:
     runs-on: ubuntu-latest
