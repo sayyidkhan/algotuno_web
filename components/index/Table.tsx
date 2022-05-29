@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridColDef} from '@mui/x-data-grid';
+import Link from 'next/link';
 
 interface StockDate {
   stockID : number,
@@ -26,7 +27,7 @@ const columns: GridColDef[] = [
 export default function DataTable(props) {
 
   const sl = props.data.stocks.result;
-  console.log(JSON.stringify(props));
+  //console.log(JSON.stringify(props));
 
   return (
     // <div style={{ height: 270, width: '70%' }}>
@@ -41,7 +42,17 @@ export default function DataTable(props) {
           rowsPerPageOptions={[3]}
           // checkboxSelection
           onCellClick={(params, event) => {
-            document.location.href = '/trending'
+            //document.location.href = '/trending';
+            console.log(params);
+            if(params.field === "tickerSymbol")
+            {
+              //document.location.href = '/trending';
+              console.log(params.row.tickerSymbol);
+              const URL = `/stockpage?tickerSymbol=${params.row.tickerSymbol}`;
+              //<Link href={URL}></Link>;
+              document.location.href = URL;
+              console.log(URL);
+            }
           }}
         />
       </div>

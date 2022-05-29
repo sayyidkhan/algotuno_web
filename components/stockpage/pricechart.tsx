@@ -4,74 +4,44 @@ import Image from 'next/image'
 import Layout from '../layout';
 //import styles from '../styles/Home.module.css';
 import styles from '../styles/stockpage.module.css';
-import * as React from "react"
+import React,{Component} from "react"
 
+const layouts = {autosize: false, width: 800, height: 600, title:"NASDAQ - AAPL - 7d"}
 
 const Plot = dynamic(() => import ('react-plotly.js'), {ssr: false});
 
-export default class MyChart extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {'title': props.title, 'myfunctionalcomponent': props.myfunctionalcomponent};
-
-    }
-
-    render() {
-        const title = this.state['title'];
-        const Myfunctionalcomponent = this.state['myfunctionalcomponent'];
+function MyChart(props) {
+    const stockList=  props.xyDataList.results;
+     const dateList = stockList.map(e=>e.DateString);
+    const closePrice = stockList.map(e=>parseFloat(parseFloat(e.Close).toFixed(2)));
+    console.log(closePrice);
+    const trace1 = {
+        //x:xdata,
+        x: dateList,
+         y: closePrice,
+         type: 'scatter',
+         mode: 'lines+markers',
+         marker: {color: 'red'},
+         name: "actual",
+       };
+        //const title = this.state['title'];
+        //const Myfunctionalcomponent = this.state['myfunctionalcomponent'];
         return (
             <div>
                 {/* <Myfunctionalcomponent title={'S&P 500'} detail={''}/> */}
                 {/*// @ts-ignore*/} 
-                <Plot
+                <Plot 
+                    
                     // @ts-ignore
-                
-                    data={[
-                        {
-
-                            x: ["14/5/2021",
-                                "17/5/2021",
-                                "18/5/2021",
-                                "19/5/2021",
-                                "20/5/2021"
-                            ],
-                            y: [126.25,
-                                126.82,
-                                126.55,
-                                123.16,
-                                125.23
-                            ],
-                            type: 'scatter',
-                            mode: 'lines+markers',
-                            marker: {color: 'red'},
-                            name: "actual",
-                        },
-                        {
-                            y: [127.25,
-                                128.82,
-                                125.55,
-                                126.16,
-                                129.23
-                            ],
-                            x: ["14/5/2021",
-                                "17/5/2021",
-                                "18/5/2021",
-                                "19/5/2021",
-                                "20/5/2021"
-                            ],
-                            type: 'scatter',
-                            mode: 'lines+markers',
-                            marker: {color: 'green'},
-                            name: "predicted",
-                        },
-                    ]}
-                    layout={{autosize: false, width: 800, height: 600, title:"NASDAQ - AAPL - 7d"}}
+                    data={[trace1]}
+                    // @ts-ignore
+                    layout={layouts}
+                    // @ts-ignore
+                    //frames={this.state.frames}
                 />
-            </div>
-
-            
+                
+            </div>    
         );
-    }
 }
 
 const MyFunctionalComponent = (props) => {
@@ -83,4 +53,8 @@ const MyFunctionalComponent = (props) => {
         </div>
     )
 };
+
+export default  MyChart
+
+
 
