@@ -32,21 +32,15 @@ export default function Page (props){
       </Head>
       
       <div className={styles.main}>
-
+        
         <h1>Stock Prices by Market Cap 
           <p className={styles.myh}>
-            <WarningAmberIcon sx={{ fontSize: 10 }}/> Pricing data updated on daily basis. Currency in USD.
+            <WarningAmberIcon sx={{ fontSize: 15 }}/> Pricing data updated on daily basis. Currency in USD.
           </p>
         </h1>
           
         {/* improve loading speed of landing page */}
         <DataTable data={props} fallback={<Spinner/>}/>
-
-        
-        
-
-        <a href='/stockpage'>Stockpage Example</a>
-        <a href='/testpage'>Test Page</a>
       </div>
     </Layout>
   )

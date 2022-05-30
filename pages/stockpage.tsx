@@ -1,12 +1,12 @@
 import Layout from "../components/layout"
 import styles from '../styles/stockpage.module.css'
 import MyChart from '../components/stockpage/pricechart'
-//import StickyHeadTable from './table'
 import {BASE_URL} from "../lib/db_prod_checker";
 import * as React from 'react';
 import Error from 'next/error';
 import {authorization_check} from '../config/auth_check'
-
+import StickyHeadTable from "../components/stockpage/table";
+import predictionData from "../components/stockpage/predictionData.json"
 interface Data {
     year: number;
     month: string;
@@ -56,8 +56,9 @@ export async function getServerSideProps(context) {
                 }
             });
             const content  = await response.json();
+            
         return {
-            props : {stockList:content, count:content.results.length, },
+            props : {stockList:content, count:content.results.length,ticker: ticker },
         }
     }catch (error)
     {
@@ -66,7 +67,7 @@ export async function getServerSideProps(context) {
     
 };
 
-const StockPage = ({errorCode,message, stockList}) => {
+const StockPage = ({errorCode,message, stockList,ticker}) => {
     
   
     if(errorCode){
@@ -82,7 +83,9 @@ const StockPage = ({errorCode,message, stockList}) => {
             <MyChart
             //@ts-ignore
               xyDataList = {stockList}
-            /> 
+              pDataList = {predictionData}
+              tickerName = {ticker}
+            />
         
          {/* <StickyHeadTable rows={rows}/>  */}
         </div>
