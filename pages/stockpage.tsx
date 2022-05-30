@@ -5,7 +5,7 @@ import MyChart from '../components/stockpage/pricechart'
 import {BASE_URL} from "../lib/db_prod_checker";
 import * as React from 'react';
 import Error from 'next/error';
-
+import {authorization_check} from '../config/auth_check'
 
 interface Data {
     year: number;
@@ -51,6 +51,7 @@ export async function getServerSideProps(context) {
                 method:'POST',
                 body:JSON.stringify(postreq(ticker)),
                 headers:{
+                    'authorization':'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e',
                     'Content-Type':'application/json'
                 }
             });
@@ -66,7 +67,7 @@ export async function getServerSideProps(context) {
 };
 
 const StockPage = ({errorCode,message, stockList}) => {
-
+    
   
     if(errorCode){
        return <Error statusCode= {errorCode} title={message}/>
