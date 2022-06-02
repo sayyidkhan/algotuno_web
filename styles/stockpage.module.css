@@ -6,7 +6,13 @@ min-height: 100vh;
   flex-direction: column;
   justify-content:baseline;
   align-items: left;
+  background-color: rgb(255, 255, 255);
 
 }
 
+.mychart MyChart{
+  top:20%;
+  position: inherit;
+  display: hide;
+}
 

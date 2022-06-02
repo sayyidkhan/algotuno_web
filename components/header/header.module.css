@@ -1,0 +1,48 @@
+/* Set min-height to avoid page reflow while session loading */
+@import url(https://fonts.googleapis.com/css?family=Raleway:500);
+.navbar{
+  display:inline-block;
+  position:absolute;
+  top:0;
+  left:0;
+  background-color: black;
+  width: 100%;
+  height: 60px;
+}
+
+.logo{
+  color: rgb(200, 200, 200);
+  font-size: 25pt;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-weight: bold;
+  float: left;
+  margin-left: 4rem;
+  padding-top: 7px;
+}
+
+.navItems {
+  padding: 0;
+  list-style: none;
+  float: right;
+  margin-right: 4rem;
+} 
+
+.navItem {
+ display: inline;
+
+}
+
+.navItem a {
+  
+  color: rgb(200, 200, 200);
+  text-align: center;
+  padding: 15px 16px;
+  text-decoration: none;
+  margin-right: 0.8rem;
+}
+
+.navItem a:hover{
+  transition: 0.3s;
+  color: white;
+}
+
