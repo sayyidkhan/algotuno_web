@@ -26,6 +26,8 @@
     "@next-auth/prisma-adapter": "^1.0.1",
     "@prisma/client": "^3.7.0",
     "@types/bcryptjs": "^2.4.2",
+    "@types/react-router-dom": "^5.3.3",
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "csv-parser": "^3.0.0",

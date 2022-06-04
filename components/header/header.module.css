@@ -16,7 +16,7 @@
   font-family: 'Raleway', Arial, sans-serif;
   font-weight: bold;
   float: left;
-  margin-left: 4rem;
+  margin-left: 3rem;
   padding-top: 7px;
 }
 
@@ -24,7 +24,7 @@
   padding: 0;
   list-style: none;
   float: right;
-  margin-right: 4rem;
+  margin-right: 3rem;
 } 
 
 .navItem {

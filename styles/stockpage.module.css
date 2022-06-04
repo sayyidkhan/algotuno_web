@@ -1,18 +1,32 @@
 .chartarea{
 min-height: 100vh;
-  padding: 4rem 2rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  padding: 4rem 4rem;
   justify-content:baseline;
   align-items: left;
   background-color: rgb(255, 255, 255);
-
 }
 
-.mychart MyChart{
-  top:20%;
-  position: inherit;
-  display: hide;
+
+
+.containers{
+ 
+  /* display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px; */
 }
 
+.container_left{
+  align-items: left;
+  
+}
+
+
+.container_right{
+  width: 20%;
+  position: absolute;
+  top: 7rem;
+  right: 4rem;
+  margin-left: 1rem;
+  /* padding: 5rem 4rem; */
+}
+  

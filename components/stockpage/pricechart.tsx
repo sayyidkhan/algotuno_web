@@ -76,7 +76,7 @@ function MyChart(props) {
     };
 
        //properties of the chart component
-    const layouts = {   autosize: true, width: 900, height: 700, title:`${ticker}`, 
+    const layouts = {   autosize: true, width: 800, height: 600, 
                         yaxis:{title:'Price',fixedrange: true}, 
                         xaxis:{title:'Date', range:['2021-05-05','2022-06-01'], rangeselector: selectorOptions,},
                         dragmode:"pan"

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Box, Container, Flex, Heading, Text } from 'theme-ui';
-import graph from '../images/graph-2.png';
+import graph from '../../public/images/graph-2.png';
 const SECTION3_DATA = {
   image: graph,
   title: 'Our algorithm is able to predict prices with over 60% accuracy',
