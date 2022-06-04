@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridColDef} from '@mui/x-data-grid';
-import { BASE_URL } from '../../lib/db_prod_checker';
+import {BASE_URL} from '../../lib/db_prod_checker';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { makeStyles } from "@mui/styles";
 import axios from 'axios';
@@ -114,10 +114,11 @@ export default function StocksList (props){
   });
   const classes = useStyles();
   //const history = useHistory();
+
   const fetchCoins = async () => {
     setLoading(true);
-  
-    const  {data}  = await axios.get(GetAllStocks());
+    const  {data} = await axios.get(GetAllStocks());
+   
     console.log(data);
  
     setStocks(data.result);
