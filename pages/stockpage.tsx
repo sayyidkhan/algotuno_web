@@ -1,111 +1,110 @@
-import dynamic from 'next/dynamic';
-import Head from 'next/head'
-import Image from 'next/image'
-import Layout from '../components/layout';
-//import styles from '../styles/Home.module.css';
-import styles from '../styles/stockpage.module.css';
-import * as React from "react"
-import Table from '../components/predictiontable'
+import Layout from "../components/layout"
+import styles from '../styles/stockpage.module.css'
+import MyChart from '../components/stockpage/pricechart'
+import {BASE_URL} from "../lib/db_prod_checker";
+import * as React from 'react';
+import Error from 'next/error';
+import predictionData from "../components/stockpage/predictionData.json"
+import Watchlist from '../components/watchlist/watchlist'
+import StockCard from '../components/stockpage/stockheadercard'
+interface Data {
+    year: number;
+    month: string;
+    min: number;
+    max: number;
+    close: number;
+    total:number;
+  }
+  
+  function createData(
+    year: number,
+    month: string,
+    min: number,
+    max: number,
+    close: number,
+    total:number,
+  ): Data {
+    //const density = population / size;
+    return { year, month, min, max, close, total };
+  }
 
-const Plot = dynamic(() => import ('react-plotly.js'), {ssr: false});
 
-class MyChart extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {'title': props.title, 'myfunctionalcomponent': props.myfunctionalcomponent};
+const rows = [
+    createData(2022, "Apr", 145, 178, 156, -10.34),
+    createData(2022, "May", 146, 172, 157, -7.34)
+    //createData()
+  ];
 
+  const postreq=(ticker)=>{
+    return{
+      "ticker_symbol" : 	ticker,
+      "start_date"	:	"2021-05-05",
+      "end_date"	:	"2022-05-27",
+      "sort"		:	"asc"
     }
+};
+export async function getServerSideProps(context) {
+  //const { tickerSymbol } = context.params; // 
+  const ticker = context.query.tickerSymbol;
+  const exchange = context.query.exchange;
 
-    render() {
-        const title = this.state['title'];
-        const Myfunctionalcomponent = this.state['myfunctionalcomponent'];
-        const StockPredictionTable = this.state['stockTable']
-        return (
-            <div>
-                <Myfunctionalcomponent title={'S&P 500'} detail={''}/>
-                {/*
-                // @ts-ignore */}
-                <Plot
-                    // @ts-ignore
-                    data={[
-                        {
-
-                            x: ["14/5/2021",
-                                "17/5/2021",
-                                "18/5/2021",
-                                "19/5/2021",
-                                "20/5/2021"
-                            ],
-                            y: [126.25,
-                                126.82,
-                                126.55,
-                                123.16,
-                                125.23
-                            ],
-                            type: 'scatter',
-                            mode: 'lines+markers',
-                            marker: {color: 'red'},
-                            name: "actual",
-                        },
-                        {
-                            y: [127.25,
-                                128.82,
-                                125.55,
-                                126.16,
-                                129.23
-                            ],
-                            x: ["14/5/2021",
-                                "17/5/2021",
-                                "18/5/2021",
-                                "19/5/2021",
-                                "20/5/2021"
-                            ],
-                            type: 'scatter',
-                            mode: 'lines+markers',
-                            marker: {color: 'green'},
-                            name: "predicted",
-                        },
-                    ]}
-                    layout={{width: 800, height: 600}}
-                />
-
-
-            </div>
-        );
+    try{
+            const response = await fetch (BASE_URL + "/api/stock/get_hsp", {
+                method:'POST',
+                body:JSON.stringify(postreq(ticker)),
+                headers:{
+                    'authorization':'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e',
+                    'Content-Type':'application/json'
+                }
+            });
+            const content  = await response.json();
+            
+        return {
+            props : {stockList:content, count:content.results.length,ticker: ticker,exchange:exchange },
+        }
+    }catch (error)
+    {
+        return{ props:{errorCode:500, message: 'Failed to fetch DB data'}}
     }
+    
+};
+
+const StockPage = ({errorCode,message, stockList,ticker,exchange,count}) => {
+    
+  
+    if(errorCode){
+       return <Error statusCode= {errorCode} title={message}/>
+    };
+
+    return(
+        
+    <Layout>
+    <div className={styles.chartarea}>
+      <div className={styles.container}>
+       <h2>Price Forecast </h2>
+            <StockCard 
+            tickerName = {ticker}
+            lastprice = {stockList.results[count-1].Close}
+            exchange = {exchange}
+            />
+        
+            <div className={styles.container_left}>
+              <MyChart
+              //@ts-ignore
+                xyDataList = {stockList}
+                pDataList = {predictionData}
+                tickerName = {ticker}
+              />
+            </div> 
+            <div className={styles.container_right}>
+              <Watchlist/>
+            </div> 
+        </div>
+      </div>
+    </Layout>
+    )
 }
 
-const MyFunctionalComponent = (props) => {
-    const detail = props.detail;
-    return (
-        <div>
-            <h2>{props.title} : {props.detail}</h2>
-        </div>
-    )
-};
-const StockPredictionTable = (props) => {
-    const detail = props.detail;
-
-    return (
-        <div>
-            <h2>{props.title} : {props.detail}</h2>
-        </div>
-    )
-};
-const StockPage = () => (
-    <Layout>
-        <div className={styles.chartarea}>
-            <h1>Stock Analysis</h1>
-            <MyChart
-                //@ts-ignore
-                myfunctionalcomponent={MyFunctionalComponent}
-                stockTable={StockPredictionTable}
-            />
-        </div>
-        <div className='stock-price-table'>
-            <Table/>
-        </div>
-    </Layout>
-)
-
 export default StockPage
+
+

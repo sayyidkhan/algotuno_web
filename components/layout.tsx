@@ -1,6 +1,6 @@
-import Header from './header';
-import Footer from './footer';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from '../components/header/header';
+import Footer from '../components/footer/footer';
+
 
 
 export default function Layout ({children}) {
