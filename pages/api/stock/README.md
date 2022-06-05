@@ -142,9 +142,9 @@ To update the ML prices for a stock, send a POST request to the **/api/stock/upd
 Example:
 
 ```
-input =  {
+{
     "ticker_symbol" : "GLD",
-	"model_number"  : "1",
+"model_number"  : "1",
     "predictions"   : [ {"Date":"epochtime", "Price":10},
 			{"Date":"epochtime", "Price":15},
 		    	{"Date":"epochtime", "Price":20} ]
