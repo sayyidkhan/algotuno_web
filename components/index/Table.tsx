@@ -4,6 +4,7 @@ import {BASE_URL} from '../../lib/db_prod_checker';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { makeStyles } from "@mui/styles";
 import axios from 'axios';
+import axios_api from '../../pages/api/axios_api';
 import {
   Container,
   createTheme,
@@ -115,9 +116,9 @@ export default function StocksList (props){
   const classes = useStyles();
   //const history = useHistory();
 
-  const fetchCoins = async () => {
+  const fetchStocks = async () => {
     setLoading(true);
-    const  {data} = await axios.get(GetAllStocks());
+    const  {data} = await axios_api.get('/api/stock/get_all_stocks');
    
     console.log(data);
  
@@ -125,7 +126,7 @@ export default function StocksList (props){
     setLoading(false);
   };
   useEffect(() => {
-    fetchCoins();
+    fetchStocks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

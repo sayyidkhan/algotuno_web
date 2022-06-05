@@ -10,6 +10,8 @@ export default function StockCard(props) {
     const tickerName = props.tickerName;
     const lastprice = parseFloat(props.lastprice).toFixed(2);
     const exchange = props.exchange;
+    const lastupdateddate = props.lastupdated;
+    
   return (
     <Box sx={{ width: '30%', maxWidth: 300, bgcolor: 'background.paper' }}>
       <Box sx={{ my: 1, mx: 2 }}>
@@ -32,7 +34,7 @@ export default function StockCard(props) {
       <Divider variant="middle" />
       <Box sx={{ m: 2 }}>
         <Typography gutterBottom variant="subtitle2">
-          Prices updated daily
+          Delayed Data.<br/> Last updated on {lastupdateddate}.
         </Typography>    
       </Box>
     </Box>

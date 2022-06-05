@@ -86,6 +86,7 @@ const StockPage = ({errorCode,message, stockList,ticker,exchange,count}) => {
             tickerName = {ticker}
             lastprice = {stockList.results[count-1].Close}
             exchange = {exchange}
+            lastupdated = {stockList.results[count-1].DateString}
             />
         
             <div className={styles.container_left}>
