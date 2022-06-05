@@ -58,7 +58,7 @@ export default async (req, res) => {
 
             successMsg = `Found the HSP range for ${ticker_symbol}`;
             console.log(successMsg);
-            res.status(200).json({
+            return res.status(200).json({
                 "message" : successMsg,
                 "results" : hsp_range
             });

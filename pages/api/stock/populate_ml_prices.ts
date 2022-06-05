@@ -52,7 +52,7 @@ export default async (req, res) => {
             })
 
             for(let i = 0; i < predicted_prices.length; i++){
-                //predicted_prices[i] = {"Date":"epochtime", "Price": 123.0, "modelType" : 1}
+                //predicted_prices[i] = {"Date":"epochtime", "Price": 123.0, "MLModelID" : 1}
 
                 predicted_prices["stockID"] = stock_id;
                 var formatted_DateObj = new Date(predicted_prices[i]["Date"]*1000);
@@ -64,9 +64,9 @@ export default async (req, res) => {
 
             // after manipulation, predicted_prices will look like this:
             // predicted_prices = [
-            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "modelType" : 1},
-            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "modelType" : 1}
-            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "modelType" : 1}]
+            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "MLModelID" : 1},
+            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "MLModelID" : 1}
+            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "MLModelID" : 1}]
 
             // repopulate with all predicted prices
             const insert_predictions = await prisma.mL_Stock_Price.createMany({data:predicted_prices});
