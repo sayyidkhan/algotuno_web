@@ -144,7 +144,7 @@ Example:
 ```
 {
     "ticker_symbol" : "GLD",
-		"model_number"  : "1",
+"model_number"  : "1",
     "predictions"   : [ {"Date":"epochtime", "Price":10},
 			{"Date":"epochtime", "Price":15},
 		    	{"Date":"epochtime", "Price":20} ]

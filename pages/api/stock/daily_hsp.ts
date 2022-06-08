@@ -114,7 +114,9 @@ export default async (req, res) => {
                         data: result
                     });
 
-                    res.status(200).json({"message" : `Successfully updated stock records for ${ticker_symbol}`,"result":update_hsp});
+                    // return instead of res
+                    // res.status(200).json({"message" : `Successfully updated stock records for ${ticker_symbol}`,"result":update_hsp});
+                    return update_hsp;
     
                 });
                 
