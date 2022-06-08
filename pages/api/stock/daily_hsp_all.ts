@@ -22,7 +22,7 @@ export default async (req, res) => {
 
 
         const result = await fetch(BASE_URL+'/api/stock/get_all_stocks');
-        const content = await result.json();
+        let content = await result.json();
 
         let ticker_symbols = [];
 
@@ -48,7 +48,8 @@ export default async (req, res) => {
                     }
                 });
             console.log(await call_api.json());
-            result_message.push(await call_api.json());
+            let msg = await call_api.json();
+            result_message.push(msg);
         });
         
         return res.status(200).json({"message" : "Completed running the script.", "result" : result_message});

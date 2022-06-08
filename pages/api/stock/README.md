@@ -144,7 +144,7 @@ Example:
 ```
 {
     "ticker_symbol" : "GLD",
-	"model_number"  : "1",
+"model_number"  : "1",
     "predictions"   : [ {"Date":"epochtime", "Price":10},
 			{"Date":"epochtime", "Price":15},
 		    	{"Date":"epochtime", "Price":20} ]
@@ -153,5 +153,3 @@ Example:
 
 Notes:
 - This endpoint requires the correct "authorization" Headers field.
-- The stock that you wish to retrieve historical prices with must already exist in the Stock table
-- The stock that you wish to retrieve historical prices of must already contain historical stock prices in the historical_stock_price table.
