@@ -1,7 +1,7 @@
 import * as React from 'react';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { makeStyles } from "@mui/styles";
-import axios_api from '../../pages/api/axios_api';
+import axios_api from '../../config/axios_api';
 import {
   Container,
   createTheme,
