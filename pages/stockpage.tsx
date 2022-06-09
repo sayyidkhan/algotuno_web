@@ -1,7 +1,7 @@
 import Layout from "../components/layout"
 import styles from '../styles/stockpage.module.css'
 import MyChart from '../components/stockpage/pricechart'
-import {BASE_URL} from "../lib/db_prod_checker";
+import {BASE_URL} from "../config/db_prod_checker";
 import * as React from 'react';
 import Error from 'next/error';
 import predictionData from "../components/stockpage/predictionData.json"

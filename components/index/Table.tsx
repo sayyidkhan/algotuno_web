@@ -52,9 +52,8 @@ export default function StocksList (props){
   const fetchStocks = async () => {
     setLoading(true);
     const  {data} = await axios_api.get('/api/stock/get_all_stocks');
-   
     console.log(data);
- 
+    
     setStocks(data.result);
     setLoading(false);
   };
@@ -181,7 +180,7 @@ export default function StocksList (props){
                           {/* {tickerSymbol}{" "}
                           {numberWithCommas(row.current_price.toFixed(2))} */}
                           <div><span style={{ color: "white" }}>
-                              {row.stockID}
+                              ${parseFloat(row.latestPrice).toFixed(2)}
                             </span></div>
                         </TableCell>
                         {/* Exchange */}
@@ -201,6 +200,10 @@ export default function StocksList (props){
                             backgroundColor: "#8A8A8A"
                           }}
                         >
+                          <div><span style={{ color: "white" }}>
+                          {parseFloat(row.priceChange).toFixed(2)}
+                          </span>
+                          </div>
                           {/* {profit && "+"}
                           {row.price_change_percentage_24h.toFixed(2)}% */}
                         </TableCell>

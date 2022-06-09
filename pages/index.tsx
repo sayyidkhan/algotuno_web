@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css'
 import * as React from "react"
 import loadable from '@loadable/component'
 import Head from 'next/head'
-import {BASE_URL} from "../lib/db_prod_checker";
+import {BASE_URL} from "../config/db_prod_checker";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Spinner } from 'theme-ui'
 import Watchlist from '../components/watchlist/watchlist'
