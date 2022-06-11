@@ -1,11 +1,10 @@
-import { isDate } from 'util/types';
 import prisma from '../../../config/prisma';
 
 const is_date_same = (date1, date2) => {
     return (
     date1.getYear() === date2.getYear() &&
     date1.getMonth() === date2.getMonth() &&
-    date1.getDay() === date2.getDay()
+    date1.getDate() === date2.getDate()
     )
 }
     
