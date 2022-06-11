@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, Box, Flex, Heading, Text, Image as Img } from 'theme-ui';
-import icon1 from '../images/why-choose-1.svg';
-import icon2 from '../images/why-choose-2.svg';
-import icon3 from '../images/why-choose-3.svg';
-import icon4 from '../images/why-choose-4.svg';
-
+import { Container, Box, Flex, Heading, Text } from 'theme-ui';
+import icon1 from '../../public/images/why-choose-1.svg';
+import icon2 from '../../public/images/why-choose-2.svg';
+import icon3 from '../../public/images/why-choose-3.svg';
+import icon4 from '../../public/images/why-choose-4.svg';
+import Image from 'next/image'
 
 const WHY_CHOOSE_DATA = {
   blockTitle: {
@@ -32,7 +32,7 @@ const WHY_CHOOSE_DATA = {
     },
     {
       icon: icon4,
-      title: 'Secure Transaction',
+      title: 'Proven profitability',
       text:
         'Lorem ipsum dolor sit amet with consectetur adipisicing elit the help eiusmod tempor.',
     },
@@ -46,6 +46,7 @@ const WhyChoose = () => {
       {/* //@ts-ignore */}
       <Container sx={styles.container}>
         <Box sx={styles.blockTitle}>
+
           <Heading as="h2">{blockTitle.title}</Heading>
           <Text as="p">{blockTitle.text}</Text>
         </Box>
@@ -53,12 +54,13 @@ const WhyChoose = () => {
           {posts.map(({ icon, text, title }, index) => (
             <Box key={`why-choose-post-key-${index}`} sx={styles.post}>
               <Box sx={styles.imageWrap}>
-                {/* <Img src={icon} alt="icon image" /> */}
+                <Image src={icon} alt="icon image" />
               </Box>
-
+              
               <Heading as="h3">{title}</Heading>
               <Text as="p">{text}</Text>
             </Box>
+            
           ))}
         </Flex>
       </Container>
@@ -75,6 +77,7 @@ const styles ={
   },
   container: {
     position: "relative",
+    
   },
   blockTitle: {
     textAlign: 'center',
@@ -121,11 +124,11 @@ const styles ={
   },
   imageWrap: {
     display: 'flex',
-    minHeight: ['auto', '83px'],
+    minHeight: ['auto', '100px'],
     alignItems: 'center',
     justifyContent: 'center',
     img: {
-      width: ['75px', null, null, null, 'auto'],
+      width: ['80px', null, null, null, 'auto'],
     },
   },
 };

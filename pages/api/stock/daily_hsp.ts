@@ -1,5 +1,15 @@
+import { isDate } from 'util/types';
 import prisma from '../../../config/prisma';
 
+const is_date_same = (date1, date2) => {
+    return (
+    date1.getYear() === date2.getYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDay() === date2.getDay()
+    )
+}
+    
+    
 export default async (req, res) => {
 
     if (req.method === "POST"){
@@ -34,46 +44,38 @@ export default async (req, res) => {
                     "message" : `Stock ${ticker_symbol} does not exist`
                 });
             } 
-
-            // get latest, earliest rec from db
-            const earliest_rec = await prisma.historical_Stock_Price.findFirst({
-                where: {
-                    stockID : stock_id
-                },
-                orderBy:{
-                    Date:'asc'
-                }
-            })
-
-            var earliest_rec_date = earliest_rec.Date;
-        
+       
             // get today's date as epoch time
-            var today = Date.now();
+            var today = new Date().getTime();
             var hsp_start_epoch, hsp_end_epoch;
 
-            // convert today's time to date obj
-            let todayDateObj = new Date(today);
-
+            // get latest_rec and get latest date
             const latest_rec = await prisma.historical_Stock_Price.findFirst({
                 where:{
                     stockID:stock_id
+                },
+                orderBy:{
+                    Date:'desc'
                 }
             })
+
+            // get latest record's Date obj, convert it into epoch time
+            let latest_rec_DateObj = latest_rec.Date.getTime()/1000;
 
             try {
                 console.log(`Pulling data from Yahoo Finance.`)
     
-                hsp_start_epoch = Math.floor(today/1000);
-                hsp_end_epoch = hsp_start_epoch - 86400;
+                hsp_end_epoch = Math.floor(today/1000); //today change sthis
+                hsp_start_epoch = latest_rec_DateObj + 86400; //latest rec + 1 day to avoid db constraint
 
-                var query_url = `https://query1.finance.yahoo.com/v7/finance/download/${ticker_symbol}?period1=${hsp_end_epoch}&period2=${hsp_start_epoch}&interval=1d&events=history&includeAdjustedClose=true`
+                var query_url = `https://query1.finance.yahoo.com/v7/finance/download/${ticker_symbol}?period1=${hsp_start_epoch}&period2=${hsp_end_epoch}&interval=1d&events=history&includeAdjustedClose=true`
                 console.log(`Pulling ${ticker_symbol} data from ${query_url}`)
                 
                 const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
                 const csvParser = require("csv-parser");
                 const needle = require("needle");
     
-                var result;
+                let result = [];
 
                 // get latest price from YF
                 needle.get(query_url).pipe(csvParser()).on("data", (data) => {
@@ -81,7 +83,7 @@ export default async (req, res) => {
                     // parse each data field
                     const hsp_data_date = new Date(data.Date);
     
-                    result = {
+                    result.push({
                         "stockID"   :   stock_id,
                         "Date"      :   hsp_data_date,
                         "DateString":   hsp_data_date.getDate() + "-" + months[hsp_data_date.getMonth()] + "-" + hsp_data_date.getFullYear(),
@@ -90,31 +92,29 @@ export default async (req, res) => {
                         "Low"       :   parseFloat(data.Low),
                         "Close"     :   parseFloat(data.Close),
                         "Volume"    :   parseFloat(data.Volume)
-                    };
+                    });
     
                 }).on("end", async (err) => {
+
                     if (err) {
                         return res.status(406).json({"message" : err});
                     } else if (Object.keys(result).length == 0) {
                         // if YF latest == empty, dont execute
-                        return  res.status(406).json({"message" : "query returned no data"}); 
-                    } else if (result["Date"].getTime() === latest_rec.Date.getTime()) {
-                       // if YF latest == latest rec from db, dont execute
+                        return  res.status(406).json({"message" : "Query returned no data"}); 
+                    } else if (is_date_same(result.slice(-1)[0].Date, latest_rec.Date)){
+                       // check results from YF, use slice(-1) to get last record
                        console.log(`Latest stock prices for ${ticker_symbol} already updated.`);
-                       return  res.status(406).json({"message" : `Latest stock prices for ${ticker_symbol} already updated.`}); 
+                       return  res.status(200).json({"message" : `Latest stock prices for ${ticker_symbol} already updated.`}); 
                     } else {
                         console.log(`Successfully pulled ${ticker_symbol} data; updating records.`);    
+
+                        const insert_hsp = await prisma.historical_Stock_Price.createMany({data:result});
+                        res.status(200).json({"message" : `Successfully updated stock records for ${ticker_symbol}`,"result":insert_hsp});
+
+                        // return instead of res
+                        // res.status(200).json({"message" : `Successfully updated stock records for ${ticker_symbol}`,"result":update_hsp});
+                        
                     }
-
-                    // if YF latest != empty and != latest rec from db, update earliest rec from db with YF data
-                    const update_hsp = await prisma.historical_Stock_Price.update({
-                        where: {
-                            stockID_Date: { stockID: stock_id, Date: earliest_rec_date }
-                        },
-                        data: result
-                    });
-
-                    res.status(200).json({"message" : `Successfully updated stock records for ${ticker_symbol}`,"result":update_hsp});
     
                 });
                 
@@ -139,5 +139,4 @@ export default async (req, res) => {
     
 
 }
-
 

@@ -2,13 +2,13 @@
 import { Container, Box, Heading, Text, Link } from 'theme-ui';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import BannerImage from '../images/banner-1.png';
+import BannerImage from '../../public/images/banner-1.png';
 
 const BANNER_DATA = {
   title: 'Welcome to the next level of financial forecasting.',
   text:
-    'Why second guess where the market is going towards when you can able to do forecasting of the financial markets through the use of AI ?\
-     Here at algotuno, we do predictive analysis through the use of AI so that you can trade more intelligently.',
+    'Worried about stock trading losses?  Welcome to Algotuno! Our team is focused on forecasting services for your stock picks. \
+     Here at algotuno, we do predictive analysis with the use of AI so that you can trade more intelligently.',
   bannerImage: BannerImage,
 };
 

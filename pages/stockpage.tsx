@@ -1,12 +1,12 @@
 import Layout from "../components/layout"
 import styles from '../styles/stockpage.module.css'
 import MyChart from '../components/stockpage/pricechart'
-import {BASE_URL} from "../lib/db_prod_checker";
+import {BASE_URL} from "../config/db_prod_checker";
 import * as React from 'react';
 import Error from 'next/error';
-import {authorization_check} from '../config/auth_check'
-import StickyHeadTable from "../components/stockpage/table";
 import predictionData from "../components/stockpage/predictionData.json"
+import Watchlist from '../components/watchlist/watchlist'
+import StockCard from '../components/stockpage/stockheadercard'
 interface Data {
     year: number;
     month: string;
@@ -46,6 +46,8 @@ const rows = [
 export async function getServerSideProps(context) {
   //const { tickerSymbol } = context.params; // 
   const ticker = context.query.tickerSymbol;
+  const exchange = context.query.exchange;
+
     try{
             const response = await fetch (BASE_URL + "/api/stock/get_hsp", {
                 method:'POST',
@@ -58,7 +60,7 @@ export async function getServerSideProps(context) {
             const content  = await response.json();
             
         return {
-            props : {stockList:content, count:content.results.length,ticker: ticker },
+            props : {stockList:content, count:content.results.length,ticker: ticker,exchange:exchange },
         }
     }catch (error)
     {
@@ -67,7 +69,7 @@ export async function getServerSideProps(context) {
     
 };
 
-const StockPage = ({errorCode,message, stockList,ticker}) => {
+const StockPage = ({errorCode,message, stockList,ticker,exchange,count}) => {
     
   
     if(errorCode){
@@ -77,18 +79,29 @@ const StockPage = ({errorCode,message, stockList,ticker}) => {
     return(
         
     <Layout>
-        <div className={styles.chartarea}>
-            <h1>Stock Analysis</h1>
-            
-            <MyChart
-            //@ts-ignore
-              xyDataList = {stockList}
-              pDataList = {predictionData}
-              tickerName = {ticker}
+    <div className={styles.chartarea}>
+      <div className={styles.container}>
+       <h2>Price Forecast </h2>
+            <StockCard 
+            tickerName = {ticker}
+            lastprice = {stockList.results[count-1].Close}
+            exchange = {exchange}
+            lastupdated = {stockList.results[count-1].DateString}
             />
         
-         {/* <StickyHeadTable rows={rows}/>  */}
+            <div className={styles.container_left}>
+              <MyChart
+              //@ts-ignore
+                xyDataList = {stockList}
+                pDataList = {predictionData}
+                tickerName = {ticker}
+              />
+            </div> 
+            <div className={styles.container_right}>
+              <Watchlist/>
+            </div> 
         </div>
+      </div>
     </Layout>
     )
 }
