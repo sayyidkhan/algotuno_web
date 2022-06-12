@@ -96,23 +96,29 @@ export default async (req, res) => {
                 }).on("end", async (err) => {
 
                     if (err) {
-                        return res.status(406).json({"message" : err});
+                        res.status(406).json({"message" : err});
                     } else if (Object.keys(result).length == 0) {
                         // if YF latest == empty, dont execute
-                        return  res.status(406).json({"message" : "Query returned no data"}); 
+                        res.status(406).json({"message" : "Query returned no data"}); 
                     } else if (is_date_same(result.slice(-1)[0].Date, latest_rec.Date)){
-                       // check results from YF, use slice(-1) to get last record
-                       console.log(`Latest stock prices for ${ticker_symbol} already updated.`);
-                       return  res.status(200).json({"message" : `Latest stock prices for ${ticker_symbol} already updated.`}); 
+                        // check results from YF, use slice(-1) to get last record
+                        console.log(`Latest stock prices for ${ticker_symbol} already updated.`);
+                        res.status(200).json({"message" : `Latest stock prices for ${ticker_symbol} already updated.`}); 
+                       
                     } else {
                         console.log(`Successfully pulled ${ticker_symbol} data; updating records.`);    
 
                         const insert_hsp = await prisma.historical_Stock_Price.createMany({data:result});
-                        res.status(200).json({"message" : `Successfully updated stock records for ${ticker_symbol}`,"result":insert_hsp});
-
-                        // return instead of res
-                        // res.status(200).json({"message" : `Successfully updated stock records for ${ticker_symbol}`,"result":update_hsp});
                         
+                        let operation = {}
+
+                        operation[ticker_symbol] = insert_hsp.count;
+
+                        res.status(200).json({
+                            "message" : `Successfully updated stock records for ${ticker_symbol}`,
+                            "result" : operation
+                        });
+
                     }
     
                 });
