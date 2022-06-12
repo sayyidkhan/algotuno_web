@@ -34,14 +34,15 @@ It can be found at [`next-auth-example.vercel.app`](https://next-auth-example.ve
 - Backend: Express + Next.JS
 - Authentication: NextAuth Framework
 - Database ORM(Object Relation Mapping): PrismaDB
-- Database: Postgres
+- Database: MySQL
 - Cloud Provider:
   1. Vercel - Hosting the backend and frontend
-  2. AWS - AWS RDS, For database storage
+  2. PlanetScale (MySQL cloud service provider), For database storage (providing up to 5GB storage)
 
 #### Additional Documentation
 
 - [API Documentation - (POSTMAN)](https://www.postman.com/dark-comet-642715/workspace/prefyp-v3/)
+- [PlanetScale CLI Installation (Optional)](https://github.com/planetscale/cli)
 
 #### About NextAuth.js
 
@@ -99,11 +100,12 @@ For more information about setting up a database, please check out the following
 - Docs: [next-auth.js.org/adapters/overview](https://next-auth.js.org/adapters/overview)
 - Adapters Repo: [nextauthjs/adapters](https://github.com/nextauthjs/adapters)
 - PrismaDB: [Prisma Client](https://www.prisma.io/)
+- PlanetScale Integration with Prisma : [Doc1](https://shadcn.com/next-prisma-planetscale-vercel) [Doc2](https://www.youtube.com/watch?v=Sx4pFi0je5w)
 
 ###### Setup Locally
 
 1. you will need docker installed
-2. f
+other steps coming soon...
 
 ###### Connect to cloud (Prisma or AWS as a online database provider) \*recommended approach if an cloud instance is available
 
@@ -150,20 +152,34 @@ npm run start
 
 ### 5. Database configuration
 
-For this project we are using the `postgres` database for the database storage.
+For this project we are using the `MySQL` database for the database storage.
 A database adapter is required to provide ORM(object relation mapping) to automatically
 map records in the database with the classes & objects in the server.
 
-- postgres (database storage)
+- MySQL (database storage)
 - prisma (database adapter)
-- prisma.io & heroku (cloud OLTP / OLAP) -> basically a GUI to view the database
-- heroku & AWS (cloud hosting provider)
+- prisma.io & Planetscale (cloud OLTP / OLAP) -> basically a GUI to view the database
+- Planetscale & AWS (cloud hosting provider)
 
+###### Sync Schema
 use this command to sync the `prisma.schema` with the cloud
 
 ```bash
 npx prisma db push
 ```
+
+###### Setup Planetscale
+> The MySQL-compatible serverless database platform.
+
+Planetscale allows the database to be hosted in the cloud and managed in a serverless manner.
+They even have branches to be able to multiple developments.
+
+- 1. Signup new account at planetscale
+  NOTE: planetscale only allows 1 database per account for FREE TIER.
+- 2. Create a `new database` by click in the `Overview` page of `https://app.planetscale.com/your_username_here`
+- 3. obtain the MySQL url
+- 4. update the environment variables accordingly with 
+
 
 currently our database does not support `npx prisma migrate`
 todo: need to look for a workaround to address this issue
@@ -229,7 +245,7 @@ Superuser Access is basically an access given to user that have all access in th
 To create a superuser access, the user will need to run a query on the terminal in order to be able to create a new user.
 
 > Steps to create a superuser:
-> Firstly, the app must be running with a database connected to either -> AWS / HEROKU / PRISMA.IO / DOCKER / POSTGRES
+> Firstly, the app must be running with a database connected to either -> AWS / HEROKU / PRISMA.IO / DOCKER / MySQL
 > Secondly, run the command below
 
 ```
@@ -252,6 +268,9 @@ _BASICLY THE TLDR is you need to login on terminal using token authentication in
 remember to `API_SECRET_KEY` in the github secrets and vercel during the use of the cron job.
 - [How to setup cron job on Vercel](https://vercel.com/docs/concepts/solutions/cron-jobs)
 - [Youtube Tutorial](https://www.youtube.com/watch?v=4DCfeXDnWSw)
+
+Basically for our project we use [pipedream](https://pipedream.com/) to allow us to run scheduling system to call our
+API(s) periodically
 
 ## Acknowledgements
 
