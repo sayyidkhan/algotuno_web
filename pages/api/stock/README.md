@@ -81,7 +81,6 @@ Example:
 ```
 
 Notes:
-- This endpoint requires the correct "authorization" Headers field.
 - The stock that you wish to retrieve historical prices with must already exist in the Stock table
 - The stock that you wish to retrieve historical prices of must already contain historical stock prices in the historical_stock_price table.
 - The **start_date** and **end_date** fields are optional. If left empty, the query will return all available historical stock prices.
