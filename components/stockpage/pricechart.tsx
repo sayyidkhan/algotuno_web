@@ -79,7 +79,7 @@ function MyChart(props) {
     const layouts = {   autosize: true, width: 800, height: 600, 
                         yaxis:{title:'Price',fixedrange: true}, 
                         xaxis:{title:'Date', range:['2021-05-05','2022-06-01'], rangeselector: selectorOptions,},
-                        dragmode:"pan"
+                        //dragmode:"pan"
                     }
     return (
             <div>
