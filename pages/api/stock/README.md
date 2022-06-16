@@ -10,9 +10,10 @@ Added the following scripts:
 - daily_hsp.ts
 - daily_hsp_all.ts
 - update_ml_prices.ts
+- get_ml_prices.ts
 
 #### NOTICE
-All endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
+Some endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
 
 #### Usage
 ## add_stock.ts
@@ -133,9 +134,6 @@ Example:
 ## daily_hsp_all.ts
 To update all the historical stock prices on a daily basis, send a GET request to the **/api/stock/daily_hsp_all.ts** endpoint.
 
-Notes:
-- This endpoint requires the correct "authorization" Headers field.
-
 ## update_ml_prices.ts
 To update the ML prices for a stock, send a POST request to the **/api/stock/update_ml_prices** endpoint with the body contents:
 
@@ -144,12 +142,32 @@ Example:
 ```
 {
     "ticker_symbol" : "GLD",
-"model_number"  : "1",
-    "predictions"   : [ {"Date":"epochtime", "Price":10},
-			{"Date":"epochtime", "Price":15},
-		    	{"Date":"epochtime", "Price":20} ]
+	"model_type"  : "1",
+        "prediction": [
+            {
+                "Sat Jan 01 2022 08:00:00 GMT+0800 (Singapore Standard Time)": 177.87269592285156
+            },
+            {
+                "Fri Jan 07 2022 08:00:00 GMT+0800 (Singapore Standard Time)": 178.38754272460938
+            },
+            {
+                "Sun Jan 30 2022 08:00:00 GMT+0800 (Singapore Standard Time)": 178.56460571289062
+            }
+        ]
 }
 ```
 
 Notes:
 - This endpoint requires the correct "authorization" Headers field.
+
+## get_ml_prices.ts
+To get the ML prices for a stock, send a GET request to the **/api/stock/get_ml_prices** endpoint with the body contents: 
+
+Example:
+
+```
+{
+	"ticker_symbol" : "GLD",
+	"model_type"	: "1"
+}
+```
