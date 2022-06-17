@@ -1,4 +1,5 @@
 import prisma from '../../../config/prisma';
+import {BASE_URL} from '../../../config/db_prod_checker';
 
 export default async (req, res) => {
 
@@ -42,17 +43,39 @@ export default async (req, res) => {
             });
             console.log(`Found ${hsp_records.length} records for ${ticker_symbol}.`)
 
+            //2. SEND TO BACKEND AI WEBSERVICE
             console.log(`Getting Tensorflow prices for ${ticker_symbol}.`)
             const get_tensorflow_prices = await getTensorflowPrices(TENSORFLOW_URL, ticker_symbol, hsp_records);
-            // const tsjson = await get_tensorflow_prices.json();
-            
-            console.log(get_tensorflow_prices);
+                        
+            let tensorflow_prices = null;
 
-            // console.log(tsjson.prediction.json());
-            res.status(200).json("testing");
+            try {
+                tensorflow_prices = await get_tensorflow_prices.json();
+            } catch (e) {
+                tensorflow_prices = await get_tensorflow_prices.text();
+            }
 
-            //2. SEND TO BACKEND AI WEBSERVICE 3. RUN MODELS TO PREDICT PRICES
-            //4. GET PREDICTION PRICES AND SEND BACK TO PRISMADB
+            console.log(tensorflow_prices);
+
+            //3. GET PREDICTION PRICES AND SEND BACK TO PRISMADB
+            const update_ml_prices = await fetch(BASE_URL + `/api/stock/update_ml_prices`,
+            {
+                method  : "POST",
+                body    : JSON.stringify(tensorflow_prices.result),
+                headers : {'Content-Type' : 'application/json'}   
+            });
+
+            let update_results = null;
+            try{
+                update_results = await update_ml_prices.json();
+            } catch (e){
+                update_results = await update_ml_prices.text();
+            }
+
+            console.log(update_results);
+            res.status(200).json({"message":"Success!", "result":update_results});
+
+
 
 
         }catch(error){
