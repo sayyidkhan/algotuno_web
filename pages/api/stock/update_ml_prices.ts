@@ -92,6 +92,8 @@ export default async (req, res) => {
                 formatted_results.push(prediction_obj);
             }
 
+            console.log(formatted_results);
+
             // after manipulation, formatted_results will look like this:
             // formatted_results = [
             //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "MLModelID" : 1},
@@ -100,7 +102,7 @@ export default async (req, res) => {
 
             // repopulate with all predicted prices
             const insert_predictions = await prisma.mL_Stock_Price.createMany({data:formatted_results});
-            const successMsg = `Inserted ${insert_predictions.count} records for ${ticker_symbol}`
+            const successMsg = `Updated ${insert_predictions.count} records from Model ${model_type} for ${ticker_symbol}`
             console.log(successMsg);
             res.status(200).json({"message":successMsg, "result":insert_predictions});
 

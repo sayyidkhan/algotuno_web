@@ -1,12 +1,14 @@
 import prisma from '../../../config/prisma';
 import {BASE_URL} from '../../../config/db_prod_checker';
 
+const TENSORFLOW_URL = "https://algotunotfjsv3.azurewebsites.net/tfjs_run_model/";
+const SCITKITLEARN_URL = "https://q6p47mowxp5fy2dkeh6cvg6dwi0dykpt.lambda-url.us-east-1.on.aws/"
+
 export default async (req, res) => {
 
     if (req.method === "POST"){
         
         let ticker_symbol, stock_id;
-        const TENSORFLOW_URL = "https://algotunotfjsv3.azurewebsites.net/tfjs_run_model/";
         
         // check if ticker symbol exists in body
         if(!req.body.ticker_symbol){
@@ -45,35 +47,30 @@ export default async (req, res) => {
 
             //2. SEND TO BACKEND AI WEBSERVICE
             console.log(`Getting Tensorflow prices for ${ticker_symbol}.`)
-            const get_tensorflow_prices = await getTensorflowPrices(TENSORFLOW_URL, ticker_symbol, hsp_records);
-                        
-            let tensorflow_prices = null;
-
-            try {
-                tensorflow_prices = await get_tensorflow_prices.json();
-            } catch (e) {
-                tensorflow_prices = await get_tensorflow_prices.text();
-            }
-
+            const get_tensorflow_prices = await getMLPrices(TENSORFLOW_URL, ticker_symbol, hsp_records);
+            console.log(`Getting Scitkitlearn prices for ${ticker_symbol}.`)            
+            const get_scikitlearn_prices = await getMLPrices(SCITKITLEARN_URL, ticker_symbol, hsp_records);
+            
+            const tensorflow_prices = await get_tensorflow_prices.json();
             console.log(tensorflow_prices);
 
+            const scikitlearn_prices = await get_scikitlearn_prices.json();
+            console.log(scikitlearn_prices);
+
+
             //3. GET PREDICTION PRICES AND SEND BACK TO PRISMADB
-            const update_ml_prices = await fetch(BASE_URL + `/api/stock/update_ml_prices`,
-            {
-                method  : "POST",
-                body    : JSON.stringify(tensorflow_prices.result),
-                headers : {'Content-Type' : 'application/json'}   
-            });
+            const update_tsfl_prices = await updateDBPrices(tensorflow_prices);
+            const update_skl_prices = await updateDBPrices(scikitlearn_prices);
 
-            let update_results = null;
-            try{
-                update_results = await update_ml_prices.json();
-            } catch (e){
-                update_results = await update_ml_prices.text();
-            }
 
-            console.log(update_results);
-            res.status(200).json({"message":"Success!", "result":update_results});
+            const tsflw_results = await update_tsfl_prices.json();
+            const skl_results = await update_skl_prices.json();
+
+
+            const final_res = [tsflw_results, skl_results];
+
+            console.log(final_res);
+            res.status(200).json({"message":"Success!", "result":final_res});
 
 
 
@@ -85,19 +82,29 @@ export default async (req, res) => {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
 
+    async function updateDBPrices(ML_prices: any) {
+        return await fetch(BASE_URL + `/api/stock/update_ml_prices`,
+            {
+                method: "POST",
+                body: JSON.stringify(ML_prices.result),
+                headers: { 'Content-Type': 'application/json' }
+            });
+    }
+
+    async function getMLPrices(ML_API_URL: string, ticker_symbol: string, hsp_records) {
+        return await fetch(ML_API_URL,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    "ticker_symbol": ticker_symbol,
+                    "stock_metadata_list": hsp_records
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+    }
 }
 
-async function getTensorflowPrices(TENSORFLOW_URL: string, ticker_symbol: any, hsp_records) {
-    return await fetch(TENSORFLOW_URL,
-        {
-            method: "POST",
-            body: JSON.stringify({
-                "ticker_symbol": ticker_symbol,
-                "stock_metadata_list": hsp_records
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-}
+
 
