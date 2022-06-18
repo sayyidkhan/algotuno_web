@@ -11,6 +11,7 @@ Added the following scripts:
 - daily_hsp_all.ts
 - update_ml_prices.ts
 - get_ml_prices.ts
+- daily_ml_prices_all.ts
 
 #### NOTICE
 Some endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
@@ -81,7 +82,6 @@ Example:
 ```
 
 Notes:
-- This endpoint requires the correct "authorization" Headers field.
 - The stock that you wish to retrieve historical prices with must already exist in the Stock table
 - The stock that you wish to retrieve historical prices of must already contain historical stock prices in the historical_stock_price table.
 - The **start_date** and **end_date** fields are optional. If left empty, the query will return all available historical stock prices.
@@ -171,3 +171,6 @@ Example:
 	"model_type"	: "1"
 }
 ```
+
+## daily_ml_prices.ts
+To update all the ML prediction prices on a daily basis, send a GET request to the **/api/stock/daily_hsp_all.ts** endpoint.
