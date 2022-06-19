@@ -10,9 +10,11 @@ Added the following scripts:
 - daily_hsp.ts
 - daily_hsp_all.ts
 - update_ml_prices.ts
+- get_ml_prices.ts
+- daily_ml_prices_all.ts
 
 #### NOTICE
-All endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
+Some endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
 
 #### Usage
 ## add_stock.ts
@@ -80,7 +82,6 @@ Example:
 ```
 
 Notes:
-- This endpoint requires the correct "authorization" Headers field.
 - The stock that you wish to retrieve historical prices with must already exist in the Stock table
 - The stock that you wish to retrieve historical prices of must already contain historical stock prices in the historical_stock_price table.
 - The **start_date** and **end_date** fields are optional. If left empty, the query will return all available historical stock prices.
@@ -133,9 +134,6 @@ Example:
 ## daily_hsp_all.ts
 To update all the historical stock prices on a daily basis, send a GET request to the **/api/stock/daily_hsp_all.ts** endpoint.
 
-Notes:
-- This endpoint requires the correct "authorization" Headers field.
-
 ## update_ml_prices.ts
 To update the ML prices for a stock, send a POST request to the **/api/stock/update_ml_prices** endpoint with the body contents:
 
@@ -143,13 +141,36 @@ Example:
 
 ```
 {
-    "ticker_symbol" : "GLD",
-"model_number"  : "1",
-    "predictions"   : [ {"Date":"epochtime", "Price":10},
-			{"Date":"epochtime", "Price":15},
-		    	{"Date":"epochtime", "Price":20} ]
+    "ticker_symbol": "AAPL",
+    "model_type": 1,
+    "prediction": [
+        {
+            "1654905600000": 136.62466430664062
+        },
+        {
+            "1655424000000": 130.37684631347656
+        },
+        {
+            "1657411200000": 127.59423828125
+        }
+    ]
 }
 ```
 
 Notes:
 - This endpoint requires the correct "authorization" Headers field.
+
+## get_ml_prices.ts
+To get the ML prices for a stock, send a GET request to the **/api/stock/get_ml_prices** endpoint with the body contents: 
+
+Example:
+
+```
+{
+	"ticker_symbol" : "GLD",
+	"model_type"	: "1"
+}
+```
+
+## daily_ml_prices.ts
+To update all the ML prediction prices on a daily basis, send a GET request to the **/api/stock/daily_hsp_all.ts** endpoint.
