@@ -141,19 +141,19 @@ Example:
 
 ```
 {
-    "ticker_symbol" : "GLD",
-	"model_type"  : "1",
-        "prediction": [
-            {
-                "Sat Jan 01 2022 08:00:00 GMT+0800 (Singapore Standard Time)": 177.87269592285156
-            },
-            {
-                "Fri Jan 07 2022 08:00:00 GMT+0800 (Singapore Standard Time)": 178.38754272460938
-            },
-            {
-                "Sun Jan 30 2022 08:00:00 GMT+0800 (Singapore Standard Time)": 178.56460571289062
-            }
-        ]
+    "ticker_symbol": "AAPL",
+    "model_type": 1,
+    "prediction": [
+        {
+            "1654905600000": 136.62466430664062
+        },
+        {
+            "1655424000000": 130.37684631347656
+        },
+        {
+            "1657411200000": 127.59423828125
+        }
+    ]
 }
 ```
 
