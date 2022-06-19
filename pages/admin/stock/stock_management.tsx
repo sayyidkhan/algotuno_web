@@ -103,8 +103,8 @@ export default function Page() {
 
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
                     <Tabs value={value} onChange={handleChange}>
-                        <Tab label="Item One"/>
-                        <Tab label="Item Two"/>
+                        <Tab label="Super User"/>
+                        <Tab label="Basic User"/>
                     </Tabs>
 
                     <TabContext value={value.toString()}>
