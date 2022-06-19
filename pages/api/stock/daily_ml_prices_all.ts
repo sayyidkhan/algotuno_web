@@ -12,6 +12,7 @@ export default async (req, res) => {
         let content = await result.json();
 
         let all_stocks = [];
+        let return_msg = [];
 
         if (content.result !== null || content.result !== undefined){
             if (content.result.length > 0){
@@ -95,8 +96,7 @@ export default async (req, res) => {
             return final_res;
 
         });
-
-    }
     
+    }
 }
 
