@@ -1,9 +1,8 @@
-import { authorization_check } from '../../../config/auth_check';
 import prisma from '../../../config/prisma';
 
 export default async (req, res) => {
 
-    if (req.method === "GET") {
+    if (req.method === "POST") {
 
         // check if ticker symbol exists in body
         if (!req.body.ticker_symbol) {

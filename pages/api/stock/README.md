@@ -161,7 +161,7 @@ Notes:
 - This endpoint requires the correct "authorization" Headers field.
 
 ## get_ml_prices.ts
-To get the ML prices for a stock, send a GET request to the **/api/stock/get_ml_prices** endpoint with the body contents: 
+To get the ML prices for a stock, send a POST request to the **/api/stock/get_ml_prices** endpoint with the body contents: 
 
 Example:
 
