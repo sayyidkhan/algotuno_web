@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { Box, Container, Flex, Heading, Text } from 'theme-ui';
-import graph from '../../public/images/graph-2.png';
+import graph from '../../public/images/graph-3.jpg';
 const SECTION3_DATA = {
   image: graph,
-  title: 'Our algorithm is able to predict prices with over 60% accuracy',
+  title: 'Better than a coin flip predictive analytics based on historical  5-years price transactions',
   text:
     'Algotuno proprietary AI technology have studied different market conditions to help our users to make a more informed decision when investing the market.\
     With us, you can once more time the market to buy the low, knowing the market is at its lowest point and sell it at its high when its highest point.',
@@ -43,17 +43,7 @@ export default Investment;
 
 const styles = {
   section: {
-    pb: [
-      '45px',
-      '50px',
-      null,
-      '90px',
-      '100px',
-      null,
-      '120px',
-      '140px',
-      '150px',
-    ],
+    paddingBottom: "8em",
   },
   container: {
     position: 'relative',
@@ -89,6 +79,7 @@ const styles = {
     mx: [null, null, null, 'auto', '0'],
     maxWidth: [null, null, null, '395px', '475px', null, '600px'],
     h2: {
+      paddingTop: "1em",
       fontSize: ['24px', '28px', '32px', null, '36px', '40px', '44px', '48px'],
       lineHeight: [1.4, null, null, 1.46],
       color: 'heading',
@@ -99,9 +90,8 @@ const styles = {
       color: 'text',
       fontSize: ['15px', null, '16px'],
       lineHeight: [1.9, null, 2.5],
-      maxWidth: '465px',
+      maxWidth: '600px',
       mt: ['12px', null, null, null, '20px', null, '25px'],
-      mb: ['22px', '30px', null, null, null, '40px'],
       mx: ['auto', null, null, null, '0'],
     },
   },

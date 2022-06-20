@@ -141,7 +141,7 @@ Example:
 
 ```
 {
-    "ticker_symbol" : "GLD",
+  "ticker_symbol" : "GLD",
 	"model_type"  : "1",
         "prediction": [
             {
