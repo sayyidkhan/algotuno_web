@@ -73,15 +73,15 @@ export default async (req, res) => {
                 //current format: predicted_prices[i] = {"epochtime" : 123.0}
                 
                 let prediction_obj = {}
-                let formatted_DateObj, formattedDateString;
                 
                 // reassign Date field into the DateObj for storage
                 // var formatted_DateObj = new Date(predicted_prices[i]["Date"]*1000);
                 for (const [key, value] of Object.entries(predicted_prices[i])){
                     prediction_obj["stockID"] = stock_id;
 
-                    formatted_DateObj = new Date(key);
-                    formattedDateString = formatted_DateObj.getDate() + "-" + months[formatted_DateObj.getMonth()] + "-" + formatted_DateObj.getFullYear();
+                    const dateIntRep = parseInt(key); // date obj in epoch time (milliseconds), Int representation
+                    const formatted_DateObj = new Date(dateIntRep); // convert epoch time to Date obj
+                    const formattedDateString = formatted_DateObj.getDate() + "-" + months[formatted_DateObj.getMonth()] + "-" + formatted_DateObj.getFullYear();
 
                     prediction_obj["Date"] = formatted_DateObj;
                     prediction_obj["DateString"] = formattedDateString;
