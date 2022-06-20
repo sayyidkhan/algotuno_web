@@ -2,7 +2,7 @@
 import { Container, Box, Heading, Text, Link } from 'theme-ui';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import BannerImage from '../../public/images/banner-1.png';
+import BannerImage from '../../public/images/banner-2.gif';
 
 const BANNER_DATA = {
   title: 'Welcome to the next level of financial forecasting.',
@@ -51,8 +51,8 @@ const Banner = () => {
             <Image
               src={bannerImage}
               alt="Banner Mockup"
-              width={740}
-              height={442}
+              width={450}
+              height={450}
             />
           </Box>
         </Container>
@@ -139,7 +139,7 @@ const Banner = () => {
     },
     sectionImage: {
       mt: ['40px', null, null, 0],
-      pl: [0, null, null, '30px', 0],
+      ml: "-7em",
       display: 'flex',
       justifyContent: 'flex-end',
       position: 'relative',
