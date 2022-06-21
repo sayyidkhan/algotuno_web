@@ -30,3 +30,13 @@ min-height: 100vh;
   /* padding: 5rem 4rem; */
 }
   
+.tablegrid{
+display: flex;
+
+
+}
+.table1{
+  padding: 0rem 5rem;
+
+
+}

@@ -20,8 +20,13 @@ export default function HeaderAdmin() {
               </Link>
             </li>
             <li className={styles.navItem}>
-              <Link href="/admin/stock/add_new_stock">
-                <a>Add New Stock</a>
+              <Link href="/admin/stock/stock_management">
+                <a>Stock Management</a>
+              </Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/admin/user/user_management">
+                <a>User Management</a>
               </Link>
             </li>
             <li className={styles.navItem}>
