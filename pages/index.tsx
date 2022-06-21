@@ -14,21 +14,22 @@ const StocksList = loadable(() => import('../components/index/Table'));
 
 
 // export const getServerSideProps = async () => {
-// try
-//   const res = await fetch(BASE_URL + '/api/stock/get_all_stocks');
-//   const stocks = await res.json();
+// try{
+//   const res = await fetch(BASE_URL + '/api/stock/get_ml_prices?input=%7B%0A%09%22ticker_symbol%22%20%3A%20%22AAPL%22%2C%0A%09%22model_type%22%09%3A%20%221%22%0A%7D');
+//   const modelA = await res.json();
 //   return {
-//       props: {stocks, length: stocks.result.length}
+//       props: {modelA}
 //   }
-// }catch (error)
-// {
-//     return{ props:{errorCode:500,message: 'Failed to fetch DB data'}}
 // }
+//   catch (error)
+//   {  
+//     return{ props:{errorCode:500,message: 'Failed to fetch DB data'}}
+//   }
 
 // };
 
 export default function Page (props){
-  
+  console.log(props)
   return (
     <Layout>
       <Head>

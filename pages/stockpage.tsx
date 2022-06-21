@@ -7,41 +7,39 @@ import Error from 'next/error';
 import predictionData from "../components/stockpage/predictionData.json"
 import Watchlist from '../components/watchlist/watchlist'
 import StockCard from '../components/stockpage/stockheadercard'
-interface Data {
-    year: number;
-    month: string;
-    min: number;
-    max: number;
-    close: number;
-    total:number;
-  }
+import StickyHeadTable from "../components/stockpage/table";
+
+// interface Data {
+//     oneday: number;
+//     sevenday: number;
+//     thirtyday: number;
+//   }
   
-  function createData(
-    year: number,
-    month: string,
-    min: number,
-    max: number,
-    close: number,
-    total:number,
-  ): Data {
-    //const density = population / size;
-    return { year, month, min, max, close, total };
-  }
-
-
-const rows = [
-    createData(2022, "Apr", 145, 178, 156, -10.34),
-    createData(2022, "May", 146, 172, 157, -7.34)
-    //createData()
-  ];
+//   function createData(
+//     oneday: number,
+//     sevenday: number,
+//     thirtyday: number,
+//   ): Data {
+//     //const density = population / size;
+//     return {oneday,sevenday,thirtyday };
+//   }
 
   const postreq=(ticker)=>{
     return{
-      "ticker_symbol" : 	ticker,
-      "start_date"	:	"2021-05-05",
-      "end_date"	:	"2022-05-27",
-      "sort"		:	"asc"
+      "ticker_symbol" : 	ticker
     }
+};
+const postreqmodelA=(ticker)=>{
+  return{
+    "ticker_symbol" : 	ticker,
+    "model_type"	: "1"
+  }
+};
+const postreqmodelB=(ticker)=>{
+  return{
+    "ticker_symbol" : 	ticker,
+    "model_type"	: "2"
+  }
 };
 export async function getServerSideProps(context) {
   //const { tickerSymbol } = context.params; // 
@@ -57,10 +55,28 @@ export async function getServerSideProps(context) {
                     'Content-Type':'application/json'
                 }
             });
+            
+            const predictionres  = await fetch(BASE_URL + "/api/stock/get_ml_prices", {
+              method:'POST',
+                body:JSON.stringify(postreqmodelA(ticker)),
+                headers:{
+                  'Content-Type':'application/json'
+                }
+            });
+
+            const predictionresB  = await fetch(BASE_URL + "/api/stock/get_ml_prices", {
+              method:'POST',
+                body:JSON.stringify(postreqmodelB(ticker)),
+                headers:{
+                  'Content-Type':'application/json'
+                }
+            });
             const content  = await response.json();
+            const predictionDataA = await predictionres.json();
+            const predictionDataB = await predictionresB.json();
             
         return {
-            props : {stockList:content, count:content.results.length,ticker: ticker,exchange:exchange },
+            props : {stockList:content, count:content.results.length,ticker: ticker,exchange:exchange,predictionDataA:predictionDataA,predictionDataB:predictionDataB },
         }
     }catch (error)
     {
@@ -69,8 +85,9 @@ export async function getServerSideProps(context) {
     
 };
 
-const StockPage = ({errorCode,message, stockList,ticker,exchange,count}) => {
-    
+
+const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictionDataA,predictionDataB}) => {
+
   
     if(errorCode){
        return <Error statusCode= {errorCode} title={message}/>
@@ -93,15 +110,26 @@ const StockPage = ({errorCode,message, stockList,ticker,exchange,count}) => {
               <MyChart
               //@ts-ignore
                 xyDataList = {stockList}
-                pDataList = {predictionData}
+                pDataList = {predictionDataA}
                 tickerName = {ticker}
               />
             </div> 
+            
+            
             <div className={styles.container_right}>
               <Watchlist/>
             </div> 
         </div>
-      </div>
+        </div>
+      <div className={styles.tablegrid}>
+            <div className={styles.table1}>
+              <StickyHeadTable pData={predictionDataA} />
+            </div>
+            <div className={styles.table2}>
+              <StickyHeadTable pData={predictionDataB} />
+            </div>
+            </div>
+            
     </Layout>
     )
 }

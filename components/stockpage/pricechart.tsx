@@ -18,9 +18,9 @@ function MyChart(props) {
 
     const ticker = props.tickerName;
 
-    const pData=  props.pDataList.results;
-    const dateList2 = pData.map(e=>e.Date);
-    const closePrice2 = pData.map(e=>parseFloat(parseFloat(e.Close).toFixed(2)));
+    const pDataA=  props.pDataList.results;
+    const dateList2 = pDataA.map(e=>e.Date);
+    const closePrice2 = pDataA.map(e=>parseFloat(parseFloat(e.Price).toFixed(2)));
 
     //trace 1 is the stock data
     const trace1 = {
