@@ -4,25 +4,10 @@ import MyChart from '../components/stockpage/pricechart'
 import {BASE_URL} from "../config/db_prod_checker";
 import * as React from 'react';
 import Error from 'next/error';
-import predictionData from "../components/stockpage/predictionData.json"
 import Watchlist from '../components/watchlist/watchlist'
 import StockCard from '../components/stockpage/stockheadercard'
 import StickyHeadTable from "../components/stockpage/table";
 
-// interface Data {
-//     oneday: number;
-//     sevenday: number;
-//     thirtyday: number;
-//   }
-  
-//   function createData(
-//     oneday: number,
-//     sevenday: number,
-//     thirtyday: number,
-//   ): Data {
-//     //const density = population / size;
-//     return {oneday,sevenday,thirtyday };
-//   }
 
   const postreq=(ticker)=>{
     return{
