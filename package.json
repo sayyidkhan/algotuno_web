@@ -23,6 +23,7 @@
     "@mui/lab": "^5.0.0-alpha.86",
     "@mui/material": "^5.2.7",
     "@mui/styles": "^5.2.3",
+    "@mui/utils": "^5.8.4",
     "@mui/x-data-grid": "^5.11.0",
     "@next-auth/prisma-adapter": "^1.0.1",
     "@prisma/client": "^3.7.0",
