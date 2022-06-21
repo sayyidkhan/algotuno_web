@@ -6,7 +6,6 @@ import loadable from '@loadable/component'
 import Head from 'next/head'
 import {BASE_URL} from "../config/db_prod_checker";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import { Spinner } from 'theme-ui'
 import Watchlist from '../components/watchlist/watchlist'
 
 
