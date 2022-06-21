@@ -25,6 +25,11 @@ export default function HeaderAdmin() {
               </Link>
             </li>
             <li className={styles.navItem}>
+              <Link href="/admin/user/user_management">
+                <a>User Management</a>
+              </Link>
+            </li>
+            <li className={styles.navItem}>
               <Link href="/">
                 <a>Back to Home</a>
               </Link>

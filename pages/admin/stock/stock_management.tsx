@@ -120,7 +120,6 @@ export default function Page() {
                 </Box>
 
                 <Box style={{marginBottom: "7.5em"}}/>
-
             </Container>
         </LayoutHeader>
     );
