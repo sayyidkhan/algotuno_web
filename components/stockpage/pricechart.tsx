@@ -18,9 +18,13 @@ function MyChart(props) {
 
     const ticker = props.tickerName;
 
-    const pDataA=  props.pDataList.results;
+    const pDataA=  props.pDataListA.results;
     const dateList2 = pDataA.map(e=>e.Date);
     const closePrice2 = pDataA.map(e=>parseFloat(parseFloat(e.Price).toFixed(2)));
+
+    const pDataB=  props.pDataListB.results;
+    const dateList3 = pDataA.map(e=>e.Date);
+    const closePrice3 = pDataA.map(e=>parseFloat(parseFloat(e.Price).toFixed(2)));
 
     //trace 1 is the stock data
     const trace1 = {
@@ -41,8 +45,17 @@ function MyChart(props) {
         type: 'scatter',
         mode: 'lines+markers',
         marker: {color: 'orange'},
-        name: "predicted",
+        name: "Model A",
        };   
+    
+    const trace3 = {
+        x: dateList3,
+        y: closePrice3,
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: {color: 'orange'},
+        name: "Model B",
+       };
 
     var selectorOptions = {
         buttons: [{
@@ -78,7 +91,7 @@ function MyChart(props) {
        //properties of the chart component
     const layouts = {   autosize: true, width: 800, height: 600, 
                         yaxis:{title:'Price',fixedrange: true}, 
-                        xaxis:{title:'Date', range:['2021-05-05','2022-06-01'], rangeselector: selectorOptions,},
+                        xaxis:{title:'Date', range:['2022-01-01','2022-08-01'], rangeselector: selectorOptions,},
                         //dragmode:"pan"
                     }
     return (
@@ -88,7 +101,7 @@ function MyChart(props) {
                 <Plot 
                     
                     // @ts-ignore
-                    data={[trace1,trace2]}
+                    data={[trace1,trace2,trace3]}
                     // @ts-ignore
                     layout={layouts}
                     // @ts-ignore

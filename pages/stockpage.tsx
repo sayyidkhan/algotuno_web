@@ -95,7 +95,8 @@ const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictio
               <MyChart
               //@ts-ignore
                 xyDataList = {stockList}
-                pDataList = {predictionDataA}
+                pDataListA = {predictionDataA}
+                pDataListB = {predictionDataB}
                 tickerName = {ticker}
               />
             </div> 
