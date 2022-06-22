@@ -31,7 +31,7 @@ const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
 const theme = createTheme();
 
-export function AddressForm() {
+export function StockForm() {
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
@@ -45,7 +45,22 @@ export function AddressForm() {
                         name="ticker_symbol"
                         label="Ticker Symbol"
                         fullWidth
-                        autoComplete="shipping address-line1"
+                        variant="standard"
+                    />
+                    <TextField
+                        required
+                        id="company_name"
+                        name="company_name"
+                        label="Company Name"
+                        fullWidth
+                        variant="standard"
+                    />
+                    <TextField
+                        required
+                        id="exchange_name"
+                        name="exchange_name"
+                        label="Stock Exchange"
+                        fullWidth
                         variant="standard"
                     />
                 </Grid>
@@ -62,8 +77,9 @@ export default function Page() {
         setValue(newValue);
     };
 
-    const handleNext = () => {
+    const handleSubmit = () => {
         setActiveStep(activeStep + 1);
+        console.log('button pressed');
     };
 
     const handleBack = () => {
@@ -76,13 +92,13 @@ export default function Page() {
             <CssBaseline/>
             <Container component="main" maxWidth="sm" sx={{mb: 4}}>
                 <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
-                    <AddressForm/>
+                    <StockForm/>
                     <React.Fragment>
                         <React.Fragment>
                             <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
                                 <Button
                                     variant="contained"
-                                    onClick={handleNext}
+                                    onClick={handleSubmit}
                                     sx={{mt: 3, ml: 1}}
                                 >
                                     Add Stock
