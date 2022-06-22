@@ -72,7 +72,7 @@ export async function getServerSideProps(context) {
 
 
 const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictionDataA,predictionDataB}) => {
-
+    
   
     if(errorCode){
        return <Error statusCode= {errorCode} title={message}/>

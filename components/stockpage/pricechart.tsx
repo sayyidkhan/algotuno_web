@@ -23,8 +23,8 @@ function MyChart(props) {
     const closePrice2 = pDataA.map(e=>parseFloat(parseFloat(e.Price).toFixed(2)));
 
     const pDataB=  props.pDataListB.results;
-    const dateList3 = pDataA.map(e=>e.Date);
-    const closePrice3 = pDataA.map(e=>parseFloat(parseFloat(e.Price).toFixed(2)));
+    const dateList3 = pDataB.map(e=>e.Date);
+    const closePrice3 = pDataB.map(e=>parseFloat(parseFloat(e.Price).toFixed(2)));
 
     //trace 1 is the stock data
     const trace1 = {
@@ -34,7 +34,7 @@ function MyChart(props) {
         type: 'scatter',
         mode: 'lines+markers',
         marker: {color: 'blue'},
-        name: "actual",
+        name: "Actual",
 
        };
 
@@ -91,12 +91,12 @@ function MyChart(props) {
        //properties of the chart component
     const layouts = {   autosize: true, width: 800, height: 600, 
                         yaxis:{title:'Price',fixedrange: true}, 
-                        xaxis:{title:'Date', range:['2022-01-01','2022-08-01'], rangeselector: selectorOptions,},
+                        xaxis:{title:'Date', range:['2022-02-01','2022-10-01'], rangeselector: selectorOptions,},
                         //dragmode:"pan"
                     }
     return (
             <div>
-                {/* <Myfunctionalcomponent title={'S&P 500'} detail={''}/> */}
+                
                 {/*// @ts-ignore*/} 
                 <Plot 
                     
