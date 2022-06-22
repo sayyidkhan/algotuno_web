@@ -48,6 +48,8 @@ export default async (req, res) => {
                 where:{
                     stockID : stock_id,
                     MLModelID : model_type
+                }, orderBy: {
+                    Date : "asc"
                 }
             });
 
