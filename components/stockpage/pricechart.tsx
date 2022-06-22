@@ -53,7 +53,7 @@ function MyChart(props) {
         y: closePrice3,
         type: 'scatter',
         mode: 'lines+markers',
-        marker: {color: 'orange'},
+        marker: {color: 'green'},
         name: "Model B",
        };
 
