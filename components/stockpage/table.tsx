@@ -22,8 +22,7 @@ const columns: readonly Column[] = [
   {
     id: '30d',
     label: '30 Day',
-    minWidth: 25,
-    format: (value: number) => value.toFixed(2),
+    minWidth: 50
   },
 
 ];
@@ -31,9 +30,10 @@ const columns: readonly Column[] = [
 const StickyHeadTable=(props)=> {
   const modelID  = props.pData.results[0].MLModelID;
   const data = props.pData.results;
-  const thirtydayprediction = parseFloat(data[2].Price).toFixed(2);
-  const sevendayprediction = parseFloat(data[1].Price).toFixed(2);
   const onedayprediction = parseFloat(data[0].Price).toFixed(2);
+  const sevendayprediction = parseFloat(data[1].Price).toFixed(2);
+  const thirtydayprediction = parseFloat(data[2].Price).toFixed(2);
+  
   const onedaydate = data[0].DateString;
   const sevendaydate = data[1].DateString;
   const thirtydaydate = data[2].DateString;
