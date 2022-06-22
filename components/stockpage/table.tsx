@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { fontStyle } from '@mui/system';
 
 interface Column {
   id: '1d' | '7d' | '30d' ;
@@ -39,15 +40,18 @@ const StickyHeadTable=(props)=> {
   const thirtydaydate = data[2].DateString;
 
  console.log(thirtydaydate);
-  let model=""
+  let model="";
+  let modeldesc= "";
 
   if(modelID==1)
   {
     model = "A";
+    modeldesc= "Long Short-Term Memory (LSTM)";
   }
   else 
   {
     model = "B";
+    modeldesc= "Random Forests";
   }
 
   return (
@@ -58,7 +62,13 @@ const StickyHeadTable=(props)=> {
           <TableHead>
             <TableRow>
             <TableCell align="center" colSpan={6} style={{ backgroundColor:'#9E9E9E' }}>
-                  Model {model} 
+                  
+                  Model {model}
+                  <div style={{ color:"white"} }>
+                  {modeldesc}
+                  </div>
+                  
+            
             </TableCell>
             </TableRow>
             <TableRow>
