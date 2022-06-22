@@ -1,129 +1,117 @@
  import * as React from 'react';
-// import Paper from '@mui/material/Paper';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TablePagination from '@mui/material/TablePagination';
-// import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
 
-// interface Column {
-//   id: 'year' | 'month' | 'min' | 'max' | 'close'|'total';
-//   label: string;
-//   minWidth?: number;
-//   align?: 'right';
-//   format?: (value: number) => string;
-// }
+interface Column {
+  id: '1d' | '7d' | '30d' ;
+  label: string;
+  minWidth?: number;
+  align?: 'right';
+  format?: (value: number) => string;
+}
 
-// const columns: readonly Column[] = [
-//   { id: 'year', label: 'Year', minWidth: 50 },
-//   { id: 'month', label: 'Month', minWidth: 50 },
-//   {
-//     id: 'min',
-//     label: 'Min',
-//     minWidth: 25,
-//     format: (value: number) => value.toFixed(2),
-//   },
-//   {
-//     id: 'max',
-//     label: 'Max',
-//     minWidth: 25,
-//     format: (value: number) => value.toFixed(2),
-//   },
-//   {
-//     id: 'close',
-//     label: 'Close',
-//     minWidth: 25,
-//     format: (value: number) => value.toFixed(2),
-//   },
-//   {
-//     id: 'total',
-//     label: 'Total',
-//     minWidth: 25,
-//     format: (value: number) => value.toFixed(2)+"%",
-//   },
-// ];
+const columns: readonly Column[] = [
+  { id: '1d', label: '1 Day', minWidth: 50 },
+  { id: '7d', label: '7 Day', minWidth: 50 },
+  {
+    id: '30d',
+    label: '30 Day',
+    minWidth: 50
+  },
 
-// const StickyHeadTable=({rows})=> {
-//   const [page, setPage] = React.useState(0);
-//   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+];
 
-//   const handleChangePage = (event: unknown, newPage: number) => {
-//     setPage(newPage);
-//   };
+const StickyHeadTable=(props)=> {
+  const modelID  = props.pData.results[0].MLModelID;
+  const data = props.pData.results;
+  const onedayprediction = parseFloat(data[0].Price).toFixed(2);
+  const sevendayprediction = parseFloat(data[1].Price).toFixed(2);
+  const thirtydayprediction = parseFloat(data[2].Price).toFixed(2);
+  
+  const onedaydate = data[0].DateString;
+  const sevendaydate = data[1].DateString;
+  const thirtydaydate = data[2].DateString;
 
-//   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setRowsPerPage(+event.target.value);
-//     setPage(0);
-//   };
+ console.log(thirtydaydate);
+  let model=""
 
-//   return (
-//     <Paper sx={{ width: '40%', overflow: 'hidden',backgroundColor:'grey', }}>
-//       {/* add the div to split the table later */}
-//       <div className=''>
-//       <TableContainer sx={{ maxHeight: 440 }}>
-//         <Table stickyHeader aria-label="sticky table">
-//           <TableHead>
-//             <TableRow>
-//             <TableCell align="center" colSpan={6}>
-//                 Apple Stock forecast by month
-//             </TableCell>
-//             </TableRow>
-//             <TableRow>
-//               {columns.map((column) => (
-//                 <TableCell
-//                   key={column.id}
-//                   align={column.align}
-//                   style={{ minWidth: column.minWidth }}
-//                 >
-//                   {column.label}
-//                 </TableCell>
-//               ))}
-//             </TableRow>
-//           </TableHead>
-//           <TableBody>
-//             {rows 
-//               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-//               .map((row: { [x: string]: any; code: React.Key; }) => {
-//                 return (
-//                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-//                     {columns.map((column) => {
-//                       const value = row[column.id];
-//                       return (
-//                         <TableCell key={column.id} align={column.align}>
-//                           {column.format && typeof value === 'number'
-//                             ? column.format(value)
-//                             : value}
-//                         </TableCell>
-//                       );
-//                     })}
-//                   </TableRow>
-//                 );
-//               })}
-//           </TableBody>
-//         </Table>
-//       </TableContainer>
-//       <TablePagination
-//         rowsPerPageOptions={[10, 25, 100]}
-//         component="div"
-//         count={rows.length}
-//         rowsPerPage={rowsPerPage}
-//         page={page}
-//         onPageChange={handleChangePage}
-//         onRowsPerPageChange={handleChangeRowsPerPage}
-//       />
-//       </div>
-//     </Paper>
-//   );
-// }
-// export default StickyHeadTable
+  if(modelID==1)
+  {
+    model = "A";
+  }
+  else 
+  {
+    model = "B";
+  }
 
-const StickyHeadTable =()=> {
-return(
-  <div>
-    
-  </div>
-)
+  return (
+    <Paper sx={{ width: '500px', overflow: 'hidden',backgroundColor:'#DFDFDF' }}>
+      <div className=''>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+            <TableCell align="center" colSpan={6} style={{ backgroundColor:'#9E9E9E' }}>
+                  Model {model} 
+            </TableCell>
+            </TableRow>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth,
+                    backgroundColor:'#9E9E9E' }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                {onedaydate}
+              </TableCell>
+              <TableCell>
+                {sevendaydate}
+              </TableCell>
+              <TableCell>
+                {thirtydaydate}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                {onedayprediction}
+              </TableCell>
+              <TableCell>
+                {sevendayprediction}
+              </TableCell>
+              <TableCell>
+                {thirtydayprediction}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+     
+      </div>
+    </Paper>
+  );
 }
 export default StickyHeadTable
+
+// const StickyHeadTable =()=> {
+// return(
+//   <div>
+    
+//   </div>
+// )
+// }
+//export default StickyHeadTable

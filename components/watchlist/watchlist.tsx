@@ -19,8 +19,6 @@ import {
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import { watchliststorage } from "../index/Table";
-import { style } from "@mui/system";
-import { StyleSharp } from "@mui/icons-material";
 
 export default function Watchlist(){
 
