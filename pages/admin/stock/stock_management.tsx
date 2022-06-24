@@ -11,6 +11,8 @@ import {createTheme} from '@mui/material/styles';
 import LayoutHeader from "../../../components/layout_header";
 import {Grid, Tab, Tabs, TextField} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
+import StockPriceListTable from "../../../components/admin/stock/stock_price_list_table";
+import MlPriceListTable from "../../../components/admin/stock/ml_price_list_table";
 
 
 function Copyright() {
@@ -110,11 +112,11 @@ export default function Page() {
                     <TabContext value={value.toString()}>
                         {/* navigation 1 */}
                         <TabPanel value="0">
-                            <AddStockComponent/>
+                            <StockPriceListTable />
                         </TabPanel>
                         {/* navigation 1 */}
                         <TabPanel value="1">
-                            Item Two
+                            <MlPriceListTable />
                         </TabPanel>
                     </TabContext>
                 </Box>
