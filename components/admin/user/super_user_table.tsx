@@ -42,6 +42,7 @@ const SearchBar = ({setSearchQuery}) => (
                 id="search-bar"
                 className="text"
                 onInput={(e) => {
+                    /* @ts-ignore */
                     setSearchQuery(e.target.value);
                 }}
                 label="search for username"
@@ -67,6 +68,7 @@ const AddUserBar = ({setSearchQuery}) => (
                 id="search-bar"
                 className="text"
                 onInput={(e) => {
+                    /* @ts-ignore */
                     setSearchQuery(e.target.value);
                 }}
                 label="upgrade username status"
