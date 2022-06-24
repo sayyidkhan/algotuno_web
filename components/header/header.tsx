@@ -20,8 +20,8 @@ export default function Header() {
               </Link>
             </li>
             <li className={styles.navItem}>
-              <Link href="/trending">
-                <a>Trending</a>
+              <Link href="/charts">
+                <a>Charts</a>
               </Link>
             </li>
             <li className={styles.navItem}>
