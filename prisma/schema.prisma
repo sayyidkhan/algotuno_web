@@ -1,10 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
+
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
@@ -40,16 +41,20 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
-  name          String?
-  email         String?     @unique
-  username      String      @unique
-  password      String
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  UserGroup     UserGroup[]
+  id              String            @id @default(cuid())
+  name            String?
+  email           String?           @unique
+  username        String            @unique
+  password        String
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  UserGroup       UserGroup[]
+  User_Tier       User_Tier[]
+  Superuser       Superuser[]
+  Stock_Watchlist Stock_Watchlist[]
+  Settings        Settings[]
 }
 
 model VerificationToken {
@@ -66,55 +71,85 @@ model UserGroup {
   id        String  @id @default(cuid())
   user_type String?
   user_id   String
-  user      User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Stock {
-  stockID       Int       @id @default(autoincrement())
-  tickerSymbol  String    @unique
-  companyName   String    @unique
-  exchange      String
+  stockID      Int    @id @default(autoincrement())
+  tickerSymbol String @unique
+  companyName  String @unique
+  exchange     String
 
-  historicalStockPrice    Historical_Stock_Price[]
-  MLStockPrice            ML_Stock_Price[]
-  inWatchlists            Watchlist[]
-
+  historicalStockPrice Historical_Stock_Price[]
+  MLStockPrice         ML_Stock_Price[]
 }
 
-model Watchlist {
-  watchlistID   Int       @id @default(autoincrement())
-  stockID       Int       
-  tickerSymbol  String
+// model Watchlist {
+//   watchlistID  Int    @id @default(autoincrement())
+//   stockID      Int
+//   tickerSymbol String
 
-  stocks        Stock[]
-}
+//   stocks Stock[]
+// }
 
 model Historical_Stock_Price {
-  stockID       Int  
-  Date          DateTime
-  DateString    String
-  Open          Float
-  High          Float
-  Low           Float
-  Close         Float
-  Volume        Int
+  stockID    Int
+  Date       DateTime
+  DateString String
+  Open       Float
+  High       Float
+  Low        Float
+  Close      Float
+  Volume     Int
 
+  stock Stock @relation(fields: [stockID], references: [stockID])
   @@id([stockID, Date])
-  stock         Stock     @relation(fields:[stockID], references:[stockID])
 }
 
 model ML_Stock_Price {
-  stockID       Int
-  Date          DateTime
-  DateString    String
-  Price         Float
-  MLModelID     Int
+  stockID    Int
+  Date       DateTime
+  DateString String
+  Price      Float
+  MLModelID  Int
 
+  stock Stock @relation(fields: [stockID], references: [stockID])
   @@id([stockID, DateString, MLModelID])
-  stock         Stock     @relation(fields:[stockID], references: [stockID])
 }
 
 model ML_types {
-  modelID       Int   @id @default(autoincrement())
-  modelType     String
+  modelID   Int    @id @default(autoincrement())
+  modelType String
+}
+
+model Superuser {
+  superuserID Int    @id @default(autoincrement())
+  userID      String
+
+  User User? @relation(fields: [userID], references: [id])
+}
+
+model User_Tier {
+  tierID Int    @id @default(autoincrement())
+  userID String
+  tier   String
+
+  User User? @relation(fields: [userID], references: [id])
+}
+
+model Settings {
+  settingID  Int    @id @default(autoincrement())
+  userID     String
+  configName String
+  value      String
+
+  User User? @relation(fields: [userID], references: [id])
+}
+
+model Stock_Watchlist {
+  watchlistID Int    @id @default(autoincrement())
+  userID      String
+  stockID     Int
+
+  User User? @relation(fields: [userID], references: [id])
 }
