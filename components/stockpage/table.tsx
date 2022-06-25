@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { fontStyle } from '@mui/system';
 
 interface Column {
   id: '1d' | '7d' | '30d' ;
@@ -22,8 +23,7 @@ const columns: readonly Column[] = [
   {
     id: '30d',
     label: '30 Day',
-    minWidth: 25,
-    format: (value: number) => value.toFixed(2),
+    minWidth: 50
   },
 
 ];
@@ -31,37 +31,28 @@ const columns: readonly Column[] = [
 const StickyHeadTable=(props)=> {
   const modelID  = props.pData.results[0].MLModelID;
   const data = props.pData.results;
-  const thirtydayprediction = parseFloat(data[2].Price).toFixed(2);
-  const sevendayprediction = parseFloat(data[1].Price).toFixed(2);
   const onedayprediction = parseFloat(data[0].Price).toFixed(2);
+  const sevendayprediction = parseFloat(data[1].Price).toFixed(2);
+  const thirtydayprediction = parseFloat(data[2].Price).toFixed(2);
+  
   const onedaydate = data[0].DateString;
   const sevendaydate = data[1].DateString;
   const thirtydaydate = data[2].DateString;
 
  console.log(thirtydaydate);
-  let model=""
+  let model="";
+  let modeldesc= "";
 
   if(modelID==1)
   {
     model = "A";
+    modeldesc= "Long Short-Term Memory (LSTM)";
   }
   else 
   {
     model = "B";
+    modeldesc= "Random Forests";
   }
-
-  console.log(model);
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  // const handleChangePage = (event: unknown, newPage: number) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
 
   return (
     <Paper sx={{ width: '500px', overflow: 'hidden',backgroundColor:'#DFDFDF' }}>
@@ -71,7 +62,13 @@ const StickyHeadTable=(props)=> {
           <TableHead>
             <TableRow>
             <TableCell align="center" colSpan={6} style={{ backgroundColor:'#9E9E9E' }}>
-                  Model {model} 
+                  
+                  Model {model}
+                  <div style={{ color:"white"} }>
+                  {modeldesc}
+                  </div>
+                  
+            
             </TableCell>
             </TableRow>
             <TableRow>

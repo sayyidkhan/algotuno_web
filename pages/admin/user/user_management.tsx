@@ -2,6 +2,8 @@ import {Box, Container, Tab, Tabs} from "@mui/material";
 import {TabContext, TabPanel} from "@mui/lab";
 import * as React from "react";
 import LayoutHeader from "../../../components/layout_header";
+import SuperUserTable from "../../../components/admin/user/super_user_table";
+import BasicUserTable from "../../../components/admin/user/basic_user_table";
 
 export default function Page() {
     const [activeStep, setActiveStep] = React.useState<number>(0);
@@ -35,11 +37,11 @@ export default function Page() {
                     <TabContext value={value.toString()}>
                         {/* navigation 1 */}
                         <TabPanel value="0">
-                            Item One
+                            <SuperUserTable/>
                         </TabPanel>
                         {/* navigation 1 */}
                         <TabPanel value="1">
-                            Item Two
+                            <BasicUserTable/>
                         </TabPanel>
                     </TabContext>
                 </Box>

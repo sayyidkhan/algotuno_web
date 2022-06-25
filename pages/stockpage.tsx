@@ -72,7 +72,7 @@ export async function getServerSideProps(context) {
 
 
 const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictionDataA,predictionDataB}) => {
-
+    
   
     if(errorCode){
        return <Error statusCode= {errorCode} title={message}/>
@@ -95,7 +95,8 @@ const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictio
               <MyChart
               //@ts-ignore
                 xyDataList = {stockList}
-                pDataList = {predictionDataA}
+                pDataListA = {predictionDataA}
+                pDataListB = {predictionDataB}
                 tickerName = {ticker}
               />
             </div> 
