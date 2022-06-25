@@ -119,8 +119,8 @@ export default function Page() {
 
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
                     <Tabs value={value} onChange={handleChange}>
-                        <Tab label="Super User"/>
-                        <Tab label="Basic User"/>
+                        <Tab label="Stock Price List" style={styles.tab_styling} />
+                        <Tab label="ML Price List" style={styles.tab_styling} />
                     </Tabs>
 
                     <TabContext value={value.toString()}>
@@ -136,8 +136,13 @@ export default function Page() {
                 </Box>
 
                 <Box style={{marginBottom: "7.5em"}}/>
-
             </Container>
         </LayoutHeader>
     );
 }
+
+const styles = {
+    tab_styling: {
+        fontSize: "16px",
+    }
+};
