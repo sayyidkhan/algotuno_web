@@ -124,14 +124,14 @@ model ML_types {
 
 model Superuser {
   superuserID Int    @id @default(autoincrement())
-  userID      String
+  userID      String  @unique
 
   User User? @relation(fields: [userID], references: [id])
 }
 
 model User_Tier {
   tierID Int    @id @default(autoincrement())
-  userID String
+  userID String @unique
   tier   String
 
   User User? @relation(fields: [userID], references: [id])
@@ -139,7 +139,7 @@ model User_Tier {
 
 model Settings {
   settingID  Int    @id @default(autoincrement())
-  userID     String
+  userID     String 
   configName String
   value      String
 
@@ -148,7 +148,7 @@ model Settings {
 
 model Stock_Watchlist {
   watchlistID Int    @id @default(autoincrement())
-  userID      String
+  userID      String 
   stockID     Int
 
   User User? @relation(fields: [userID], references: [id])
