@@ -30,8 +30,6 @@ Example:
     "exchange"     	:   "NYSE"
 }
 ```
-Notes:
-- This endpoint requires the correct "authorization" Headers field.
 
 ## delete_stock.ts
 To delete an existing stock from the Stock table, send a POST request to the **/api/stock/delete_stock** endpoint with the body contents:
