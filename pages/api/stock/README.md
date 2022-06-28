@@ -9,9 +9,10 @@ Added the following scripts:
 - delete_hsp.ts
 - daily_hsp.ts
 - daily_hsp_all.ts
-- update_ml_prices.ts
 - get_ml_prices.ts
-- daily_ml_prices_all.ts
+- update_ml_prices.ts
+- update_tensorflow_prices.ts
+- update_scikitlearn_prices.ts
 
 #### NOTICE
 Some endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
@@ -134,6 +135,18 @@ Example:
 ## daily_hsp_all.ts
 To update all the historical stock prices on a daily basis, send a GET request to the **/api/stock/daily_hsp_all.ts** endpoint.
 
+## get_ml_prices.ts
+To get the ML prices for a stock, send a POST request to the **/api/stock/get_ml_prices** endpoint with the body contents: 
+
+Example:
+
+```
+{
+	"ticker_symbol" : "GLD",
+	"model_type"	: "1"
+}
+```
+
 ## update_ml_prices.ts
 To update the ML prices for a stock, send a POST request to the **/api/stock/update_ml_prices** endpoint with the body contents:
 
@@ -160,17 +173,8 @@ Example:
 Notes:
 - This endpoint requires the correct "authorization" Headers field.
 
-## get_ml_prices.ts
-To get the ML prices for a stock, send a POST request to the **/api/stock/get_ml_prices** endpoint with the body contents: 
+## update_tensorflow_prices.ts
+To get and update the Tensorflow prediction prices, send a GET request to the **/api/stock/update_tensorflow_prices** endpoint.
 
-Example:
-
-```
-{
-	"ticker_symbol" : "GLD",
-	"model_type"	: "1"
-}
-```
-
-## daily_ml_prices.ts
-To update all the ML prediction prices on a daily basis, send a GET request to the **/api/stock/daily_hsp_all.ts** endpoint.
+## update_scikitlearn_prices.ts
+To get and update the ScikitLearn prediction prices, send a GET request to the **/api/stock/update_scikitlearn_prices** endpoint.
