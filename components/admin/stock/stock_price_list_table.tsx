@@ -73,78 +73,46 @@ const SearchBar = ({setSearchQuery}) => (
     </form>
 );
 
-const AddStockBar = ({setSearchQuery}) => (
-    <form>
-        <Grid container spacing={2}>
-            {/* copy each grid to add more fields */}
-            <Grid item xs={2}>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center'
-                }}>
-                    <TextField
-                        id="search-bar"
-                        className="text"
-                        onInput={(e) => {
-                        }}
-                        label="add new ticker symbol"
-                        variant="outlined"
-                        placeholder="Search..."
-                        size="small"
-                        fullWidth
-                    />
-                </div>
-            </Grid>
-            {/* copy each grid to add more fields */}
-            <Grid item xs={2}>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center'
-                }}>
-                    <TextField
-                        id="search-bar"
-                        className="text"
-                        onInput={(e) => {
-                        }}
-                        label="add new ticker symbol"
-                        variant="outlined"
-                        placeholder="Search..."
-                        size="small"
-                        fullWidth
-                    />
-                </div>
-            </Grid>
-            {/* copy each grid to add more fields */}
-            <Grid item xs={2}>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center'
-                }}>
-                    <TextField
-                        id="search-bar"
-                        className="text"
-                        onInput={(e) => {
-                        }}
-                        label="specify market type"
-                        variant="outlined"
-                        placeholder="Search..."
-                        size="small"
-                        fullWidth
-                    />
-                    <IconButton type="submit" aria-label="search">
-                        <AddCircleOutlineRoundedIcon style={{fill: "blue"}}/>
-                    </IconButton>
-                </div>
-            </Grid>
-        </Grid>
-    </form>
-);
-
 
 export default function StockPriceListTable() {
     const [rows, setRows] = useState<BasicUserInterface[]>(originalRows);
     const [searched, setSearched] = useState<string>("");
     // const classes = useStyles();
+    const [tickersymbol, setTickerSymbol] = useState('');
+    const [companyname, setCompanyName] = useState('');
+    const [exchange, setExchangeName] = useState('');
+
+    const addStock = async () => {
+        
+        try{ 
+            const res = await fetch(`/api/stock/add_stock`, {
+            method : 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body : JSON.stringify({
+                "ticker_symbol" : tickersymbol,
+                "company_name"  : companyname,
+                "exchange"      : exchange
+                })
+            }).then(async res => {
+                const data = await res.json();
+                const message = data.message;
+                alert(message);
+                return message;        
+            });
+
+        } catch (error) {
+            return error;
+        }
+    }
+
+    const hs = async e => {
+        e.preventDefault();
+        console.log(tickersymbol, companyname, exchange);
+        addStock();
+    }
 
     const requestSearch = (searchedVal: string) => {
         const filteredRows = originalRows.filter((row) => {
@@ -166,8 +134,67 @@ export default function StockPriceListTable() {
                 <Paper>
                     <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
                         <h5>Add new Stock</h5>
-                        <AddStockBar setSearchQuery={() => {
-                        }}/>
+                        <form onSubmit={hs}>
+                            <Grid container spacing={2}>
+                                {/* copy each grid to add more fields */}
+                                <Grid item xs={2}>
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    }}>
+                                        <TextField
+                                            id="ticker_symbol"
+                                            className="text"
+                                            onChange={e=>setTickerSymbol(e.target.value)}
+                                            label="Ticker Symbol"
+                                            variant="outlined"
+                                            placeholder="Enter ticker symbol..."
+                                            size="small"
+                                            fullWidth
+                                        />
+                                    </div>
+                                </Grid>
+                                {/* copy each grid to add more fields */}
+                                <Grid item xs={2}>
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    }}>
+                                        <TextField
+                                            id="company_name"
+                                            className="text"
+                                            onChange={e=>setCompanyName(e.target.value)}
+                                            label="Company Name"
+                                            variant="outlined"
+                                            placeholder="Enter Company Name..."
+                                            size="small"
+                                            fullWidth
+                                        />
+                                    </div>
+                                </Grid>
+                                {/* copy each grid to add more fields */}
+                                <Grid item xs={2}>
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    }}>
+                                        <TextField
+                                            id="exchange_name"
+                                            className="text"
+                                            onChange={e=>setExchangeName(e.target.value)}
+                                            label="Exchange Name"
+                                            variant="outlined"
+                                            placeholder="Enter Exchange Name..."
+                                            size="small"
+                                            fullWidth
+                                        />
+                                        <IconButton type="submit" aria-label="submit">
+                                            <AddCircleOutlineRoundedIcon style={{fill: "blue"}}/>
+                                        </IconButton>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </form>
                         <h5>Search for stock(s)</h5>
                         <Grid container spacing={2}>
                             <Grid item xs={3}>
