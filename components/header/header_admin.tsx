@@ -31,14 +31,14 @@ export default function HeaderAdmin() {
             </li>
             <li className={styles.navItem}>
               <Link href="/">
-                <a>Back to Home</a>
+                <a>Back to Main Page</a>
               </Link>
             </li>
-            <li className={styles.navItem}>
-              <Link href="/logout">
-                <a>Log Out</a>
-              </Link>
-            </li>
+            {session ? (
+                <li className={styles.navItem}>
+                  <a onClick={() => signOut()}><b>Log Out</b></a>
+                </li>
+            ) : <></>}
           </ul>
         </nav>
       </div>
