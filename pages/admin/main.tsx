@@ -23,14 +23,22 @@ export default function Page() {
                     <Grid container spacing={2}>
                         {/* item no 1 here */}
                         <Grid item xs={12}>
-                            <div style={{ margin : "2em" }}>
+                            <div style={{margin: "2em"}}>
                                 <h2>Testing</h2>
-                                <Item>xs=12</Item>
+                                <Item style={{height: '40vh'}}>
+                                    <iframe
+                                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRZPs5Qf_vdFi5xjOmKtcMmDErtzZc1G3GH2rHfReUUgIjpU4GE4hmOfQg2jcfx5kzaF0p3ZFszI7Wy/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"
+                                        width="100%"
+                                        allowTransparency={true}
+                                        style={{height: "100%", background: "#F01446"}}
+                                    >
+                                    </iframe>
+                                </Item>
                             </div>
                         </Grid>
                         {/* item no 2 here */}
                         <Grid item xs={12}>
-                            <div style={{ margin : "2em" }}>
+                            <div style={{margin: "2em"}}>
                                 <h2>Testing</h2>
                                 <Item>xs=12</Item>
                             </div>
