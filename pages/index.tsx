@@ -1,45 +1,13 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Layout from "../components/layout";
 import bg from '../public/landing_page/lp_1.jpg';
-
-
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
-const theme = createTheme();
+import global_styles from "../styles/Home.module.css";
 
 export default function SignInSide() {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
 
     return (
         <Layout>
@@ -58,18 +26,22 @@ export default function SignInSide() {
 
                         <Box sx={{mt: 1, ml: 3, mr: 3}}>
                             <Box sx={{ml: 3, mr: 3}}>
-                                <h1 style={{
-                                    color: 'gold',
-                                    opacity: '0.8',
-                                    borderColor: 'black',
-                                    fontSize: '3em',
-                                    textShadow: '1em',
-                                    textDecorationColor: 'black',
-                                }}>
+                                <h1
+                                    style={{
+                                        color: '#cc9900',
+                                        opacity: '0.8',
+                                        borderColor: 'black',
+                                        fontSize: '3em',
+                                        textShadow: '1em',
+                                        textDecorationColor: 'black',
+                                        // filter: 'drop-shadow(2px 2px 2.5px #000)',
+                                    }}
+                                    className={global_styles.landing_page_title}
+                                >
                                     ALGOTUNO.IO
                                 </h1>
                                 <br/>
-                                <h2>The <span style={{color: 'gold'}}>financial compass</span> you need to help
+                                <h2>The <span style={{color: '#cc9900'}}>financial compass</span> you need to help
                                     you<br/> identify where the opportunities are
                                 </h2>
                                 <p>identifying the best stock to pick can be a monumental task in an uncertain world.

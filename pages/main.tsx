@@ -13,15 +13,13 @@ const StocksList = loadable(() => import('../components/index/Table'));
 
 
 export default function Page (props){
-  console.log(props)
   return (
     <Layout>
       <Head>
         <title>Home</title>
       </Head>
       <div className={styles.containers}>
-            <div className={styles.container_left}> 
-        
+            <div className={styles.container_left}>
                 <StocksList/>
             </div>
             <div className={styles.container_right}>
