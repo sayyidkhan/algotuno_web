@@ -33,6 +33,7 @@ const Credential = ({providers, csrfToken}) => {
               label="password"
               name="password"
               autoComplete="password"
+              type="password"
               autoFocus
               value={password}
               onChange={e => setPassword(e.target.value)}
