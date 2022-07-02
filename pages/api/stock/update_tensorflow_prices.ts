@@ -1,8 +1,6 @@
 import prisma from '../../../config/prisma';
 import {BASE_URL} from '../../../config/db_prod_checker';
-
-const TENSORFLOW_URL = "https://algotunotfjsv3.azurewebsites.net/tfjs_run_model/";
-const SCITKITLEARN_URL = "https://q6p47mowxp5fy2dkeh6cvg6dwi0dykpt.lambda-url.us-east-1.on.aws/"
+import {TENSORFLOW_URL} from '../../../config/ml_endpoints';
 
 export default async (req, res) => {
 
@@ -12,7 +10,6 @@ export default async (req, res) => {
         let content = await result.json();
 
         let all_stocks = [];
-        let return_msg = [];
 
         if (content.result !== null || content.result !== undefined){
             if (content.result.length > 0){
@@ -28,7 +25,7 @@ export default async (req, res) => {
         Promise.all(getAndUpdatePrices(all_stocks)).then(
             (values)=>{
                 console.log(values);
-                res.status(200).json({"message":"Finished updating daily ML prices.", "result": values});
+                res.status(200).json({"message":"Finished updating daily Tensorflow predictions.", "result": values});
         }).catch((err)=>res.status(406).json(err));
 
 
@@ -76,27 +73,21 @@ export default async (req, res) => {
             //2. SEND TO BACKEND AI WEBSERVICE
             console.log(`Getting Tensorflow prices for ${ts}.`);
             const get_tensorflow_prices = await getMLPrices(TENSORFLOW_URL, ts, hsp_records);
-            console.log(`Getting Scitkitlearn prices for ${ts}.`);
-            const get_scikitlearn_prices = await getMLPrices(SCITKITLEARN_URL, ts, hsp_records);
     
             const tensorflow_prices = await get_tensorflow_prices.json();
             console.log(tensorflow_prices);
     
-            const scikitlearn_prices = await get_scikitlearn_prices.json();
-            console.log(scikitlearn_prices);
-    
             //3. GET PREDICTION PRICES AND SEND BACK TO PRISMADB
             const update_tsfl_prices = await updateDBPrices(tensorflow_prices);
-            const update_skl_prices = await updateDBPrices(scikitlearn_prices);
     
             const tsflw_results = await update_tsfl_prices.json();
-            const skl_results = await update_skl_prices.json();
     
-            const final_res = [tsflw_results, skl_results];
+            const final_res = [tsflw_results];
             return final_res;
 
         });
-    
+
     }
+    
 }
 
