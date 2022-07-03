@@ -71,7 +71,10 @@ export function StockForm() {
     );
 }
 
-export default function Page() {
+export default function Page({ posts }) {
+    console.log(posts);
+
+
     const [activeStep, setActiveStep] = React.useState<number>(0);
     const [value, setValue] = React.useState<number>(0);
 
@@ -142,6 +145,25 @@ export default function Page() {
         </LayoutHeader>
     );
 }
+
+
+export async function getStaticProps() {
+    // Call an external API endpoint to get posts.
+    // You can use any data fetching library
+    const res = await fetch('https://dummy.restapiexample.com/api/v1/employees');
+    console.log(res);
+    const posts = await res.json();
+
+    // By returning { props: { posts } }, the Blog component
+    // will receive `posts` as a prop at build time
+    return {
+        props: {
+            posts,
+        },
+    }
+}
+
+// https://nextjs.org/docs/basic-features/data-fetching/get-static-props
 
 const styles = {
     tab_styling: {
