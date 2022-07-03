@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
+import {BASE_URL} from '../../../config/db_prod_checker';
 import {createTheme} from '@mui/material/styles';
 import LayoutHeader from "../../../components/layout_header";
 import {Grid, Tab, Tabs, TextField} from "@mui/material";
@@ -27,9 +28,6 @@ function Copyright() {
         </Typography>
     );
 }
-
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
-
 
 const theme = createTheme();
 
@@ -71,9 +69,8 @@ export function StockForm() {
     );
 }
 
-export default function Page({ posts }) {
-    console.log(posts);
-
+export default function Page({ stocks }) {
+    console.log(stocks);
 
     const [activeStep, setActiveStep] = React.useState<number>(0);
     const [value, setValue] = React.useState<number>(0);
@@ -91,36 +88,10 @@ export default function Page({ posts }) {
         setActiveStep(activeStep - 1);
     };
 
-    function AddStockComponent() {
-        return <Container>
-            <Box sx={{mt: 12.5}}/>
-            <CssBaseline/>
-            <Container component="main" maxWidth="sm" sx={{mb: 4}}>
-                <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
-                    <StockForm/>
-                    <React.Fragment>
-                        <React.Fragment>
-                            <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleSubmit}
-                                    sx={{mt: 3, ml: 1}}
-                                >
-                                    Add Stock
-                                </Button>
-                            </Box>
-                        </React.Fragment>
-                    </React.Fragment>
-                </Paper>
-            </Container>
-        </Container>;
-    }
-
     return (
         <LayoutHeader>
             <Container maxWidth="xl">
                 <Box style={{marginTop: "7.5em"}}/>
-
 
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
                     <Tabs value={value} onChange={handleChange}>
@@ -131,7 +102,7 @@ export default function Page({ posts }) {
                     <TabContext value={value.toString()}>
                         {/* navigation 1 */}
                         <TabPanel value="0">
-                            <StockPriceListTable />
+                            <StockPriceListTable stockList={stocks} />
                         </TabPanel>
                         {/* navigation 1 */}
                         <TabPanel value="1">
@@ -150,17 +121,11 @@ export default function Page({ posts }) {
 export async function getStaticProps() {
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
-    const res = await fetch('https://dummy.restapiexample.com/api/v1/employees');
-    console.log(res);
-    const posts = await res.json();
+    const res = await fetch(BASE_URL + '/api/stock/get_all_stocks');
+    const result = await res.json();
+    const stocks = result.result;
 
-    // By returning { props: { posts } }, the Blog component
-    // will receive `posts` as a prop at build time
-    return {
-        props: {
-            posts,
-        },
-    }
+    return {props:{stocks}};
 }
 
 // https://nextjs.org/docs/basic-features/data-fetching/get-static-props
