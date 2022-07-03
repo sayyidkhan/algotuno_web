@@ -57,6 +57,7 @@ export default function StocksList (props){
     setStocks(data.result);
     setLoading(false);
   };
+
   useEffect(() => {
     fetchStocks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
