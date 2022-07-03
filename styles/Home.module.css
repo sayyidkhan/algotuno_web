@@ -80,8 +80,8 @@
 }
 
 .containers {
-    min-height: 100vh;
-    padding: 4rem 3rem;
+    min-height: 90vh;
+    padding: 0rem 3rem;
     display: grid;
     grid-template-columns: 3fr 1fr;
     grid-gap: 10px;
@@ -89,15 +89,14 @@
 
 .container_left {
     align-items: left;
+    
 }
 
 
 .container_right {
     display: inline;
-
     position: relative;
     top: 4rem;
-
     margin-left: 2rem;
     /* padding: 5rem 4rem; */
 }
@@ -107,4 +106,10 @@
     color: #FFFFFF;
     /*background: #996D6D;*/
     text-shadow: #474747 3px 5px 2px;
+}
+
+.stockwidget{
+    margin-top: 4rem;
+    padding:0 10rem;
+    width:70%
 }
