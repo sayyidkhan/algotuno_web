@@ -167,7 +167,7 @@ export default function StockPriceListTable(props) {
         }
     }
 
-    const hs = async e => {
+    const handleSubmit = async e => {
         e.preventDefault();
         console.log(tickersymbol, companyname, exchange);
         addStock();
@@ -193,7 +193,7 @@ export default function StockPriceListTable(props) {
                 <Paper>
                     <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
                         <h5>Add new Stock</h5>
-                        <form onSubmit={hs}>
+                        <form onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
                                 {/* copy each grid to add more fields */}
                                 <Grid item xs={2}>
