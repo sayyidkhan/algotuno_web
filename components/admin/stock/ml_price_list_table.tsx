@@ -17,6 +17,7 @@ import {
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AlertComponent from "../../alert/alert_message";
+import {bool} from "prop-types";
 
 interface BasicUserInterface {
     ticker_symbol: string;
@@ -77,6 +78,9 @@ const SearchBar = ({setSearchQuery}) => (
 export default function MlPriceListTable() {
     const [rows, setRows] = useState<BasicUserInterface[]>(originalRows);
     const [searched, setSearched] = useState<string>("");
+    const [display, setDisplay] = useState<boolean>(false);
+    const [status, setStatus] = useState<boolean>(null);
+    const [message, setMessage] = useState("");
     // const classes = useStyles();
 
     const requestSearch = (searchedVal: string) => {
@@ -91,9 +95,32 @@ export default function MlPriceListTable() {
         requestSearch(searched);
     };
 
+    const myFunction = () => {
+        console.log("hello world");
+        // 1. set the display to true to show the UI
+        setDisplay(true);
+        // 2. logic here
+        const success = true;
+        // 3. to show the update message
+        if (success) {
+            setStatus(true);
+            setMessage("the operation is successful");
+        }
+        else {
+            setStatus(false);
+            setMessage("the operation is unsuccesful");
+        }
+        // 4. remove all the data
+        setTimeout(() => {
+            setStatus(null);
+            setMessage("");
+            setDisplay(false);
+        }, 3000);
+    };
+
     return (
         <div>
-            <AlertComponent display={true} status={true} message={"enter message here"}/>
+            <AlertComponent display={display} status={status} message={"enter message here"}/>
             <br/>
             <div>
                 <Paper>
@@ -128,7 +155,11 @@ export default function MlPriceListTable() {
                                         <TableCell align="right">{row.earliest_stock_date}</TableCell>
                                         <TableCell align="right">{row.latest_stock_date}</TableCell>
                                         <TableCell align="right">
-                                            <Button variant="text" color="error">Remove</Button>
+                                            <Button
+                                                variant="text"
+                                                color="error"
+                                                onClick={() => myFunction()}
+                                            >Remove</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
