@@ -2,6 +2,7 @@
 Added the following scripts:
 - add_superuser.ts
 - delete_superuser.ts
+- get_all_superuser.ts
 
 #### NOTICE
 Some endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
@@ -29,3 +30,5 @@ Example:
 }
 ```
 
+## get_all_superuser.ts
+To get all superusers, send a GEt request to the **/api/user/get_all_superuser** endpoint.
