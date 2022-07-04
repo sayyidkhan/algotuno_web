@@ -51,7 +51,7 @@ model User {
   accounts        Account[]
   sessions        Session[]
   UserGroup       UserGroup[]
-  User_Tier       User_Tier[]
+  Subscription    Subscription[]
   Superuser       Superuser[]
   Stock_Watchlist Stock_Watchlist[]
   Settings        Settings[]
@@ -84,13 +84,6 @@ model Stock {
   MLStockPrice         ML_Stock_Price[]
 }
 
-// model Watchlist {
-//   watchlistID  Int    @id @default(autoincrement())
-//   stockID      Int
-//   tickerSymbol String
-
-//   stocks Stock[]
-// }
 
 model Historical_Stock_Price {
   stockID    Int
@@ -102,7 +95,7 @@ model Historical_Stock_Price {
   Close      Float
   Volume     Int
 
-  stock Stock @relation(fields: [stockID], references: [stockID])
+  stock Stock @relation(fields: [stockID], references: [stockID], onDelete:Cascade)
   @@id([stockID, Date])
 }
 
@@ -113,7 +106,7 @@ model ML_Stock_Price {
   Price      Float
   MLModelID  Int
 
-  stock Stock @relation(fields: [stockID], references: [stockID])
+  stock Stock @relation(fields: [stockID], references: [stockID], onDelete:Cascade)
   @@id([stockID, DateString, MLModelID])
 }
 
@@ -126,15 +119,15 @@ model Superuser {
   superuserID Int    @id @default(autoincrement())
   userID      String  @unique
 
-  User User? @relation(fields: [userID], references: [id])
+  User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
 }
 
-model User_Tier {
-  tierID Int    @id @default(autoincrement())
+model Subscription {
+  subscriptionID Int    @id @default(autoincrement())
   userID String @unique
   tier   String
 
-  User User? @relation(fields: [userID], references: [id])
+  User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
 }
 
 model Settings {
@@ -143,7 +136,7 @@ model Settings {
   configName String
   value      String
 
-  User User? @relation(fields: [userID], references: [id])
+  User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
 }
 
 model Stock_Watchlist {
@@ -151,5 +144,5 @@ model Stock_Watchlist {
   userID      String 
   stockID     Int
 
-  User User? @relation(fields: [userID], references: [id])
+  User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
 }
