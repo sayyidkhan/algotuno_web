@@ -123,10 +123,10 @@ export async function getStaticProps() {
     const result = await res.json();
     const stocks = result.result;
 
-    Promise.all(get_hsp_ranges(stocks)).then((values)=>{
-        console.log(values);
+    // Promise.all(get_hsp_ranges(stocks)).then((values)=>{
+    //     console.log(values);
         
-    })
+    // })
 
     // stocks.forEach(async element => {
     //     const get_hsp_range = await fetch(BASE_URL + `/api/stock/get_hsp_range`,
