@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
+import {BASE_URL} from '../../../config/db_prod_checker';
 import {createTheme} from '@mui/material/styles';
 import LayoutHeader from "../../../components/layout_header";
 import {Grid, Tab, Tabs, TextField} from "@mui/material";
@@ -27,9 +28,6 @@ function Copyright() {
         </Typography>
     );
 }
-
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
-
 
 const theme = createTheme();
 
@@ -71,7 +69,9 @@ export function StockForm() {
     );
 }
 
-export default function Page() {
+export default function Page({ stocks }) {
+    console.log(stocks);
+
     const [activeStep, setActiveStep] = React.useState<number>(0);
     const [value, setValue] = React.useState<number>(0);
 
@@ -88,36 +88,10 @@ export default function Page() {
         setActiveStep(activeStep - 1);
     };
 
-    function AddStockComponent() {
-        return <Container>
-            <Box sx={{mt: 12.5}}/>
-            <CssBaseline/>
-            <Container component="main" maxWidth="sm" sx={{mb: 4}}>
-                <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
-                    <StockForm/>
-                    <React.Fragment>
-                        <React.Fragment>
-                            <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleSubmit}
-                                    sx={{mt: 3, ml: 1}}
-                                >
-                                    Add Stock
-                                </Button>
-                            </Box>
-                        </React.Fragment>
-                    </React.Fragment>
-                </Paper>
-            </Container>
-        </Container>;
-    }
-
     return (
         <LayoutHeader>
             <Container maxWidth="xl">
                 <Box style={{marginTop: "7.5em"}}/>
-
 
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
                     <Tabs value={value} onChange={handleChange}>
@@ -128,7 +102,7 @@ export default function Page() {
                     <TabContext value={value.toString()}>
                         {/* navigation 1 */}
                         <TabPanel value="0">
-                            <StockPriceListTable />
+                            <StockPriceListTable stockList={stocks} />
                         </TabPanel>
                         {/* navigation 1 */}
                         <TabPanel value="1">
@@ -142,6 +116,57 @@ export default function Page() {
         </LayoutHeader>
     );
 }
+
+
+export async function getStaticProps() {
+    const res = await fetch(BASE_URL + '/api/stock/get_all_stocks');
+    const result = await res.json();
+    const stocks = result.result;
+
+    Promise.all(get_hsp_ranges(stocks)).then((values)=>{
+        console.log(values);
+        
+    })
+
+    // stocks.forEach(async element => {
+    //     const get_hsp_range = await fetch(BASE_URL + `/api/stock/get_hsp_range`,
+    //     {
+    //         method: "POST",
+    //         body:   JSON.stringify({ "ticker_symbol": element.tickerSymbol }),
+    //         headers: {
+    //             'Content-Type' : 'application/json',
+    //             'authorization' : 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
+    //         }
+    //     });
+
+    //     const hsp_results = await get_hsp_range.json();
+    //     const hsp_range = hsp_results.results;
+
+    //     element['earliest_stock_date'] = hsp_range[0];
+    //     element['latest_stock_date'] = hsp_range[1];
+    // });
+
+    return {props:{stocks}};
+}
+
+// https://nextjs.org/docs/basic-features/data-fetching/get-static-props
+
+function get_hsp_ranges(ticker_symbols : any[]) {
+    return ticker_symbols.map(async (e)=>{
+
+        const res = await fetch(BASE_URL + `/api/stock/get_hsp_range`,
+        {
+            method: "POST",
+            body:   JSON.stringify({ "ticker_symbol": e.tickerSymbol }),
+            headers: {
+                'Content-Type' : 'application/json',
+                'authorization' : 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
+            }
+        });
+        
+        return res.json();
+    })
+} 
 
 const styles = {
     tab_styling: {
