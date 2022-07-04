@@ -6,13 +6,29 @@ export default async (req, res) => {
 
         try{
             const all_users = await prisma.user.findMany({
-                select:{
-                    id : true,
-                    name: true,
-                    email: true,
-                    username: true
+                include:{
+                    Superuser:{
+                        select:{
+                            superuserID: true
+                        }
+                    }
                 }
             });
+
+            try {
+                all_users.forEach(e=>{
+                    if (e.Superuser.length == 1){
+                        e["superuserID"]= e.Superuser[0]["superuserID"];
+                    }
+                    
+                    delete e.Superuser;
+                    delete e.password;
+                    delete e.image;
+
+                })
+            }catch(error){
+
+            }
 
             const successMsg = `Found ${all_users.length} users`;
             console.log(successMsg);

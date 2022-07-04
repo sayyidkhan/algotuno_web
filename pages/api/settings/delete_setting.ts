@@ -1,4 +1,3 @@
-import { authorization_check } from '../../../config/auth_check';
 import prisma from '../../../config/prisma';
 
 export default async (req, res) => {
