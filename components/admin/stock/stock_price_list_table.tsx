@@ -17,6 +17,7 @@ import {
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AlertComponent from "../../alert/alert_message";
+import { BASE_URL } from "../../../config/db_prod_checker";
 
 interface BasicUserInterface {
     stockID: number;
@@ -115,30 +116,45 @@ export default function StockPriceListTable(props) {
         })
     }
 
-    function deleteStock(id) {
+    async function deleteStock(ts) {
         //delete stock 
-        console.log("hello world");
-        console.log(id);
-        // 1. set the display to true to show the UI
-        setDisplay(true);
-        // 2. logic here
-        const success = true;
-        // 3. to show the update message
-        if (success) {
-            setStatus(true);
-            setMessage("the operation is successful");
-        }
-        else {
-            setStatus(false);
-            setMessage("the operation is unsuccesful");
-        }
-        // 4. remove all the data
-        setTimeout(() => {
-            setStatus(null);
-            setMessage("");
-            setDisplay(false);
-        }, 3000);
+        try{
+ 
+            const res = await fetch(`/api/stock/delete_stock`, {
+                method:"POST",
+                body:   JSON.stringify({ "ticker_symbol": ts }),
+                        headers: {
+                            'Content-Type' : 'application/json',
+                            'authorization' : 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
+                        }
+            });
 
+            const delete_stock_result = await res.json();
+            const delete_stock_msg = delete_stock_result.message;
+            console.log(delete_stock_msg)
+
+            // 1. set the display to true to show the UI
+            setDisplay(true);
+            // 2. logic here
+            const success = true;
+            // 3. to show the update message
+            if (success) {
+                setStatus(true);
+            }
+            else {
+                setStatus(false);
+            }
+
+            setMessage(delete_stock_msg);
+            // 4. remove all the data
+            setTimeout(() => {
+                setStatus(null);
+                setMessage("");
+                setDisplay(false);
+            }, 3000);
+        } catch (Error) {
+            console.log(Error)
+        }
     }
 
     const addStock = async () => {
@@ -158,8 +174,28 @@ export default function StockPriceListTable(props) {
             }).then(async res => {
                 const data = await res.json();
                 const message = data.message;
-                alert(message);
-                return message;        
+                console.log(message);
+
+                // 1. set the display to true to show the UI
+                setDisplay(true);
+                // 2. logic here
+                const success = true;
+                // 3. to show the update message
+                if (success) {
+                    setStatus(true);
+                }
+                else {
+                    setStatus(false);
+                }
+
+                setMessage(message);
+                // 4. remove all the data
+                setTimeout(() => {
+                    setStatus(null);
+                    setMessage("");
+                    setDisplay(false);
+                }, 3000);
+
             });
 
         } catch (error) {
@@ -187,7 +223,7 @@ export default function StockPriceListTable(props) {
 
     return (
         <div>
-            <AlertComponent display={true} status={true} message={"enter message here"}/>
+            <AlertComponent display={display} status={status} message={message}/>
             <br/>
             <div>
                 <Paper>
@@ -195,7 +231,6 @@ export default function StockPriceListTable(props) {
                         <h5>Add new Stock</h5>
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
-                                {/* copy each grid to add more fields */}
                                 <Grid item xs={2}>
                                     <div style={{
                                         display: 'flex',
@@ -213,7 +248,6 @@ export default function StockPriceListTable(props) {
                                         />
                                     </div>
                                 </Grid>
-                                {/* copy each grid to add more fields */}
                                 <Grid item xs={2}>
                                     <div style={{
                                         display: 'flex',
@@ -231,7 +265,6 @@ export default function StockPriceListTable(props) {
                                         />
                                     </div>
                                 </Grid>
-                                {/* copy each grid to add more fields */}
                                 <Grid item xs={2}>
                                     <div style={{
                                         display: 'flex',
@@ -282,7 +315,7 @@ export default function StockPriceListTable(props) {
                                         <TableCell align="right">{row.earliest_stock_date}</TableCell>
                                         <TableCell align="right">{row.latest_stock_date}</TableCell>
                                         <TableCell align="right">
-                                            <Button variant="text" color="error" onClick={() => deleteStock(row.stockID)}>Remove</Button>
+                                            <Button variant="text" color="error" onClick={() => deleteStock(row.tickerSymbol)}>Remove</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
