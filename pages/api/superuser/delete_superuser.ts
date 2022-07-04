@@ -12,12 +12,11 @@ export default async (req, res) => {
             return
         }
 
-        let input_username, user_id;
+        let user_id;
 
         try {
 
-            // check if ticker symbol exists in Stock database
-            input_username = req.body.username;
+            const input_username = req.body.username;
 
             const user_record = await prisma.user.findFirst({
                 where: {
