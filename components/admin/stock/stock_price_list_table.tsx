@@ -228,7 +228,7 @@ export default function StockPriceListTable(props) {
             <div>
                 <Paper>
                     <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
-                        <h5>Add new stock</h5>
+                        <h5>Add new Stock</h5>
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
                                 <Grid item xs={2}>
@@ -323,6 +323,13 @@ export default function StockPriceListTable(props) {
                         </Table>
                     </TableContainer>
                 </Paper>
+                <br/>
+                <a
+                    target="_blank"
+                    href="https://smartdevpreneur.com/the-easiest-way-to-implement-material-ui-table-search/"
+                >
+                    Learn how to add search and filter to Material-UI Table here.
+                </a>
             </div>
         </div>
     );
