@@ -3,7 +3,7 @@ Added the following scripts:
 - add_stock.ts
 - delete_stock.ts
 - get_all_stocks.ts
-- get_all_stock_with_hsp.ts
+- get_all_stocks_with_hsp.ts
 - populate_hsp.ts
 - get_hsp.ts
 - get_hsp_range.ts
@@ -50,7 +50,7 @@ Notes:
 To get all stocks from the Stock table, send a GET request to the **/api/stock/get_all_stocks** endpoint.
 
 ## get_all_stocks_with_hsp.ts
-To get all stocks from the Stock table with their HSP range, send a GET request to the **/api/stock/get_all_stock_with_hsp** endpoint.
+To get all stocks from the Stock table with their HSP ranges, send a GET request to the **/api/stock/get_all_stocks_with_hsp** endpoint.
 
 ## populate_hsp.ts
 To populate a stock with historical stock prices, send a POST request to the **/api/stock/populate_hsp** endpoint with the body contents:
