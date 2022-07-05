@@ -122,11 +122,8 @@ export async function getStaticProps() {
     const res = await fetch(BASE_URL + '/api/stock/get_all_stocks_with_hsp');
     const result = await res.json();
     const stocks = result.result;
-
     return {props:{stocks}};
 }
-
-// https://nextjs.org/docs/basic-features/data-fetching/get-static-props
 
 const styles = {
     tab_styling: {
