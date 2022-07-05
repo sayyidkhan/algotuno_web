@@ -122,8 +122,6 @@ export async function getStaticProps() {
     const res = await fetch(BASE_URL + '/api/stock/get_all_stocks_with_hsp');
     const result = await res.json();
     const stocks = result.result;
-    let stocks_with_hsp_range;
-
 
     return {props:{stocks}};
 }

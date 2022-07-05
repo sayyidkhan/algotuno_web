@@ -9,8 +9,7 @@ export default async (req, res) => {
             const all_stocks = await prisma.stock.findMany({});
 
             Promise.all(get_hsp_range(all_stocks)).then((values)=>{
-                console.log(values);
-                const successMsg = "yes"
+                const successMsg = "Retrieved stocks with HSP range"
                 console.log(successMsg);
                 res.status(200).json({
                   "message" : successMsg,
