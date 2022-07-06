@@ -22,12 +22,12 @@ export default function Header() {
                     <ul className={styles.navItems}>
                         <li className={styles.navItem}>
                             <Link href="/main">
-                                <a>Home</a>
+                                <a>Dashboard</a>
                             </Link>
                         </li>
                         <li className={styles.navItem}>
                             <Link href="/charts">
-                                <a>Charts</a>
+                                <a>Markets</a>
                             </Link>
                         </li>
                         <li className={styles.navItem}>
