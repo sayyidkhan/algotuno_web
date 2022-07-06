@@ -28,6 +28,9 @@ export default async (req, res) => {
     }
     
     function get_hsp_range(ticker_symbols:any[]){
+
+        const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
         return ticker_symbols.map(async (e)=>{
             const hsp_range = await prisma.historical_Stock_Price.aggregate({
                 _max : {Date: true},
@@ -36,8 +39,10 @@ export default async (req, res) => {
             })
 
             let stock = e;
-            stock['latest_stock_date'] = hsp_range["_max"]["Date"];
-            stock['earliest_stock_date'] = hsp_range["_min"]["Date"];
+            const max = hsp_range["_max"]["Date"];
+            const min = hsp_range["_min"]["Date"];
+            stock['latest_stock_date'] = max.getDate() + "-" + months[max.getMonth()] + "-" + max.getFullYear();
+            stock['earliest_stock_date'] = min.getDate() + "-" + months[min.getMonth()] + "-" + min.getFullYear();
 
             return stock        
         })
