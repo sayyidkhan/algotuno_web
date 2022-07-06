@@ -12,7 +12,7 @@ export default async (req, res) => {
             return
         }
 
-        let input_username, user_id, model_type;
+        let input_username, user_id;
 
         try {
 

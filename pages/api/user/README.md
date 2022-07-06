@@ -1,14 +1,17 @@
 ## Overview
 Added the following scripts:
-- add_superuser.ts
-- delete_superuser.ts
+- get_all_user.ts
+- delete_user.ts
 
 #### NOTICE
 Some endpoints expect an authorization key in the Headers of each request. The authorization key must be indicated in the Headers as "authorization" : "NEXT_PUBLIC_API_SECRET_KEY **INSERT SECRET KEY**"
 
 #### Usage
-## add_superuser.ts
-To add a superuser, send a POST request to the **/api/user/add_superuser** endpoint with the body contents as such:
+## get_all_user.ts
+To get all users, send a GET request to the **/api/user/get_all_user** endpoint.
+
+## delete_user.ts
+To add a user, send a POST request to the **/api/user/delete_superuser** endpoint with the body contents as such:
 
 Example:
 
@@ -17,15 +20,3 @@ Example:
     "username"      :   "test123"
 }
 ```
-
-## delete_superuser.ts
-To delete a superuser, send a POST request to the **/api/user/add_superuser** endpoint with the body contents as such:
-
-Example:
-
-```
-{
-    "username"      :   "test123"
-}
-```
-

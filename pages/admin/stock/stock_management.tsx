@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
+import {BASE_URL} from '../../../config/db_prod_checker';
 import {createTheme} from '@mui/material/styles';
 import LayoutHeader from "../../../components/layout_header";
 import {Grid, Tab, Tabs, TextField} from "@mui/material";
@@ -28,12 +29,9 @@ function Copyright() {
     );
 }
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
-
-
 const theme = createTheme();
 
-export function AddressForm() {
+export function StockForm() {
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
@@ -47,7 +45,22 @@ export function AddressForm() {
                         name="ticker_symbol"
                         label="Ticker Symbol"
                         fullWidth
-                        autoComplete="shipping address-line1"
+                        variant="standard"
+                    />
+                    <TextField
+                        required
+                        id="company_name"
+                        name="company_name"
+                        label="Company Name"
+                        fullWidth
+                        variant="standard"
+                    />
+                    <TextField
+                        required
+                        id="exchange_name"
+                        name="exchange_name"
+                        label="Stock Exchange"
+                        fullWidth
                         variant="standard"
                     />
                 </Grid>
@@ -56,7 +69,9 @@ export function AddressForm() {
     );
 }
 
-export default function Page() {
+export default function Page({ stocks }) {
+    console.log(stocks);
+
     const [activeStep, setActiveStep] = React.useState<number>(0);
     const [value, setValue] = React.useState<number>(0);
 
@@ -64,44 +79,19 @@ export default function Page() {
         setValue(newValue);
     };
 
-    const handleNext = () => {
+    const handleSubmit = () => {
         setActiveStep(activeStep + 1);
+        console.log('button pressed');
     };
 
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
 
-    function AddStockComponent() {
-        return <Container>
-            <Box sx={{mt: 12.5}}/>
-            <CssBaseline/>
-            <Container component="main" maxWidth="sm" sx={{mb: 4}}>
-                <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
-                    <AddressForm/>
-                    <React.Fragment>
-                        <React.Fragment>
-                            <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleNext}
-                                    sx={{mt: 3, ml: 1}}
-                                >
-                                    Add Stock
-                                </Button>
-                            </Box>
-                        </React.Fragment>
-                    </React.Fragment>
-                </Paper>
-            </Container>
-        </Container>;
-    }
-
     return (
         <LayoutHeader>
             <Container maxWidth="xl">
                 <Box style={{marginTop: "7.5em"}}/>
-
 
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
                     <Tabs value={value} onChange={handleChange}>
@@ -112,7 +102,7 @@ export default function Page() {
                     <TabContext value={value.toString()}>
                         {/* navigation 1 */}
                         <TabPanel value="0">
-                            <StockPriceListTable />
+                            <StockPriceListTable stockList={stocks} />
                         </TabPanel>
                         {/* navigation 1 */}
                         <TabPanel value="1">
@@ -125,6 +115,14 @@ export default function Page() {
             </Container>
         </LayoutHeader>
     );
+}
+
+
+export async function getStaticProps() {
+    const res = await fetch(BASE_URL + '/api/stock/get_all_stocks_with_hsp');
+    const result = await res.json();
+    const stocks = result.result;
+    return {props:{stocks}};
 }
 
 const styles = {

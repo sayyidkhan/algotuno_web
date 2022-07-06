@@ -17,10 +17,12 @@ import {
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AlertComponent from "../../alert/alert_message";
+import { BASE_URL } from "../../../config/db_prod_checker";
 
 interface BasicUserInterface {
-    ticker_symbol: string;
-    stock_name: string;
+    stockID: number;
+    tickerSymbol: string;
+    companyName: string;
     earliest_stock_date: string;
     latest_stock_date: string;
 }
@@ -28,20 +30,23 @@ interface BasicUserInterface {
 
 const originalRows: BasicUserInterface[] = [
     {
-        ticker_symbol: "amcr",
-        stock_name: "amcor",
+        stockID : 1,
+        tickerSymbol: "amcr",
+        companyName: "amcor",
         earliest_stock_date: "1-jan-2017",
         latest_stock_date: "30-jun-2022"
     },
     {
-        ticker_symbol: "tsla",
-        stock_name: "tesla",
+        stockID : 2,
+        tickerSymbol: "tsla",
+        companyName: "tesla",
         earliest_stock_date: "1-jan-2017",
         latest_stock_date: "30-jun-2022"
     },
     {
-        ticker_symbol: "goog",
-        stock_name: "google",
+        stockID : 3,
+        tickerSymbol: "goog",
+        companyName: "google",
         earliest_stock_date: "1-jan-2017",
         latest_stock_date: "30-jun-2022"
     },
@@ -74,13 +79,83 @@ const SearchBar = ({setSearchQuery}) => (
 );
 
 
-export default function StockPriceListTable() {
-    const [rows, setRows] = useState<BasicUserInterface[]>(originalRows);
+export default function StockPriceListTable(props) {
+    
+    const mystocklist = props.stockList;
+    console.log(mystocklist);
+    const myUpdatedStocklist = myFunc(mystocklist);
+    console.log(myUpdatedStocklist);
+    const [rows, setRows] = useState<BasicUserInterface[]>(myUpdatedStocklist);
     const [searched, setSearched] = useState<string>("");
-    // const classes = useStyles();
     const [tickersymbol, setTickerSymbol] = useState('');
     const [companyname, setCompanyName] = useState('');
     const [exchange, setExchangeName] = useState('');
+
+    const [display, setDisplay] = useState<boolean>(false);
+    const [status, setStatus] = useState<boolean>(null);
+    const [message, setMessage] = useState("");
+
+    function myFunc(_stocks){
+        return _stocks.map(e=>{
+            
+            const sid = e.stockID;
+            const ts = e.tickerSymbol;
+            const s_name = e.companyName;
+            const earliest_date = e.earliest_stock_date;
+            const latest_date = e.latest_stock_date;
+
+            const obj:BasicUserInterface = {
+                stockID: sid,
+                tickerSymbol: ts,
+                companyName: s_name,
+                earliest_stock_date: earliest_date,
+                latest_stock_date: latest_date
+            };
+
+            return obj
+        })
+    }
+
+    async function deleteStock(ts) {
+        //delete stock 
+        try{
+ 
+            const res = await fetch(`/api/stock/delete_stock`, {
+                method:"POST",
+                body:   JSON.stringify({ "ticker_symbol": ts }),
+                        headers: {
+                            'Content-Type' : 'application/json',
+                            'authorization' : 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
+                        }
+            });
+
+            const delete_stock_result = await res.json();
+            const delete_stock_msg = delete_stock_result.message;
+            console.log(delete_stock_msg)
+
+            // 1. set the display to true to show the UI
+            setDisplay(true);
+            // 2. logic here
+            const success = true;
+            // 3. to show the update message
+            if (success) {
+                setStatus(true);
+            }
+            else {
+                setStatus(false);
+            }
+
+            setMessage(delete_stock_msg);
+            // 4. remove all the data
+            setTimeout(() => {
+                setStatus(null);
+                setMessage("");
+                setDisplay(false);
+            }, 3000);
+        } catch (Error) {
+            console.log(Error)
+        }
+    }
 
     const addStock = async () => {
         
@@ -99,8 +174,28 @@ export default function StockPriceListTable() {
             }).then(async res => {
                 const data = await res.json();
                 const message = data.message;
-                alert(message);
-                return message;        
+                console.log(message);
+
+                // 1. set the display to true to show the UI
+                setDisplay(true);
+                // 2. logic here
+                const success = true;
+                // 3. to show the update message
+                if (success) {
+                    setStatus(true);
+                }
+                else {
+                    setStatus(false);
+                }
+
+                setMessage(message);
+                // 4. remove all the data
+                setTimeout(() => {
+                    setStatus(null);
+                    setMessage("");
+                    setDisplay(false);
+                }, 3000);
+
             });
 
         } catch (error) {
@@ -108,7 +203,7 @@ export default function StockPriceListTable() {
         }
     }
 
-    const hs = async e => {
+    const handleSubmit = async e => {
         e.preventDefault();
         console.log(tickersymbol, companyname, exchange);
         addStock();
@@ -116,7 +211,7 @@ export default function StockPriceListTable() {
 
     const requestSearch = (searchedVal: string) => {
         const filteredRows = originalRows.filter((row) => {
-            return row.ticker_symbol.toLowerCase().includes(searchedVal.toLowerCase());
+            return row.tickerSymbol.toLowerCase().includes(searchedVal.toLowerCase());
         });
         setRows(filteredRows);
     };
@@ -128,15 +223,14 @@ export default function StockPriceListTable() {
 
     return (
         <div>
-            <AlertComponent display={true} status={true} message={"enter message here"}/>
+            <AlertComponent display={display} status={status} message={message}/>
             <br/>
             <div>
                 <Paper>
                     <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
                         <h5>Add new Stock</h5>
-                        <form onSubmit={hs}>
+                        <form onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
-                                {/* copy each grid to add more fields */}
                                 <Grid item xs={2}>
                                     <div style={{
                                         display: 'flex',
@@ -154,7 +248,6 @@ export default function StockPriceListTable() {
                                         />
                                     </div>
                                 </Grid>
-                                {/* copy each grid to add more fields */}
                                 <Grid item xs={2}>
                                     <div style={{
                                         display: 'flex',
@@ -172,7 +265,6 @@ export default function StockPriceListTable() {
                                         />
                                     </div>
                                 </Grid>
-                                {/* copy each grid to add more fields */}
                                 <Grid item xs={2}>
                                     <div style={{
                                         display: 'flex',
@@ -216,16 +308,14 @@ export default function StockPriceListTable() {
                             </TableHead>
                             <TableBody>
                                 {rows.map((row, index) => (
-                                    <TableRow key={row.ticker_symbol}>
+                                    <TableRow key={row.tickerSymbol}>
                                         <TableCell>{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row">
-                                            {row.ticker_symbol}
-                                        </TableCell>
-                                        <TableCell align="right">{row.stock_name}</TableCell>
+                                        <TableCell component="th" scope="row">{row.tickerSymbol}</TableCell>
+                                        <TableCell align="right">{row.companyName}</TableCell>
                                         <TableCell align="right">{row.earliest_stock_date}</TableCell>
                                         <TableCell align="right">{row.latest_stock_date}</TableCell>
                                         <TableCell align="right">
-                                            <Button variant="text" color="error">Remove</Button>
+                                            <Button variant="text" color="error" onClick={() => deleteStock(row.tickerSymbol)}>Remove</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
