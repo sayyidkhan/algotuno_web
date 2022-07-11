@@ -8,7 +8,7 @@ import {Grid, Tab, Tabs, TextField} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import SettingsTable from "../../../components/admin/settings/settings_table";
 
-export default function Page({settings }) {
+export default function Page() {
     const [activeStep, setActiveStep] = React.useState<number>(0);
     const [value, setValue] = React.useState<number>(0);
 
@@ -32,12 +32,12 @@ export default function Page({settings }) {
 
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
                     <Tabs value={value} onChange={handleChange}>
-                        <Tab label="Settings List" style={styles.tab_styling} />
+                        <Tab label="Settings List" style={styles.tab_styling}/>
                     </Tabs>
 
                     <TabContext value={value.toString()}>
                         <TabPanel value="0">
-                            <SettingsTable settingsList={settings} />
+                            <SettingsTable />
                         </TabPanel>
                     </TabContext>
                 </Box>
@@ -48,13 +48,6 @@ export default function Page({settings }) {
     );
 }
 
-
-export async function getStaticProps() {
-    const res = await fetch(BASE_URL + '/api/settings/get_all_setting');
-    const result = await res.json();
-    const settings = result.result;
-    return {props:{settings}};
-}
 
 const styles = {
     tab_styling: {
