@@ -11,7 +11,6 @@
     display: flex;
     flex-direction: column;
     justify-content: baseline;
-
     align-items: center;
 
 }
@@ -109,7 +108,7 @@
 }
 
 .stockwidget{
-    margin-top: 4rem;
-    padding:0 10rem;
-    width:70%
+    margin-top: 5rem;
+    width:70%;
+    padding: 0rem 5rem;
 }

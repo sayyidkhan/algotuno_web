@@ -11,13 +11,15 @@ export default function SignInSide() {
 
     return (
         <Layout>
-            <Grid container component="main" sx={{height: '88vh', marginBottom: '-1em', marginTop: '3em'}}>
+            
+            <Grid container component="main" sx={{height: '120vh', marginTop: '3em'}}>
                 {/*<CssBaseline/>*/}
                 <Grid item xs={12} sm={6}>
                     <Box
                         sx={{
                             my: 8,
                             mx: 4,
+                            
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -34,6 +36,7 @@ export default function SignInSide() {
                                         fontSize: '3em',
                                         textShadow: '1em',
                                         textDecorationColor: 'black',
+                                        
                                         // filter: 'drop-shadow(2px 2px 2.5px #000)',
                                     }}
                                     className={global_styles.landing_page_title}
@@ -82,7 +85,7 @@ export default function SignInSide() {
                                     {/*Forgot password?*/}
                                     {/*</Link>*/}
                                 </Grid>
-                                <Grid item>
+                                <Grid item >
                                     <Link href="/account/register" variant="body2">
                                         {"Don't have an account? Sign Up"}
                                     </Link>
@@ -102,9 +105,11 @@ export default function SignInSide() {
                             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[100],
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
+                       
                     }}
                 />
             </Grid>
+                       
         </Layout>
     );
 }

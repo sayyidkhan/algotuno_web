@@ -1,11 +1,6 @@
 import Head from 'next/head'
 import Layout from '../components/layout';
 import styles from '../styles/Home.module.css'
-// import {
-//   MarketOverview,
-//   TechnicalAnalysis
-// } from "react-ts-tradingview-widgets";
-// import TradingViewWidget, { Themes } from "react-tradingview-widget";
 import { AdvancedRealTimeChart } from "react-ts-tradingview-widgets";
 import { MarketOverview } from "react-ts-tradingview-widgets";
 

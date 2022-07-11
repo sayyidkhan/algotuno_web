@@ -137,6 +137,7 @@ model Settings {
   value      String
 
   User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
+  @@unique([userID, configName])
 }
 
 model Stock_Watchlist {

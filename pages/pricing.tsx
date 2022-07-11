@@ -17,6 +17,7 @@ import Container from '@mui/material/Container';
 import Layout from '../components/layout';
 
 
+
 const tiers = [
   {
     title: 'Free',
@@ -131,12 +132,15 @@ function PricingContent() {
                   </ul>
                 </CardContent>
                 <CardActions>
+                <Link href='/checkout'>
                   <Button
                     fullWidth
                     variant={tier.buttonVariant as 'outlined' | 'contained'}
+                    
                   >
                     {tier.buttonText}
                   </Button>
+                  </Link>
                 </CardActions>
               </Card>
             </Grid>

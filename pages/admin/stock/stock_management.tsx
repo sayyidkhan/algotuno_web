@@ -119,54 +119,11 @@ export default function Page({ stocks }) {
 
 
 export async function getStaticProps() {
-    const res = await fetch(BASE_URL + '/api/stock/get_all_stocks');
+    const res = await fetch(BASE_URL + '/api/stock/get_all_stocks_with_hsp');
     const result = await res.json();
     const stocks = result.result;
-
-    Promise.all(get_hsp_ranges(stocks)).then((values)=>{
-        console.log(values);
-        
-    })
-
-    // stocks.forEach(async element => {
-    //     const get_hsp_range = await fetch(BASE_URL + `/api/stock/get_hsp_range`,
-    //     {
-    //         method: "POST",
-    //         body:   JSON.stringify({ "ticker_symbol": element.tickerSymbol }),
-    //         headers: {
-    //             'Content-Type' : 'application/json',
-    //             'authorization' : 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
-    //         }
-    //     });
-
-    //     const hsp_results = await get_hsp_range.json();
-    //     const hsp_range = hsp_results.results;
-
-    //     element['earliest_stock_date'] = hsp_range[0];
-    //     element['latest_stock_date'] = hsp_range[1];
-    // });
-
     return {props:{stocks}};
 }
-
-// https://nextjs.org/docs/basic-features/data-fetching/get-static-props
-
-function get_hsp_ranges(ticker_symbols : any[]) {
-    return ticker_symbols.map(async (e)=>{
-
-        const res = await fetch(BASE_URL + `/api/stock/get_hsp_range`,
-        {
-            method: "POST",
-            body:   JSON.stringify({ "ticker_symbol": e.tickerSymbol }),
-            headers: {
-                'Content-Type' : 'application/json',
-                'authorization' : 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
-            }
-        });
-        
-        return res.json();
-    })
-} 
 
 const styles = {
     tab_styling: {

@@ -19,11 +19,10 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import AlertComponent from "../../alert/alert_message";
 
 interface BasicUserInterface {
-    stockID: number;
-    tickerSymbol: string;
-    companyName: string;
-    earliest_stock_date: string;
-    latest_stock_date: string;
+    userID: number;
+    settingID: string;
+    configName: string;
+    configValue: string;
 }
 
 const SearchBar = ({setSearchQuery}) => (
@@ -39,7 +38,7 @@ const SearchBar = ({setSearchQuery}) => (
                     /* @ts-ignore */
                     setSearchQuery(e.target.value);
                 }}
-                label="Ticker Symbol"
+                label="settingID"
                 variant="outlined"
                 placeholder="Search..."
                 size="small"
@@ -52,49 +51,47 @@ const SearchBar = ({setSearchQuery}) => (
     </form>
 );
 
-export default function StockPriceListTable(props) {
+export default function SettingsTable(props) {
     
-    const mystocklist = props.stockList;
-    const myUpdatedStocklist = myFunc(mystocklist);
-    console.log(myUpdatedStocklist);
-    const [rows, setRows] = useState<BasicUserInterface[]>(myUpdatedStocklist);
+    const mySettings = props.settingsList;
+    const myUpdatedSettingsList = myFunc(mySettings);
+    console.log(myUpdatedSettingsList);
+    const [rows, setRows] = useState<BasicUserInterface[]>(myUpdatedSettingsList);
     const [searched, setSearched] = useState<string>("");
-    const [tickersymbol, setTickerSymbol] = useState('');
-    const [companyname, setCompanyName] = useState('');
-    const [exchange, setExchangeName] = useState('');
+
+    const [userID, setUserID] = useState('');
+    const [configName, setConfigName] = useState('');
+    const [configValue, setConfigValue] = useState('');
 
     const [display, setDisplay] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
 
-    function myFunc(_stocks){
-        return _stocks.map(e=>{
+    function myFunc(settings){
+        return settings.map(e=>{
             
-            const sid = e.stockID;
-            const ts = e.tickerSymbol;
-            const s_name = e.companyName;
-            const earliest_date = e.earliest_stock_date;
-            const latest_date = e.latest_stock_date;
+            const uid = e.userID;
+            const sid = e.settingID;
+            const configName = e.configName;
+            const configValue = e.value;
 
             const obj:BasicUserInterface = {
-                stockID: sid,
-                tickerSymbol: ts,
-                companyName: s_name,
-                earliest_stock_date: earliest_date,
-                latest_stock_date: latest_date
+                userID: uid,
+                settingID: sid,
+                configName: configName,
+                configValue: configValue
             };
 
             return obj
         })
     }
 
-    async function deleteStock(ts) {
-        //delete stock 
+    async function deleteSetting(sid) { 
         try{
  
-            const res = await fetch(`/api/stock/delete_stock`, {
+            const res = await fetch(`/api/settings/delete_setting`, {
                 method:"POST",
-                body:   JSON.stringify({ "ticker_symbol": ts }),
+                body:   JSON.stringify({ "setting_id": sid }),
                         headers: {
                             'Content-Type' : 'application/json',
                             'authorization' : 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
@@ -129,19 +126,19 @@ export default function StockPriceListTable(props) {
         }
     }
 
-    const addStock = async () => {
+    const addSetting = async () => {
         
         try{ 
-            const res = await fetch(`/api/stock/add_stock`, {
+            const res = await fetch(`/api/settings/add_setting`, {
             method : 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             body : JSON.stringify({
-                "ticker_symbol" : tickersymbol,
-                "company_name"  : companyname,
-                "exchange"      : exchange
+                "user_id" : userID,
+                "config_name"  : configName,
+                "config_value"      : configValue
                 })
             }).then(async res => {
                 const data = await res.json();
@@ -177,13 +174,13 @@ export default function StockPriceListTable(props) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(tickersymbol, companyname, exchange);
-        addStock();
+        console.log(userID, configName, configValue);
+        addSetting();
     }
 
     const requestSearch = (searchedVal: string) => {
         const filteredRows = rows.filter((row) => {
-            return row.tickerSymbol.toLowerCase().includes(searchedVal.toLowerCase());
+            return row.settingID.includes(searchedVal);
         });
         setRows(filteredRows);
     };
@@ -200,7 +197,7 @@ export default function StockPriceListTable(props) {
             <div>
                 <Paper>
                     <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
-                        <h5>Add new stock</h5>
+                        <h5>Add new setting</h5>
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
                                 <Grid item xs={2}>
@@ -209,12 +206,12 @@ export default function StockPriceListTable(props) {
                                         alignItems: 'center'
                                     }}>
                                         <TextField
-                                            id="ticker_symbol"
+                                            id="userID"
                                             className="text"
-                                            onChange={e=>setTickerSymbol(e.target.value)}
-                                            label="Ticker Symbol"
+                                            onChange={e=>setUserID(e.target.value)}
+                                            label="User ID"
                                             variant="outlined"
-                                            placeholder="Enter ticker symbol..."
+                                            placeholder="Enter User ID..."
                                             size="small"
                                             fullWidth
                                         />
@@ -226,12 +223,12 @@ export default function StockPriceListTable(props) {
                                         alignItems: 'center'
                                     }}>
                                         <TextField
-                                            id="company_name"
+                                            id="configName"
                                             className="text"
-                                            onChange={e=>setCompanyName(e.target.value)}
-                                            label="Company Name"
+                                            onChange={e=>setConfigName(e.target.value)}
+                                            label="Config Name"
                                             variant="outlined"
-                                            placeholder="Enter Company Name..."
+                                            placeholder="Enter Config Name..."
                                             size="small"
                                             fullWidth
                                         />
@@ -243,12 +240,12 @@ export default function StockPriceListTable(props) {
                                         alignItems: 'center'
                                     }}>
                                         <TextField
-                                            id="exchange_name"
+                                            id="configValue"
                                             className="text"
-                                            onChange={e=>setExchangeName(e.target.value)}
-                                            label="Exchange Name"
+                                            onChange={e=>setConfigValue(e.target.value)}
+                                            label="Config Value"
                                             variant="outlined"
-                                            placeholder="Enter Exchange Name..."
+                                            placeholder="Enter Config Value..."
                                             size="small"
                                             fullWidth
                                         />
@@ -259,7 +256,7 @@ export default function StockPriceListTable(props) {
                                 </Grid>
                             </Grid>
                         </form>
-                        <h5>Search for stock(s)</h5>
+                        <h5>Search for setting(s)</h5>
                         <Grid container spacing={2}>
                             <Grid item xs={3}>
                                 <SearchBar setSearchQuery={val => requestSearch(val)}/>
@@ -271,23 +268,23 @@ export default function StockPriceListTable(props) {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>No.</TableCell>
-                                    <TableCell>Ticker Symbol</TableCell>
-                                    <TableCell align="right">Stock Name</TableCell>
-                                    <TableCell align="right">Earliest Stock Date</TableCell>
-                                    <TableCell align="right">Latest Stock Date</TableCell>
+                                    <TableCell>User ID</TableCell>
+                                    <TableCell align="right">Setting ID</TableCell>
+                                    <TableCell align="right">Config Name</TableCell>
+                                    <TableCell align="right">Config Value</TableCell>
                                     <TableCell align="right">Operations</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {rows.map((row, index) => (
-                                    <TableRow key={row.tickerSymbol}>
+                                    <TableRow key={row.settingID}>
                                         <TableCell>{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row">{row.tickerSymbol}</TableCell>
-                                        <TableCell align="right">{row.companyName}</TableCell>
-                                        <TableCell align="right">{row.earliest_stock_date}</TableCell>
-                                        <TableCell align="right">{row.latest_stock_date}</TableCell>
+                                        <TableCell component="th" scope="row">{row.userID}</TableCell>
+                                        <TableCell align="right">{row.settingID}</TableCell>
+                                        <TableCell align="right">{row.configName}</TableCell>
+                                        <TableCell align="right">{row.configValue}</TableCell>
                                         <TableCell align="right">
-                                            <Button variant="text" color="error" onClick={() => deleteStock(row.tickerSymbol)}>Remove</Button>
+                                            <Button variant="text" color="error" onClick={() => deleteSetting(row.settingID)}>Remove</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
