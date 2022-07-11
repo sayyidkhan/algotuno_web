@@ -37,6 +37,11 @@ export default function HeaderAdmin() {
                             </Link>
                         </li>
                         <li className={styles.navItem}>
+                            <Link href="/admin/settings/settings_management">
+                                <a>Settings</a>
+                            </Link>
+                        </li>
+                        <li className={styles.navItem}>
                             <Link href="/main">
                                 <a>Back to Main Page</a>
                             </Link>
