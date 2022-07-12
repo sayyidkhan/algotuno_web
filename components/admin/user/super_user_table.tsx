@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
 import {
@@ -10,6 +10,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    LinearProgress,
     TableContainer,
     TableHead,
     TableRow,
@@ -17,6 +18,8 @@ import {
 } from "@mui/material";
 import AlertComponent from "../../alert/alert_message";
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import axios_api from "../../../config/axios_api";
+import { isTemplateHead } from "typescript";
 
 interface SuperUserInterface {
     username: string;
@@ -25,12 +28,12 @@ interface SuperUserInterface {
 }
 
 
-const originalRows: SuperUserInterface[] = [
-    {username: "Varrick", date_created: "10-jun-2022", date_granted_access: "20-june-2022"},
-    {username: "Sayyid", date_created: "10-jun-2022", date_granted_access: "20-june-2022"},
-    {username: "Kian Guan", date_created: "10-jun-2022", date_granted_access: "20-june-2022"},
-    {username: "Hari", date_created: "10-jun-2022", date_granted_access: "20-june-2022"},
-];
+// const originalRows: SuperUserInterface[] = [
+//     {username: "Varrick", date_created: "10-jun-2022", date_granted_access: "20-june-2022"},
+//     {username: "Sayyid", date_created: "10-jun-2022", date_granted_access: "20-june-2022"},
+//     {username: "Kian Guan", date_created: "10-jun-2022", date_granted_access: "20-june-2022"},
+//     {username: "Hari", date_created: "10-jun-2022", date_granted_access: "20-june-2022"},
+// ];
 
 const SearchBar = ({setSearchQuery}) => (
     <form>
@@ -86,12 +89,28 @@ const AddUserBar = ({setSearchQuery}) => (
 
 
 export default function SuperUserTable() {
-    const [rows, setRows] = useState<SuperUserInterface[]>(originalRows);
     const [searched, setSearched] = useState<string>("");
-    // const classes = useStyles();
+    const [rows,setRows] = useState([]);
+    const [users,setUsers] = useState([]);
+    const [loading,setLoading]= useState<boolean>();
+    const [display, setDisplay] = useState<boolean>(false);
+    const [status, setStatus] = useState<boolean>(null);
+    const [message, setMessage] = useState("");
 
+    const fetchUsers = async () => {
+        setLoading(true);
+        const  {data} = await axios_api.get('/api/user/get_all_user');
+        setUsers(data.result);
+          setLoading(false);
+          
+      };
+
+    useEffect(() => {
+    fetchUsers();
+    }, []); 
+    
     const requestSearch = (searchedVal: string) => {
-        const filteredRows = originalRows.filter((row) => {
+        const filteredRows = users.filter((row) => {
             return row.username.toLowerCase().includes(searchedVal.toLowerCase());
         });
         setRows(filteredRows);
@@ -113,49 +132,55 @@ export default function SuperUserTable() {
                             <Grid item xs={3}>
                                 <SearchBar setSearchQuery={val => requestSearch(val)} />
                             </Grid>
-                            <Grid item xs={3}>
-                                { /* todo: add function for add user */}
-                                <AddUserBar setSearchQuery={() => {}} />
-                            </Grid>
+                            
                         </Grid>
                     </Box>
                     <TableContainer>
+                    {loading ? (
+                    <LinearProgress style={{ backgroundColor: "black" }} />
+                     ) : (
                         <Table style={{minWidth: 650}} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>No.</TableCell>
                                     <TableCell>Username</TableCell>
+                                    <TableCell align="right">SuperUser ID</TableCell>
                                     <TableCell align="right">Date Created</TableCell>
                                     <TableCell align="right">Granted Access Date</TableCell>
                                     <TableCell align="right">Operations</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row, index) => (
-                                    <TableRow key={row.username}>
-                                        <TableCell>{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row">
-                                            {row.username}
-                                        </TableCell>
-                                        <TableCell align="right">{row.date_created}</TableCell>
-                                        <TableCell align="right">{row.date_granted_access}</TableCell>
-                                        <TableCell align="right">
-                                            <Button variant="text" color="error">Revoke Access</Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                {users.map((user, index) =>{
+                                    if ("superuserID" in user){
+                                        return(
+                                            <TableRow key={user.username}>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell component="th" scope="row">
+                                                {user.username}
+                                            </TableCell>
+                                            
+                                            <TableCell align="right">{user.superuserID}</TableCell>
+                                            <TableCell align="right">date_created</TableCell>
+                                            <TableCell align="right">date_granted_access</TableCell>
+                                            <TableCell align="right">
+                                                <Button variant="text" color="error">Revoke Access</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                        )
+                                    }
+
+                                    
+                                }
+                                )}
                             </TableBody>
                         </Table>
+                     )}
                     </TableContainer>
                 </Paper>
                 <br/>
-                <a
-                    target="_blank"
-                    href="https://smartdevpreneur.com/the-easiest-way-to-implement-material-ui-table-search/"
-                >
-                    Learn how to add search and filter to Material-UI Table here.
-                </a>
             </div>
         </div>
     );
 }
+

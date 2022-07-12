@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
 import {
@@ -17,6 +17,8 @@ import {
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AlertComponent from "../../alert/alert_message";
+import {setRandomFallback} from "bcryptjs";
+import {BASE_URL} from "../../../config/db_prod_checker";
 
 interface BasicUserInterface {
     userID: number;
@@ -51,12 +53,9 @@ const SearchBar = ({setSearchQuery}) => (
     </form>
 );
 
-export default function SettingsTable(props) {
-    
-    const mySettings = props.settingsList;
-    const myUpdatedSettingsList = myFunc(mySettings);
-    console.log(myUpdatedSettingsList);
-    const [rows, setRows] = useState<BasicUserInterface[]>(myUpdatedSettingsList);
+export default function SettingsTable() {
+    const [loading, setLoading] = useState(true);
+    const [rows, setRows] = useState<BasicUserInterface[]>([]);
     const [searched, setSearched] = useState<string>("");
 
     const [userID, setUserID] = useState('');
@@ -67,9 +66,23 @@ export default function SettingsTable(props) {
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
 
+
+    useEffect(() => {
+        if (loading) {
+            getListFromDB();
+            setLoading(false);
+        }
+    },[rows]);
+
+    function getListFromDB() {
+        get_all_setting_api().then(res => {
+            const myUpdatedSettingsList = myFunc(res);
+            setRows(myUpdatedSettingsList);
+        });
+    }
+
     function myFunc(settings){
         return settings.map(e=>{
-            
             const uid = e.userID;
             const sid = e.settingID;
             const configName = e.configName;
@@ -88,7 +101,6 @@ export default function SettingsTable(props) {
 
     async function deleteSetting(sid) { 
         try{
- 
             const res = await fetch(`/api/settings/delete_setting`, {
                 method:"POST",
                 body:   JSON.stringify({ "setting_id": sid }),
@@ -121,15 +133,17 @@ export default function SettingsTable(props) {
                 setMessage("");
                 setDisplay(false);
             }, 3000);
+            // 5. refresh table
+            getListFromDB();
+            setLoading(true);
         } catch (Error) {
             console.log(Error)
         }
     }
 
     const addSetting = async () => {
-        
         try{ 
-            const res = await fetch(`/api/settings/add_setting`, {
+            await fetch(`/api/settings/add_setting`, {
             method : 'POST',
             headers: {
               'Accept': 'application/json',
@@ -164,7 +178,10 @@ export default function SettingsTable(props) {
                     setMessage("");
                     setDisplay(false);
                 }, 3000);
-
+            }).finally(() => {
+                // refresh table
+                getListFromDB();
+                setLoading(true);
             });
 
         } catch (error) {
@@ -175,14 +192,17 @@ export default function SettingsTable(props) {
     const handleSubmit = async e => {
         e.preventDefault();
         console.log(userID, configName, configValue);
-        addSetting();
+        await addSetting();
     }
 
     const requestSearch = (searchedVal: string) => {
         const filteredRows = rows.filter((row) => {
-            return row.settingID.includes(searchedVal);
+            return row.settingID.toString().includes(searchedVal);
         });
         setRows(filteredRows);
+        if (searchedVal === "") {
+            setLoading(true);
+        }
     };
 
     const cancelSearch = () => {
@@ -296,4 +316,11 @@ export default function SettingsTable(props) {
             </div>
         </div>
     );
+}
+
+async function get_all_setting_api() {
+    const res = await fetch( '/api/settings/get_all_setting');
+    const result = await res.json();
+    const settings = result.result;
+    return settings;
 }

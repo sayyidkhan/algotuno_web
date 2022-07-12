@@ -24,9 +24,6 @@ const AboutPage = () => (
     <ContactSupport/>
   </Layout>
   </ThemeProvider>
-  
-  
-
 )
 
 export default AboutPage
