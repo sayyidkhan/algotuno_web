@@ -15,8 +15,6 @@ import MLPriceListTable from "../../../components/admin/stock/ml_price_list_tabl
 
 const theme = createTheme();
 
-
-
 export default function Page() {
     function Copyright() {
         return (
@@ -28,44 +26,6 @@ export default function Page() {
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>
-        );
-    }
-
-    function StockForm() {
-        return (
-            <React.Fragment>
-                <Typography variant="h6" gutterBottom>
-                    Add Stock
-                </Typography>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <TextField
-                            required
-                            id="ticker_symbol"
-                            name="ticker_symbol"
-                            label="Ticker Symbol"
-                            fullWidth
-                            variant="standard"
-                        />
-                        <TextField
-                            required
-                            id="company_name"
-                            name="company_name"
-                            label="Company Name"
-                            fullWidth
-                            variant="standard"
-                        />
-                        <TextField
-                            required
-                            id="exchange_name"
-                            name="exchange_name"
-                            label="Stock Exchange"
-                            fullWidth
-                            variant="standard"
-                        />
-                    </Grid>
-                </Grid>
-            </React.Fragment>
         );
     }
 
@@ -99,7 +59,8 @@ export default function Page() {
                     <TabContext value={value.toString()}>
                         {/* navigation 1 */}
                         <TabPanel value="0">
-                            <StockPriceListTable stockList={[]} />
+                            {/* <StockPriceListTable stockList={[]} /> */}
+                            <StockPriceListTable/>
                         </TabPanel>
                         {/* navigation 1 */}
                         <TabPanel value="1">

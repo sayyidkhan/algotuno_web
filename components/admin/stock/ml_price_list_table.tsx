@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
 import {
@@ -15,38 +15,16 @@ import {
     TextField
 } from "@mui/material";
 
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AlertComponent from "../../alert/alert_message";
-import {bool} from "prop-types";
 
 interface BasicUserInterface {
-    ticker_symbol: string;
-    stock_name: string;
+    stockID: number;
+    tickerSymbol: string;
+    companyName: string;
     earliest_stock_date: string;
     latest_stock_date: string;
 }
 
-
-const originalRows: BasicUserInterface[] = [
-    {
-        ticker_symbol: "amcr",
-        stock_name: "amcor",
-        earliest_stock_date: "1-jan-2017",
-        latest_stock_date: "30-jun-2022"
-    },
-    {
-        ticker_symbol: "tsla",
-        stock_name: "tesla",
-        earliest_stock_date: "1-jan-2017",
-        latest_stock_date: "30-jun-2022"
-    },
-    {
-        ticker_symbol: "goog",
-        stock_name: "google",
-        earliest_stock_date: "1-jan-2017",
-        latest_stock_date: "30-jun-2022"
-    },
-];
 
 const SearchBar = ({setSearchQuery}) => (
     <form>
@@ -76,16 +54,51 @@ const SearchBar = ({setSearchQuery}) => (
 
 
 export default function MLPriceListTable() {
-    const [rows, setRows] = useState<BasicUserInterface[]>(originalRows);
+    const [loading, setLoading] = useState(true);
+    const [rows, setRows] = useState<BasicUserInterface[]>();
     const [searched, setSearched] = useState<string>("");
+
+    const [tickersymbol, setTickerSymbol] = useState('');
+    const [companyname, setCompanyName] = useState('');
+    const [exchange, setExchangeName] = useState('');
+
     const [display, setDisplay] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
-    // const classes = useStyles();
+
+    useEffect(() => {
+        if (loading) {
+            getListFromDB();
+            setLoading(false);
+        }
+    }, [rows]);
+
+    function getListFromDB() {
+        get_all_stocks_api().then(res => {
+            console.log(res);
+            const myUpdatedStocksList = myFunc(res);
+            setRows(myUpdatedStocksList);
+        });
+    }
+
+    function myFunc(_stocks) {
+        return _stocks.map(e => {
+
+            const obj: BasicUserInterface = {
+                stockID: e.stockID,
+                tickerSymbol: e.tickerSymbol,
+                companyName: e.companyName,
+                earliest_stock_date: e.earliest_stock_date,
+                latest_stock_date: e.latest_stock_date
+            };
+
+            return obj
+        })
+    }
 
     const requestSearch = (searchedVal: string) => {
-        const filteredRows = originalRows.filter((row) => {
-            return row.ticker_symbol.toLowerCase().includes(searchedVal.toLowerCase());
+        const filteredRows = rows.filter((row) => {
+            return row.tickerSymbol.toLowerCase().includes(searchedVal.toLowerCase());
         });
         setRows(filteredRows);
     };
@@ -124,15 +137,25 @@ export default function MLPriceListTable() {
             <br/>
             <div>
                 <Paper>
-                    <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
-                        <h5>Search for stock(s)</h5>
-                        <Grid container spacing={2}>
-                            <Grid item xs={3}>
-                                <SearchBar setSearchQuery={val => requestSearch(val)}/>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <TableContainer>
+                    { /*** if no items to display do not display the search bar ***/}
+                        {
+                            rows !== undefined && rows.length > 0 ?
+                                <div>
+                                    <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
+                                        <h5>Search for stock(s)</h5>
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={3}>
+                                                <SearchBar setSearchQuery={val => requestSearch(val)}/>
+                                            </Grid>
+                                        </Grid>
+                                    </Box>
+                                </div> :
+                            <br/>
+                        }
+                    { /*** if no items to display do not display the table ***/}
+                    {
+                        rows !== undefined && rows.length > 0 ?
+                            <TableContainer style={{ maxHeight: 400 }}>
                         <Table style={{minWidth: 650}} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
@@ -146,26 +169,30 @@ export default function MLPriceListTable() {
                             </TableHead>
                             <TableBody>
                                 {rows.map((row, index) => (
-                                    <TableRow key={row.ticker_symbol}>
+                                    <TableRow key={row.tickerSymbol}>
                                         <TableCell>{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row">
-                                            {row.ticker_symbol}
-                                        </TableCell>
-                                        <TableCell align="right">{row.stock_name}</TableCell>
+                                        <TableCell component="th" scope="row"> {row.tickerSymbol}</TableCell>
+                                        <TableCell align="right">{row.companyName}</TableCell>
                                         <TableCell align="right">{row.earliest_stock_date}</TableCell>
                                         <TableCell align="right">{row.latest_stock_date}</TableCell>
                                         <TableCell align="right">
-                                            <Button
-                                                variant="text"
-                                                color="error"
-                                                onClick={() => myFunction()}
-                                            >Remove</Button>
+                                            <Button variant="text" color="error" onClick={() => myFunction()}>Remove</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
-                    </TableContainer>
+                    </TableContainer> :
+                            <div style={{margin: "5em"}}>
+                                <h3 style={{textAlign: "center"}}><b>No data to display</b></h3>
+                                {
+                                    /*** add padding ***/
+                                    Array.from(Array(5).keys()).map((index) => {
+                                        return <br key={index}/>
+                                    })
+                                }
+                            </div>
+                    }
                 </Paper>
                 <br/>
                 <a
@@ -177,4 +204,23 @@ export default function MLPriceListTable() {
             </div>
         </div>
     );
+}
+
+async function get_all_stocks_api() {
+    return fetch('/api/stock/get_all_stocks_with_ml_range').then(res => {
+
+        if (res.status === 200) {
+            return res.json()
+                .then(inner_res => inner_res.result)
+                .catch(err => {
+                    console.log(err);
+                    return [];
+                })
+        } else {
+            return [];
+        }
+    }).catch(err => {
+        console.log(err);
+        return [];
+    });
 }

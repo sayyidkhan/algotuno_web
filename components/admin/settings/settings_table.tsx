@@ -83,7 +83,8 @@ export default function SettingsTable() {
     function getListFromDB() {
         get_all_setting_api().then(res => {
             // todo: replace dummy_list, back to response
-            const myUpdatedSettingsList = myFunc(dummy_list);
+            console.log(res);
+            const myUpdatedSettingsList = myFunc(res);
             setRows(myUpdatedSettingsList);
         });
     }

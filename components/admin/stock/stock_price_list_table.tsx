@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
 import {
@@ -26,7 +26,7 @@ interface BasicUserInterface {
     latest_stock_date: string;
 }
 
-const SearchBar = ({setSearchQuery}) => (
+const SearchBar = ({ setSearchQuery }) => (
     <form>
         <div style={{
             display: 'flex',
@@ -46,19 +46,18 @@ const SearchBar = ({setSearchQuery}) => (
                 fullWidth
             />
             <IconButton type="submit" aria-label="search">
-                <SearchIcon style={{fill: "blue"}}/>
+                <SearchIcon style={{ fill: "blue" }} />
             </IconButton>
         </div>
     </form>
 );
 
-export default function StockPriceListTable(props) {
+export default function StockPriceListTable() {
     
-    const mystocklist = props.stockList;
-    const myUpdatedStocklist = myFunc(mystocklist);
-    console.log(myUpdatedStocklist);
-    const [rows, setRows] = useState<BasicUserInterface[]>(myUpdatedStocklist);
+    const [loading, setLoading] = useState(true);
+    const [rows, setRows] = useState<BasicUserInterface[]>();
     const [searched, setSearched] = useState<string>("");
+
     const [tickersymbol, setTickerSymbol] = useState('');
     const [companyname, setCompanyName] = useState('');
     const [exchange, setExchangeName] = useState('');
@@ -67,21 +66,30 @@ export default function StockPriceListTable(props) {
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
 
-    function myFunc(_stocks){
-        return _stocks.map(e=>{
-            
-            const sid = e.stockID;
-            const ts = e.tickerSymbol;
-            const s_name = e.companyName;
-            const earliest_date = e.earliest_stock_date;
-            const latest_date = e.latest_stock_date;
+    useEffect(() => {
+        if (loading) {
+            getListFromDB();
+            setLoading(false);
+        }
+    }, [rows]);
 
-            const obj:BasicUserInterface = {
-                stockID: sid,
-                tickerSymbol: ts,
-                companyName: s_name,
-                earliest_stock_date: earliest_date,
-                latest_stock_date: latest_date
+    function getListFromDB() {
+        get_all_stocks_api().then(res => {
+            console.log(res);
+            const myUpdatedStocksList = myFunc(res);
+            setRows(myUpdatedStocksList);
+        });
+    }
+
+    function myFunc(_stocks) {
+        return _stocks.map(e => {
+
+            const obj: BasicUserInterface = {
+                stockID: e.stockID,
+                tickerSymbol: e.tickerSymbol,
+                companyName: e.companyName,
+                earliest_stock_date: e.earliest_stock_date,
+                latest_stock_date: e.latest_stock_date
             };
 
             return obj
@@ -90,15 +98,15 @@ export default function StockPriceListTable(props) {
 
     async function deleteStock(ts) {
         //delete stock 
-        try{
- 
+        try {
+
             const res = await fetch(`/api/stock/delete_stock`, {
-                method:"POST",
-                body:   JSON.stringify({ "ticker_symbol": ts }),
-                        headers: {
-                            'Content-Type' : 'application/json',
-                            'authorization' : 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
-                        }
+                method: "POST",
+                body: JSON.stringify({ "ticker_symbol": ts }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'NEXT_PUBLIC_API_SECRET_KEY 9ddf045fa71e89c6d0d71302c0c5c97e'
+                }
             });
 
             const delete_stock_result = await res.json();
@@ -130,18 +138,18 @@ export default function StockPriceListTable(props) {
     }
 
     const addStock = async () => {
-        
-        try{ 
+
+        try {
             const res = await fetch(`/api/stock/add_stock`, {
-            method : 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body : JSON.stringify({
-                "ticker_symbol" : tickersymbol,
-                "company_name"  : companyname,
-                "exchange"      : exchange
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "ticker_symbol": tickersymbol,
+                    "company_name": companyname,
+                    "exchange": exchange
                 })
             }).then(async res => {
                 const data = await res.json();
@@ -195,8 +203,8 @@ export default function StockPriceListTable(props) {
 
     return (
         <div>
-            <AlertComponent display={display} status={status} message={message}/>
-            <br/>
+            <AlertComponent display={display} status={status} message={message} />
+            <br />
             <div>
                 <Paper>
                     <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
@@ -211,7 +219,7 @@ export default function StockPriceListTable(props) {
                                         <TextField
                                             id="ticker_symbol"
                                             className="text"
-                                            onChange={e=>setTickerSymbol(e.target.value)}
+                                            onChange={e => setTickerSymbol(e.target.value)}
                                             label="Ticker Symbol"
                                             variant="outlined"
                                             placeholder="Enter ticker symbol..."
@@ -228,7 +236,7 @@ export default function StockPriceListTable(props) {
                                         <TextField
                                             id="company_name"
                                             className="text"
-                                            onChange={e=>setCompanyName(e.target.value)}
+                                            onChange={e => setCompanyName(e.target.value)}
                                             label="Company Name"
                                             variant="outlined"
                                             placeholder="Enter Company Name..."
@@ -245,7 +253,7 @@ export default function StockPriceListTable(props) {
                                         <TextField
                                             id="exchange_name"
                                             className="text"
-                                            onChange={e=>setExchangeName(e.target.value)}
+                                            onChange={e => setExchangeName(e.target.value)}
                                             label="Exchange Name"
                                             variant="outlined"
                                             placeholder="Enter Exchange Name..."
@@ -253,50 +261,89 @@ export default function StockPriceListTable(props) {
                                             fullWidth
                                         />
                                         <IconButton type="submit" aria-label="submit">
-                                            <AddCircleOutlineRoundedIcon style={{fill: "blue"}}/>
+                                            <AddCircleOutlineRoundedIcon style={{ fill: "blue" }} />
                                         </IconButton>
                                     </div>
                                 </Grid>
                             </Grid>
                         </form>
-                        <h5>Search for stock(s)</h5>
-                        <Grid container spacing={2}>
-                            <Grid item xs={3}>
-                                <SearchBar setSearchQuery={val => requestSearch(val)}/>
-                            </Grid>
-                        </Grid>
+                        { /*** if no items to display do not display the search bar ***/}
+                        {
+                                rows !== undefined && rows.length > 0 ?
+                            <div>
+                                <h5>Search for stock(s)</h5>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={3}>
+                                        <SearchBar setSearchQuery={val => requestSearch(val)} />
+                                    </Grid>
+                                </Grid>
+                            </div>:
+                            <br/>
+                        }   
                     </Box>
-                    <TableContainer>
-                        <Table style={{minWidth: 650}} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>No.</TableCell>
-                                    <TableCell>Ticker Symbol</TableCell>
-                                    <TableCell align="right">Stock Name</TableCell>
-                                    <TableCell align="right">Earliest Stock Date</TableCell>
-                                    <TableCell align="right">Latest Stock Date</TableCell>
-                                    <TableCell align="right">Operations</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row, index) => (
-                                    <TableRow key={row.tickerSymbol}>
-                                        <TableCell>{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row">{row.tickerSymbol}</TableCell>
-                                        <TableCell align="right">{row.companyName}</TableCell>
-                                        <TableCell align="right">{row.earliest_stock_date}</TableCell>
-                                        <TableCell align="right">{row.latest_stock_date}</TableCell>
-                                        <TableCell align="right">
-                                            <Button variant="text" color="error" onClick={() => deleteStock(row.tickerSymbol)}>Remove</Button>
-                                        </TableCell>
+                    { /*** if no items to display do not display the table ***/}
+                    {
+                        rows !== undefined && rows.length > 0 ?
+                        <TableContainer style={{ maxHeight: 400 }}>
+                            <Table style={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>No.</TableCell>
+                                        <TableCell>Ticker Symbol</TableCell>
+                                        <TableCell align="right">Stock Name</TableCell>
+                                        <TableCell align="right">Earliest Stock Date</TableCell>
+                                        <TableCell align="right">Latest Stock Date</TableCell>
+                                        <TableCell align="right">Operations</TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                </TableHead>
+                                <TableBody>
+                                    {rows.map((row, index) => (
+                                        <TableRow key={row.tickerSymbol}>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell component="th" scope="row">{row.tickerSymbol}</TableCell>
+                                            <TableCell align="right">{row.companyName}</TableCell>
+                                            <TableCell align="right">{row.earliest_stock_date}</TableCell>
+                                            <TableCell align="right">{row.latest_stock_date}</TableCell>
+                                            <TableCell align="right">
+                                                <Button variant="text" color="error" onClick={() => deleteStock(row.tickerSymbol)}>Remove</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer> :
+                            <div style={{margin: "5em"}}>
+                            <h3 style={{textAlign: "center"}}><b>No data to display</b></h3>
+                            {
+                                /*** add padding ***/
+                                Array.from(Array(5).keys()).map((index) => {
+                                    return <br key={index}/>
+                                })
+                            }
+                        </div>
+                    }
                 </Paper>
-                <br/>
+                <br />
             </div>
         </div>
     );
+}
+
+async function get_all_stocks_api() {
+    return fetch('/api/stock/get_all_stocks_with_hsp').then(res => {
+
+        if (res.status === 200) {
+            return res.json()
+                .then(inner_res => inner_res.result)
+                .catch(err => {
+                    console.log(err);
+                    return [];
+                })
+        } else {
+            return [];
+        }
+    }).catch(err => {
+        console.log(err);
+        return [];
+    });
 }

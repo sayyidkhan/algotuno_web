@@ -46,8 +46,8 @@ export default async (req, res) => {
                 stock['earliest_stock_date'] = min.getDate() + "-" + months[min.getMonth()] + "-" + min.getFullYear();
             } catch (error){
                 console.log(error)
-                stock['latest_stock_date'] = "No HSP found"
-                stock['earliest_stock_date'] = "No HSP found"
+                stock['latest_stock_date'] = "No ML Predictions found"
+                stock['earliest_stock_date'] = "No ML Predictions found"
             }
             return stock        
         })
