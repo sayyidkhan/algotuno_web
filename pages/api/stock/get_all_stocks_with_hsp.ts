@@ -39,11 +39,16 @@ export default async (req, res) => {
             })
 
             let stock = e;
-            const max = hsp_range["_max"]["Date"];
-            const min = hsp_range["_min"]["Date"];
-            stock['latest_stock_date'] = max.getDate() + "-" + months[max.getMonth()] + "-" + max.getFullYear();
-            stock['earliest_stock_date'] = min.getDate() + "-" + months[min.getMonth()] + "-" + min.getFullYear();
-
+            try{
+                const max = hsp_range["_max"]["Date"];
+                const min = hsp_range["_min"]["Date"];
+                stock['latest_stock_date'] = max.getDate() + "-" + months[max.getMonth()] + "-" + max.getFullYear();
+                stock['earliest_stock_date'] = min.getDate() + "-" + months[min.getMonth()] + "-" + min.getFullYear();
+            } catch (error){
+                console.log(error)
+                stock['latest_stock_date'] = "No HSP found"
+                stock['earliest_stock_date'] = "No HSP found"
+            }
             return stock        
         })
     }
