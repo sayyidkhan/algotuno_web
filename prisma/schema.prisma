@@ -131,9 +131,9 @@ model Subscription {
   subscriptionID     Int    @id @default(autoincrement())
   userID             String @unique
   tier               String
-  subscriptionPlanID Int
+  subscriptionPlanID Int    
 
-  Subscription_Plan Subscription_Plan @relation(fields: [subscriptionPlanID], references: [subscriptionPlanID], onDelete: Cascade)
+  Subscription_Plan Subscription_Plan? @relation(fields: [subscriptionPlanID], references: [subscriptionPlanID], onDelete: Cascade)
   User              User?             @relation(fields: [userID], references: [id], onDelete: Cascade)
 }
 
