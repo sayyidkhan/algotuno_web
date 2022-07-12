@@ -49,20 +49,15 @@ export default function Page() {
         <LayoutHeader>
             <Container maxWidth="xl">
                 <Box style={{marginTop: "7.5em"}}/>
-
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
                     <Tabs value={value} onChange={handleChange}>
                         <Tab label="Stock Price List" style={styles.tab_styling} />
                         <Tab label="ML Price List" style={styles.tab_styling} />
                     </Tabs>
-
                     <TabContext value={value.toString()}>
-                        {/* navigation 1 */}
                         <TabPanel value="0">
-                            {/* <StockPriceListTable stockList={[]} /> */}
                             <StockPriceListTable/>
                         </TabPanel>
-                        {/* navigation 1 */}
                         <TabPanel value="1">
                             <MLPriceListTable />
                         </TabPanel>

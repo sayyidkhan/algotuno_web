@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import CreateIcon from '@mui/icons-material/Create';
 
 import {
     Box,
@@ -12,12 +13,10 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField, Typography
+    TextField
 } from "@mui/material";
 
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AlertComponent from "../../alert/alert_message";
-
 
 interface BasicUserInterface {
     settingID: string;
@@ -51,15 +50,6 @@ const SearchBar = ({setSearchQuery}) => (
     </form>
 );
 
-const dummy_list = [
-    {settingID: "1", configName: "config name", value: "1"},
-    {settingID: "2", configName: "config name", value: "2"},
-    {settingID: "3", configName: "config name", value: "3"},
-    {settingID: "4", configName: "config name", value: "4"},
-    {settingID: "5", configName: "config name", value: "5"},
-    {settingID: "6", configName: "config name", value: "6"},
-];
-
 export default function SettingsTable() {
     const [loading, setLoading] = useState(true);
     const [rows, setRows] = useState<BasicUserInterface[]>([]);
@@ -71,7 +61,6 @@ export default function SettingsTable() {
     const [display, setDisplay] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
-
 
     useEffect(() => {
         if (loading) {
@@ -142,9 +131,9 @@ export default function SettingsTable() {
         }
     }
 
-    const addSetting = async () => {
+    const upsertSetting = async () => {
         try {
-            await fetch(`/api/settings/add_setting`, {
+            await fetch(`/api/settings/add_or_update_setting`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -191,7 +180,7 @@ export default function SettingsTable() {
     const handleSubmit = async e => {
         e.preventDefault();
         console.log(configName, configValue);
-        await addSetting();
+        await upsertSetting();
     };
 
     const requestSearch = (searchedVal: string) => {
@@ -216,7 +205,7 @@ export default function SettingsTable() {
             <div>
                 <Paper>
                     <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
-                        <h5>Add new setting</h5>
+                        <h5>Add / Update settings</h5>
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
                                 <Grid item xs={2}>
@@ -252,7 +241,7 @@ export default function SettingsTable() {
                                             fullWidth
                                         />
                                         <IconButton type="submit" aria-label="submit">
-                                            <AddCircleOutlineRoundedIcon style={{fill: "blue"}}/>
+                                            <CreateIcon style={{fill: "blue"}}/>
                                         </IconButton>
                                     </div>
                                 </Grid>
@@ -294,8 +283,7 @@ export default function SettingsTable() {
                                                 <TableCell align="right">{row.configName}</TableCell>
                                                 <TableCell align="right">{row.configValue}</TableCell>
                                                 <TableCell align="right">
-                                                    <Button variant="text" color="error"
-                                                            onClick={() => deleteSetting(row.settingID)}>Remove</Button>
+                                                    <Button variant="text" color="error" onClick={() => deleteSetting(row.settingID)}>Remove</Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))}
