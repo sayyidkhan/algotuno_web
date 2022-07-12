@@ -75,7 +75,7 @@ const SearchBar = ({setSearchQuery}) => (
 );
 
 
-export default function MlPriceListTable() {
+export default function MLPriceListTable() {
     const [rows, setRows] = useState<BasicUserInterface[]>(originalRows);
     const [searched, setSearched] = useState<string>("");
     const [display, setDisplay] = useState<boolean>(false);

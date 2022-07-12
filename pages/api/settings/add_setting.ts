@@ -6,10 +6,9 @@ export default async (req, res) => {
 
         let query;
 
-        // check if user_id, config_name and config_value
+        // check if config_name and config_value
         try{
             query = {
-                "userID"      : req.body.user_id,
                 "configName"  : req.body.config_name, 
                 "value"       : req.body.config_value
             }
@@ -17,14 +16,14 @@ export default async (req, res) => {
             const exceptionMsg = error.message;
             console.error(exceptionMsg)
             res.status(406).json({
-                "message" : "Specify the user_id, config_name and config_value",
+                "message" : "Specify the config_name and config_value",
                 "exception" : exceptionMsg
             });
         }
 
         try{
             const add_setting_result = await prisma.settings.create({data:query});
-            const successMsg = `Inserted ${req.body.user_id}, ${req.body.config_name}, ${req.body.config_value}`;
+            const successMsg = `Inserted ${req.body.config_name}, ${req.body.config_value}`;
             console.log(successMsg);
             res.status(200).json({
                 "message" : successMsg,

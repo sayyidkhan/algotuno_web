@@ -54,7 +54,6 @@ model User {
   Subscription    Subscription[]
   Superuser       Superuser[]
   Stock_Watchlist Stock_Watchlist[]
-  Settings        Settings[]
 }
 
 model VerificationToken {
@@ -84,7 +83,6 @@ model Stock {
   MLStockPrice         ML_Stock_Price[]
 }
 
-
 model Historical_Stock_Price {
   stockID    Int
   Date       DateTime
@@ -95,7 +93,7 @@ model Historical_Stock_Price {
   Close      Float
   Volume     Int
 
-  stock Stock @relation(fields: [stockID], references: [stockID], onDelete:Cascade)
+  stock Stock @relation(fields: [stockID], references: [stockID], onDelete: Cascade)
   @@id([stockID, Date])
 }
 
@@ -106,7 +104,7 @@ model ML_Stock_Price {
   Price      Float
   MLModelID  Int
 
-  stock Stock @relation(fields: [stockID], references: [stockID], onDelete:Cascade)
+  stock Stock @relation(fields: [stockID], references: [stockID], onDelete: Cascade)
   @@id([stockID, DateString, MLModelID])
 }
 
@@ -117,33 +115,38 @@ model ML_types {
 
 model Superuser {
   superuserID Int    @id @default(autoincrement())
-  userID      String  @unique
+  userID      String @unique
 
-  User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
+  User User? @relation(fields: [userID], references: [id], onDelete: Cascade)
+}
+
+model Subscription_Plan {
+  subscriptionPlanID Int            @id @default(autoincrement())
+  planName           String         @unique
+  price              Int
+  Subscription       Subscription[]
 }
 
 model Subscription {
-  subscriptionID Int    @id @default(autoincrement())
-  userID String @unique
-  tier   String
+  subscriptionID     Int    @id @default(autoincrement())
+  userID             String @unique
+  tier               String
+  subscriptionPlanID Int
 
-  User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
+  Subscription_Plan Subscription_Plan @relation(fields: [subscriptionPlanID], references: [subscriptionPlanID], onDelete: Cascade)
+  User              User?             @relation(fields: [userID], references: [id], onDelete: Cascade)
 }
 
 model Settings {
   settingID  Int    @id @default(autoincrement())
-  userID     String 
-  configName String
+  configName String @unique
   value      String
-
-  User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
-  @@unique([userID, configName])
 }
 
 model Stock_Watchlist {
   watchlistID Int    @id @default(autoincrement())
-  userID      String 
+  userID      String
   stockID     Int
 
-  User User? @relation(fields: [userID], references: [id], onDelete:Cascade)
+  User User? @relation(fields: [userID], references: [id], onDelete: Cascade)
 }

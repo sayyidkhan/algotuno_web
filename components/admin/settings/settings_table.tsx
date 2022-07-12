@@ -17,11 +17,9 @@ import {
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AlertComponent from "../../alert/alert_message";
-import {setRandomFallback} from "bcryptjs";
-import {BASE_URL} from "../../../config/db_prod_checker";
+
 
 interface BasicUserInterface {
-    userID: number;
     settingID: string;
     configName: string;
     configValue: string;
@@ -58,7 +56,6 @@ export default function SettingsTable() {
     const [rows, setRows] = useState<BasicUserInterface[]>([]);
     const [searched, setSearched] = useState<string>("");
 
-    const [userID, setUserID] = useState('');
     const [configName, setConfigName] = useState('');
     const [configValue, setConfigValue] = useState('');
 
@@ -83,16 +80,10 @@ export default function SettingsTable() {
 
     function myFunc(settings){
         return settings.map(e=>{
-            const uid = e.userID;
-            const sid = e.settingID;
-            const configName = e.configName;
-            const configValue = e.value;
-
             const obj:BasicUserInterface = {
-                userID: uid,
-                settingID: sid,
-                configName: configName,
-                configValue: configValue
+                settingID: e.settingID,
+                configName: e.configName,
+                configValue: e.value
             };
 
             return obj
@@ -150,7 +141,6 @@ export default function SettingsTable() {
               'Content-Type': 'application/json'
             },
             body : JSON.stringify({
-                "user_id" : userID,
                 "config_name"  : configName,
                 "config_value"      : configValue
                 })
@@ -191,7 +181,7 @@ export default function SettingsTable() {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(userID, configName, configValue);
+        console.log(configName, configValue);
         await addSetting();
     }
 
@@ -220,23 +210,6 @@ export default function SettingsTable() {
                         <h5>Add new setting</h5>
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
-                                <Grid item xs={2}>
-                                    <div style={{
-                                        display: 'flex',
-                                        alignItems: 'center'
-                                    }}>
-                                        <TextField
-                                            id="userID"
-                                            className="text"
-                                            onChange={e=>setUserID(e.target.value)}
-                                            label="User ID"
-                                            variant="outlined"
-                                            placeholder="Enter User ID..."
-                                            size="small"
-                                            fullWidth
-                                        />
-                                    </div>
-                                </Grid>
                                 <Grid item xs={2}>
                                     <div style={{
                                         display: 'flex',
@@ -288,8 +261,7 @@ export default function SettingsTable() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>No.</TableCell>
-                                    <TableCell>User ID</TableCell>
-                                    <TableCell align="right">Setting ID</TableCell>
+                                    <TableCell>Setting ID</TableCell>
                                     <TableCell align="right">Config Name</TableCell>
                                     <TableCell align="right">Config Value</TableCell>
                                     <TableCell align="right">Operations</TableCell>
@@ -299,8 +271,7 @@ export default function SettingsTable() {
                                 {rows.map((row, index) => (
                                     <TableRow key={row.settingID}>
                                         <TableCell>{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row">{row.userID}</TableCell>
-                                        <TableCell align="right">{row.settingID}</TableCell>
+                                        <TableCell component="th" scope="row">{row.settingID}</TableCell>
                                         <TableCell align="right">{row.configName}</TableCell>
                                         <TableCell align="right">{row.configValue}</TableCell>
                                         <TableCell align="right">

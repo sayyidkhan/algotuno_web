@@ -10,9 +10,7 @@ import LayoutHeader from "../../../components/layout_header";
 import {Grid, Tab, Tabs, TextField} from "@mui/material";
 import {TabContext, TabPanel} from "@mui/lab";
 import StockPriceListTable from "../../../components/admin/stock/stock_price_list_table";
-import MlPriceListTable from "../../../components/admin/stock/ml_price_list_table";
-
-
+import MLPriceListTable from "../../../components/admin/stock/ml_price_list_table";
 
 
 const theme = createTheme();
@@ -105,7 +103,7 @@ export default function Page() {
                         </TabPanel>
                         {/* navigation 1 */}
                         <TabPanel value="1">
-                            <MlPriceListTable />
+                            <MLPriceListTable />
                         </TabPanel>
                     </TabContext>
                 </Box>
@@ -115,14 +113,6 @@ export default function Page() {
         </LayoutHeader>
     );
 }
-
-
-// export async function getStaticProps() {
-//     const res = await fetch(BASE_URL + '/api/stock/get_all_stocks_with_hsp');
-//     const result = await res.json();
-//     const stocks = result.result;
-//     return {props:{stocks}};
-// }
 
 const styles = {
     tab_styling: {

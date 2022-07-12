@@ -5,36 +5,15 @@ export default async (req, res) => {
     if (req.method === "GET"){
 
         try{
-            const username = req.body.username;
 
-            if (username) {
-                const user_setting = await prisma.user.findMany({
-                    where:{
-                        username:username
-                    },
-                    select: {
-                        Settings:true
-                    }
-                });
+            const all_setting = await prisma.settings.findMany({});
 
-                const successMsg = `Found ${username}'s settings`;
-                console.log(successMsg);
-                res.status(200).json({
-                    "message" : successMsg,
-                    "result"  : user_setting
-                  });
-            } else {
-                const all_setting = await prisma.settings.findMany({});
-
-                const successMsg = `Found ${all_setting.length} settings`;
-                console.log(successMsg);
-                res.status(200).json({
-                  "message" : successMsg,
-                  "result"  : all_setting
-                });
-    
-            }
-
+            const successMsg = `Found ${all_setting.length} settings`;
+            console.log(successMsg);
+            res.status(200).json({
+                "message" : successMsg,
+                "result"  : all_setting
+            });
 
         } catch (error) {
             const code = error.code;
