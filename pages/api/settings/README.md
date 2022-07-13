@@ -14,7 +14,7 @@ To add/update a setting, send a POST request to the **/api/settings/add_or_updat
 Example:
 
 ```
-
+{
     "config_name" : "testconf", 
     "config_value": "testval" 
 }
