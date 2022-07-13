@@ -54,6 +54,7 @@ model User {
   Subscription    Subscription[]
   Superuser       Superuser[]
   Stock_Watchlist Stock_Watchlist[]
+  User_Settings   User_Settings[]
 }
 
 model VerificationToken {
@@ -105,7 +106,7 @@ model ML_Stock_Price {
   MLModelID  Int
 
   stock Stock @relation(fields: [stockID], references: [stockID], onDelete: Cascade)
-  @@id([stockID, DateString, MLModelID])
+  @@id([stockID, Date, MLModelID])
 }
 
 model ML_types {
@@ -131,16 +132,25 @@ model Subscription {
   subscriptionID     Int    @id @default(autoincrement())
   userID             String @unique
   tier               String
-  subscriptionPlanID Int    
+  subscriptionPlanID Int
 
   Subscription_Plan Subscription_Plan? @relation(fields: [subscriptionPlanID], references: [subscriptionPlanID], onDelete: Cascade)
-  User              User?             @relation(fields: [userID], references: [id], onDelete: Cascade)
+  User              User?              @relation(fields: [userID], references: [id], onDelete: Cascade)
 }
 
-model Settings {
-  settingID  Int    @id @default(autoincrement())
-  configName String @unique
-  value      String
+model App_Settings {
+  settingID    Int    @id @default(autoincrement())
+  settingName  String @unique
+  settingValue String
+}
+
+model User_Settings {
+  settingID    Int    @id @default(autoincrement())
+  userID       String
+  settingName  String 
+  settingValue String
+
+  User User? @relation(fields: [userID], references: [id], onDelete: Cascade)
 }
 
 model Stock_Watchlist {
