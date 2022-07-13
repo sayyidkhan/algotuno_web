@@ -9,7 +9,7 @@ export default async (req, res) => {
 
         try{
             if(settingID){
-                const delete_setting = await prisma.settings.delete({
+                const delete_setting = await prisma.app_Settings.delete({
                     where:{
                         settingID : settingID
                     }
@@ -20,9 +20,9 @@ export default async (req, res) => {
                     "result"  : delete_setting
                 });
             } else if (configName){
-                const delete_setting = await prisma.settings.deleteMany({
+                const delete_setting = await prisma.app_Settings.deleteMany({
                     where:{
-                        configName : configName
+                        settingName : configName
                     }
                 })
 
