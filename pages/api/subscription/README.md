@@ -28,7 +28,8 @@ Example:
 ```
 {
     "plan_name" : "some plan name",
-    "price"     : 55
+    "price"     : 55,
+    "watchlist_limit"   : 10
 }
 ```
 
@@ -44,9 +45,10 @@ Example:
 {
     "subscription_plan_id" : 1,
     "plan_name" : "Flex",
-    "price"     : 30
+    "price"     : 30,
+    "watchlist_limit"   : 10
 }
 ```
 
 Notes:
-- To update only the **plan_name**, omit the **price** field and vice versa.
+- You can update a single field at a time, i.e., to only update the **plan_name**, omit the **price** and **watchlist_limit** fields.

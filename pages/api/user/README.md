@@ -11,7 +11,7 @@ Some endpoints expect an authorization key in the Headers of each request. The a
 To get all users, send a GET request to the **/api/user/get_all_user** endpoint.
 
 ## delete_user.ts
-To add a user, send a POST request to the **/api/user/delete_superuser** endpoint with the body contents as such:
+To add a user, send a POST request to the **/api/user/delete_user** endpoint with the body contents as such:
 
 Example:
 
