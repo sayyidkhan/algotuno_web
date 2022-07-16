@@ -9,21 +9,22 @@ export default async (req, res) => {
         // check if planName and price are specified
         try{
             query = {
-                "planName"  : req.body.plan_name,
-                "price"   : req.body.price
+                "planName"          : req.body.plan_name,
+                "price"             : req.body.price,
+                "watchlistLimit"    : req.body.watchlist_limit
             }
         } catch (error) {
             const exceptionMsg = error.message;
             console.error(exceptionMsg)
             res.status(406).json({
-                "message" : "Specify the plan_name and price",
+                "message" : "Specify the plan_name, price and watchlist_limit",
                 "exception" : exceptionMsg
             });
         }
 
         try{
-            const add_plan = await prisma.stock.create({data:query});
-            const successMsg = `Inserted new plan ${req.body.plan_name}, ${req.body.price}`;
+            const add_plan = await prisma.subscription_Plan.create({data:query});
+            const successMsg = `Inserted new plan ${req.body.plan_name}, ${req.body.price}, ${req.body.watchlist_limit}`;
             console.log(successMsg);
             res.status(200).json({
                 "message" : successMsg,

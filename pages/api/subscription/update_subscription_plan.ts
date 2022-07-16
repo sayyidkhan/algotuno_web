@@ -7,17 +7,22 @@ export default async (req, res) => {
         const subscriptionPlanID = req.body.subscription_plan_id;
         const planName = req.body.plan_name;
         const price = req.body.price;
+        const watchlistLimit = req.body.watchlist_limit;
         let data = {};
 
         if(subscriptionPlanID){
             try{
-                if (planName || price){
+                if (planName || price || watchlistLimit){
                     if(planName){
                         data["planName"] = planName;
                     }
 
                     if(price){
                         data["price"] = price;
+                    }
+
+                    if (watchlistLimit){
+                        data["watchlistLimit"] = watchlistLimit ;
                     }
 
                     const update_subscription_plan = await prisma.subscription_Plan.update({
@@ -34,7 +39,7 @@ export default async (req, res) => {
 
                 } else {
                     res.status(406).json({
-                        "message" : "Specify the plan_name OR price."
+                        "message" : "Specify the plan_name OR price OR watchlist_limit."
                     });
                         
                 }

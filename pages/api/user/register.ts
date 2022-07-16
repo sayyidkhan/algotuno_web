@@ -28,7 +28,7 @@ export default async (req, res) => {
                 },
                 body: JSON.stringify({
                   "user_id" : new_user_id,
-                  "subscription_plan_id" : 1
+                  "subscription_plan_id" : 4
                 })
             });
 
