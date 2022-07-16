@@ -149,7 +149,6 @@ export default function BasicUserTable() {
 
     const handleClickAway = () => {
         setOpen(false);
-        cancelSearch();
         
       };
     const deleteUser = async (username) => {
