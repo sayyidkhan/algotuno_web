@@ -122,10 +122,11 @@ model Superuser {
 }
 
 model Subscription_Plan {
-  subscriptionPlanID Int            @id @default(autoincrement())
-  planName           String         @unique
-  price              Int
-  Subscription       Subscription[]
+  subscriptionPlanID  Int            @id @default(autoincrement())
+  planName            String         @unique
+  price               Int
+  watchlistLimit      Int
+  Subscription        Subscription[]
 }
 
 model Subscription {
