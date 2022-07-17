@@ -7,10 +7,11 @@ import Router from "next/router";
 export default function HeaderAdmin() {
     const {data: session, status} = useSession();
     const loading = status === "loading";
-    const buttonSize = {"height": "4em", "width": "8em"};
-
+    const buttonSize = {"height": "4em", "width": "7em"};
+    //comment
     const signOutAndRedirect = async () => {
         await Router.push('/').then(async () => {
+            ///this is test comment
             await signOut();
         });
     };
