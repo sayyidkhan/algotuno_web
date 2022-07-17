@@ -13,7 +13,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField
+    TextField,
+    ClickAwayListener
 } from "@mui/material";
 import AlertComponent from "../../alert/alert_message";
 import axios_api from "../../../config/axios_api";
@@ -55,7 +56,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 // }
 
 
-const SearchBar = ({setSearchQuery}) => (
+const SearchBar = ({searched}) => (
     <form>
         <div style={{
             display: 'flex',
@@ -64,9 +65,9 @@ const SearchBar = ({setSearchQuery}) => (
             <TextField
                 id="search-bar"
                 className="text"
-                onInput={(e) => {
+                onChange={(e) => {
                     /* @ts-ignore */
-                    setSearchQuery(e.target.value);
+                    searched(e.target.value);
                 }}
                 label="Search user"
                 variant="outlined"
@@ -75,13 +76,13 @@ const SearchBar = ({setSearchQuery}) => (
                 fullWidth
             />
             <IconButton type="submit" aria-label="search">
-                <SearchIcon style={{fill: "blue"}}/>
+                <SearchIcon style={{fill: "blue"}} />
             </IconButton>
         </div>
     </form>
 );
 
-const AddUserBar = ({setSearchQuery}) => (
+const AddUserBar = ({searched}) => (
     <form>
         <div style={{
             display: 'flex',
@@ -102,6 +103,7 @@ const AddUserBar = ({setSearchQuery}) => (
             />
             <IconButton type="submit" aria-label="search">
                 <AddCircleOutlineRoundedIcon style={{fill: "blue"}}/>
+                
             </IconButton>
         </div>
     </form>
@@ -111,12 +113,13 @@ const AddUserBar = ({setSearchQuery}) => (
 export default function BasicUserTable() {
     
     //const [rows, setRows] = useState<BasicUserInterface[]>(originalRows);
-    const [searched, setSearched] = useState<string>("");
+    const [searched, setSearchQuery] = useState<string>("");
     const [users,setUsers] = useState([]);
     const [loading,setLoading]= useState<boolean>();
     const [display, setDisplay] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
+    const [open, setOpen] = React.useState(false);
     // const classes = useStyles();
 
     const fetchUsers = async () => {
@@ -128,7 +131,7 @@ export default function BasicUserTable() {
 
       useEffect(() => {
         fetchUsers();
-       
+
       }, []);
       
     const requestSearch = (searchedVal: string) => {
@@ -139,63 +142,146 @@ export default function BasicUserTable() {
     };
 
     const cancelSearch = () => {
-        setSearched("");
+        setSearchQuery("");
         requestSearch(searched);
+        fetchUsers();
     };
 
-
-    const deleteUser = () => {
-        // 1. set the display to true to show the UI
+    const handleClickAway = () => {
+        setOpen(false);
+        
+      };
+    const deleteUser = async (username) => {
+        
+        const res = await fetch(`/api/user/delete_user`, {
+            method : 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "username" : username
+            })
+        })
+        .then(async res => {
+          const data = await res.json();
+          const message = data.message;
+          return message;
+        })
+        .then(message => {
         setDisplay(true);
-        // 2. logic here
-        const success = true;
-        // 3. to show the update message
-        if (success) {
-            setStatus(true);
-            setMessage("the operation is successful");
-        }
-        else {
-            setStatus(false);
-            setMessage("the operation is unsuccesful");
-        }
-        // 4. remove all the data
+        setMessage(message);
+        setStatus(true);
+          //sto(true);
+          //setIsLoading(false);
+        })
+        setTimeout(() => {
+            fetchUsers();
+            setStatus(null);
+            setMessage("timed out");
+            setDisplay(false);
+        }, 1000);
+    };
+
+    const upgradeUser = async (username) => {
+        
+        const res = await fetch(`/api/superuser/add_superuser`, {
+            method : 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "username" : username
+            })
+        })
+        .then(async res => {
+          const data = await res.json();
+          const message = data.message;
+          return message;
+        })
+        .then(message => {
+        setDisplay(true);
+        setMessage(message);
+        setStatus(true);
+          //sto(true);
+          //setIsLoading(false);
+        })
         setTimeout(() => {
             setStatus(null);
             setMessage("timed out");
             setDisplay(false);
-        }, 3000);
+        }, 1000);
     };
+
+    // const deleteUser = async (username) => {
+    //     // 1. set the display to true to show the UI
+    //     console.log(username);
+    //     setDisplay(true);
+    //     const deleteu = { "username": `${username}` };
+    //     const res = await axios_api.post('/api/user/delete_user', deleteu);
+        
+    //     const response = await res.json();
+    //     console.log(response.message);
+    //     // 2. logic here
+    //     const success = true;
+    //     // 3. to show the update message
+    //     if (success) {
+    //         setStatus(true);
+    //         setMessage(`${response.message}`);
+            
+    //     }
+    //     else {
+    //         setStatus(false);
+    //         setMessage("the operation is unsuccesful");
+    //     }
+    //     // 4. remove all the data
+    //     setTimeout(() => {
+    //         setStatus(null);
+    //         setMessage("timed out");
+    //         setDisplay(false);
+    //     }, 3000);
+    // };
 
     return (
         <div>
-            
             <AlertComponent display={display} status={status} message={message} />
             <br/>
             <div>
                 <Paper>
+                
+                <ClickAwayListener
+                mouseEvent="onMouseDown"
+                touchEvent="onTouchStart"
+                onClickAway={handleClickAway}
+                >
                     <Box pt={2.5} pl={2.5} pb={2.5} pr={2.5}>
                         <Grid container spacing={2}>
                             <Grid item xs={3}>
-                                <SearchBar setSearchQuery={val => requestSearch(val)} />
+                                <SearchBar searched={val => requestSearch(val)}  />
                             </Grid>
                             <Grid item xs={3}>
                                 { /* todo: add function for add user */}
-                                <AddUserBar setSearchQuery={() => {}} />
+                                {/* <AddUserBar setSearchQuery={val=>requestSearch(val)}  /> */}
                             </Grid>
                         </Grid>
                     </Box>
-                    <TableContainer>
+                </ClickAwayListener>
+                
+                
+                     
+                    <TableContainer style={{maxHeight:400}}>
                     {loading ? (
                     <LinearProgress style={{ backgroundColor: "black" }} />
                      ) : (
+                        users !== undefined && users.length > 0 ?
                         <Table style={{minWidth: 650}} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>No.</TableCell>
                                     <TableCell>Username</TableCell>
                                     <TableCell align="right">Email</TableCell>
-                                    <TableCell align="right">Date Created</TableCell>
-                                    <TableCell align="right">Subscription Type</TableCell>
+                                    <TableCell align="right">Upgrade to SuperUser</TableCell>
                                     <TableCell align="right">Operations</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -207,26 +293,38 @@ export default function BasicUserTable() {
                                             {user.username}
                                         </TableCell>
                                         <TableCell align="right">{user.email}</TableCell>
-
                                         <TableCell align="right">
-                                            date created
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            subscription 
+                                            <Button 
+                                            variant="text"
+                                             color="error"
+                                             onClick={()=>upgradeUser(user.username)}>
+                                                Upgrade</Button>
                                         </TableCell>
                                         <TableCell align="right">
                                             <Button 
                                             variant="text"
                                              color="error"
-                                             onClick={()=>deleteUser()}>
-                                                Remove</Button>
+                                             onClick={()=>deleteUser(user.username)}>
+                                                Delete</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
-                        )}
-                    </TableContainer>
+                        
+                    :
+                    <div style={{margin: "5em"}}>
+                    <h3 style={{textAlign: "center"}}><b>No data to display</b></h3>
+                    {
+                        /*** add padding ***/
+                        Array.from(Array(5).keys()).map((index) => {
+                            return <br key={index}/>
+                        })
+                    }
+                    
+                </div>
+                )}
+                </TableContainer>
                     
                 </Paper>  
             </div>

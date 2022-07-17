@@ -19,13 +19,13 @@ import {
 import AlertComponent from "../../alert/alert_message";
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import axios_api from "../../../config/axios_api";
-import { isTemplateHead } from "typescript";
 
-interface SuperUserInterface {
-    username: string;
-    date_created: string;
-    date_granted_access: string;
-}
+
+// interface SuperUserInterface {
+//     username: string;
+//     date_created: string;
+//     date_granted_access: string;
+// }
 
 
 // const originalRows: SuperUserInterface[] = [
@@ -121,9 +121,41 @@ export default function SuperUserTable() {
         requestSearch(searched);
     };
 
+    const revokeSuperUserAccess = async (username) => {
+        
+        const res = await fetch(`/api/superuser/delete_superuser`, {
+            method : 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "username" : username
+            })
+        })
+        .then(async res => {
+          const data = await res.json();
+          const message = data.message;
+          return message;
+        })
+        .then(message => {
+        setDisplay(true);
+        setMessage(message);
+        setStatus(true);
+          //sto(true);
+          //setIsLoading(false);
+        })
+        setTimeout(() => {
+            fetchUsers();
+            setStatus(null);
+            setMessage("timed out");
+            setDisplay(false);
+        }, 1000);
+    };
+
     return (
         <div>
-            <AlertComponent display={true} status={true} message={"enter message here"}/>
+            <AlertComponent display={display} status={true} message={message}/>
             <br/>
             <div>
                 <Paper>
@@ -135,7 +167,7 @@ export default function SuperUserTable() {
                             
                         </Grid>
                     </Box>
-                    <TableContainer>
+                    <TableContainer style={{maxHeight:400}}>
                     {loading ? (
                     <LinearProgress style={{ backgroundColor: "black" }} />
                      ) : (
@@ -144,27 +176,27 @@ export default function SuperUserTable() {
                                 <TableRow>
                                     <TableCell>No.</TableCell>
                                     <TableCell>Username</TableCell>
-                                    <TableCell align="right">SuperUser ID</TableCell>
-                                    <TableCell align="right">Date Created</TableCell>
-                                    <TableCell align="right">Granted Access Date</TableCell>
+                                    <TableCell>Email</TableCell>
+                                    <TableCell align="left">SuperUser ID</TableCell>
                                     <TableCell align="right">Operations</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {users.map((user, index) =>{
-                                    if ("superuserID" in user){
+                                    if (user.Superuser.length >0){
                                         return(
                                             <TableRow key={user.username}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell component="th" scope="row">
                                                 {user.username}
                                             </TableCell>
-                                            
-                                            <TableCell align="right">{user.superuserID}</TableCell>
-                                            <TableCell align="right">date_created</TableCell>
-                                            <TableCell align="right">date_granted_access</TableCell>
+                                            <TableCell component="th" scope="row">
+                                                {user.email}
+                                            </TableCell>
+                                            <TableCell align="left">{user.Superuser[0].superuserID}</TableCell>
+                            
                                             <TableCell align="right">
-                                                <Button variant="text" color="error">Revoke Access</Button>
+                                                <Button variant="text" color="error" onClick={()=>revokeSuperUserAccess(user.username)}>Revoke Access</Button>
                                             </TableCell>
                                         </TableRow>
                                         )

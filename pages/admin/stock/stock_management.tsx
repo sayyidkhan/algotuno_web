@@ -119,13 +119,18 @@ export default function Page() {
     return (
         <LayoutHeader>
             <Container maxWidth="xl">
+<<<<<<< HEAD
                 <Box style={{marginTop: "7.5em"}}/>
 <<<<<<< .merge_file_a19412
 =======
 
 
 >>>>>>> .merge_file_a40512
+=======
+                <Box style={{marginTop: "5.5em"}}/>
+>>>>>>> b7640fef3c202f3c16304bdc061255377c2d6f3e
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
+                <h1 style={{textAlign:'center'}}>Stock Management</h1>
                     <Tabs value={value} onChange={handleChange}>
                         <Tab label="Stock Price List" style={styles.tab_styling} />
                         <Tab label="ML Price List" style={styles.tab_styling} />

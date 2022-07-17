@@ -16,6 +16,11 @@ export default function Footer() {
           </Link> 
         </li>
         <li className={styles.navItem}>
+          <Link href="/account/user_settings">
+           <a>Settings</a>
+          </Link> 
+        </li>
+        <li className={styles.navItem}>
         <span>Algotuno® 2022. All Rights Reserved</span> 
         </li>
       </ul>

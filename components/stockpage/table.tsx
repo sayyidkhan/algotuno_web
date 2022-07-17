@@ -56,7 +56,9 @@ const StickyHeadTable=(props)=> {
 
   return (
     <Paper sx={{ width: '500px', overflow: 'hidden',backgroundColor:'#DFDFDF' }}>
-      <div className=''>
+        {
+          data !== undefined && data.length > 0 ?
+        
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -109,9 +111,17 @@ const StickyHeadTable=(props)=> {
             </TableRow>
           </TableBody>
         </Table>
-      </TableContainer>
-     
+      </TableContainer>:
+      <div style={{margin: "5em"}}>
+      <h3 style={{textAlign: "center"}}><b>No data to display</b></h3>
+      {
+          /*** add padding ***/
+          Array.from(Array(5).keys()).map((index) => {
+              return <br key={index}/>
+          })
+      }
       </div>
+    }
     </Paper>
   );
 }
