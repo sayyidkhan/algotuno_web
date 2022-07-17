@@ -249,7 +249,7 @@ export default function BasicUserTable() {
             <br/>
             <div>
                 <Paper>
-                {
+                
                 <ClickAwayListener
                 mouseEvent="onMouseDown"
                 touchEvent="onTouchStart"
@@ -267,13 +267,14 @@ export default function BasicUserTable() {
                         </Grid>
                     </Box>
                 </ClickAwayListener>
-                }
-                {
-                     users !== undefined && users.length > 0 ?
+                
+                
+                     
                     <TableContainer style={{maxHeight:400}}>
                     {loading ? (
                     <LinearProgress style={{ backgroundColor: "black" }} />
                      ) : (
+                        users !== undefined && users.length > 0 ?
                         <Table style={{minWidth: 650}} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
@@ -319,8 +320,8 @@ export default function BasicUserTable() {
                                 ))}
                             </TableBody>
                         </Table>
-                        )}
-                    </TableContainer>:
+                        
+                    :
                     <div style={{margin: "5em"}}>
                     <h3 style={{textAlign: "center"}}><b>No data to display</b></h3>
                     {
@@ -329,8 +330,11 @@ export default function BasicUserTable() {
                             return <br key={index}/>
                         })
                     }
+                    
                 </div>
-                    }
+                )}
+                </TableContainer>
+                    
                 </Paper>  
             </div>
           

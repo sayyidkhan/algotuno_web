@@ -48,8 +48,9 @@ export default function Page() {
     return (
         <LayoutHeader>
             <Container maxWidth="xl">
-                <Box style={{marginTop: "7.5em"}}/>
+                <Box style={{marginTop: "5.5em"}}/>
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
+                <h1 style={{textAlign:'center'}}>Stock Management</h1>
                     <Tabs value={value} onChange={handleChange}>
                         <Tab label="Stock Price List" style={styles.tab_styling} />
                         <Tab label="ML Price List" style={styles.tab_styling} />

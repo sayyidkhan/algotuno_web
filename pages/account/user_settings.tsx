@@ -50,8 +50,11 @@ export default function Page() {
     return (
         <LayoutHeader>
             <Container maxWidth="xl">
-                <Box style={{marginTop: "7.5em"}}/>
+                
+                <Box style={{marginTop: "5.5em"}}/>
+                
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
+                    <h1 style={{textAlign:'center'}}>User Settings</h1>
                     <Tabs value={value} onChange={handleChange}>
                         <Tab label="Stock Configuration" style={styles.tab_styling} />
                         <Tab label="Subscription management" style={styles.tab_styling} />

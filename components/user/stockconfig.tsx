@@ -5,6 +5,7 @@ import {
     Box,
     Button, Grid,
     IconButton,
+    LinearProgress,
     Paper,
     Table,
     TableBody,
@@ -17,6 +18,8 @@ import {
 import Checkbox from '@mui/material/Checkbox';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AlertComponent from "../alert/alert_message";
+import axios_api from "../../config/axios_api";
+import { NamedTupleMember } from "typescript";
 
 type Order = 'asc' | 'desc';
 interface EnhancedTableProps {
@@ -28,7 +31,7 @@ interface EnhancedTableProps {
   }
 
 interface BasicUserInterface {
-    stockID: string;
+    stockID: number;
     tickerSymbol: string;
     companyName: string;
     exchange:string;
@@ -62,7 +65,7 @@ const SearchBar = ({ setSearchQuery }) => (
 
 export default function StockPriceListTable() {
     
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>();
     const [rows, setRows] = useState<BasicUserInterface[]>();
     const [searched, setSearched] = useState<string>("");
 
@@ -74,38 +77,28 @@ export default function StockPriceListTable() {
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
 
-    const [selected, setSelected] = React.useState<readonly string[]>([]);
+    const [selected, setSelected] = React.useState([]);
     
-    useEffect(() => {
-        if (loading) {
-            getListFromDB();
+    const fetchStocks = async () => {
+        setLoading(true);
+        try{
+            const  {data} = await axios_api.get('/api/stock/get_all_stocks');
+            setRows(data.result);
             setLoading(false);
         }
+        catch(error)
+        {
+            console.log(error)    
+        }
+      };
+    
+
+    useEffect(() => {
+        fetchStocks();
         setSelected([]);
-    }, [rows]);
+    }, []);
 
-    function getListFromDB() {
-        get_all_stocks_api().then(res => {
-            const myUpdatedStocksList = myFunc(res);
-            setRows(myUpdatedStocksList);
-        });
-    }
-
-    function myFunc(_stocks) {
-        return _stocks.map(e => {
-
-            const obj: BasicUserInterface = {
-                stockID: e.stockID,
-                tickerSymbol: e.tickerSymbol,
-                companyName: e.companyName,
-                exchange:e.exchange
-            };
-
-            return obj
-        })
-    }
-
-    async function deleteStock(ts) {
+    async function updateUserWatchList(ts) {
         //delete stock 
         try {
 
@@ -145,52 +138,7 @@ export default function StockPriceListTable() {
             console.log(Error)
         }
     }
-
-    const addStock = async () => {
-
-        try {
-            const res = await fetch(`/api/stock/add_stock`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "ticker_symbol": tickersymbol,
-                    "company_name": companyname,
-                    "exchange": exchange
-                })
-            }).then(async res => {
-                const data = await res.json();
-                const message = data.message;
-                console.log(message);
-
-                // 1. set the display to true to show the UI
-                setDisplay(true);
-                // 2. logic here
-                const success = true;
-                // 3. to show the update message
-                if (success) {
-                    setStatus(true);
-                }
-                else {
-                    setStatus(false);
-                }
-
-                setMessage(message);
-                // 4. remove all the data
-                setTimeout(() => {
-                    setStatus(null);
-                    setMessage("");
-                    setDisplay(false);
-                }, 3000);
-
-            });
-
-        } catch (error) {
-            return error;
-        }
-    }
+    
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -208,31 +156,26 @@ export default function StockPriceListTable() {
         setSearched("");
         requestSearch(searched);
     };
-    const isSelected = (tickerSymbol: string) => selected.indexOf(tickerSymbol) !== -1;
+
+
+    const isSelected = (stockID: string) => selected.indexOf(stockID) !== -1;
+
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
-          const newSelecteds = rows.map((n) => n.tickerSymbol);
+          const newSelecteds = rows.map((n) => n.stockID.toString());
           setSelected(newSelecteds);
           return;
         }
         setSelected([]);
       };
-    //  const handleCheckboxChange = event => {
-    //     let newArray = [...workDays, event.target.id];
-    //     if (this.state.workDays.includes(event.target.id)) {
-    //       newArray = newArray.filter(day => day !== event.target.id);
-    //     }
-    //     this.setState({
-    //       workDays: newArray
-    //     });
-    //   };  
-      const handleClick = (event: React.MouseEvent<unknown>, tickerSymbol: string, stockID:string) => {
-         const selectedIndex = selected.indexOf(tickerSymbol);
-        let newSelected: readonly string[] = [];
-        let selectedStocks: readonly string[]=[];
+
+
+      const handleClick = (event: React.MouseEvent<unknown>, tickerSymbol: string, stockID:number) => {
+         const selectedIndex = selected.indexOf(stockID.toString());
+        let newSelected:  string[] = [];
         if (selectedIndex === -1) {
-          newSelected = newSelected.concat(selected, tickerSymbol);
+          newSelected = newSelected.concat(selected, stockID.toString());
           
         } else if (selectedIndex === 0) {
           newSelected = newSelected.concat(selected.slice(1));
@@ -248,15 +191,6 @@ export default function StockPriceListTable() {
         }
         
         setSelected(newSelected);
-        // if (event.target.checked) {
-        //     const newSelecteds = rows.stockID;
-        //     setSelected(newSelecteds);
-        //     return;
-        //   }
-        //   setSelected([]);
-           
-
-
       };
     
      const updateUserStockList=()=>{
@@ -296,7 +230,9 @@ export default function StockPriceListTable() {
                         }   
                     </Box>
                     { /*** if no items to display do not display the table ***/}
-                    {
+                    {loading ? (
+                    <LinearProgress style={{ backgroundColor: "black" }} />
+                     ) : (
                         rows !== undefined && rows.length > 0 ?
                         <TableContainer style={{ maxHeight: 400 }}>
                             <Table style={{ minWidth: 650 }} aria-label="simple table">
@@ -315,13 +251,14 @@ export default function StockPriceListTable() {
                                     </TableCell>
                                         <TableCell>No.</TableCell>
                                         <TableCell>Ticker Symbol</TableCell>
+                                        <TableCell>StockID</TableCell>
                                         <TableCell align="right">Exchange</TableCell>
                                         <TableCell align="right">Status</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {rows.map((row, index) => {
-                                        const isItemSelected = isSelected(row.tickerSymbol);
+                                        const isItemSelected = isSelected((row.stockID).toString());
                                         const labelId = `enhanced-table-checkbox-${index}`;
                                         return(
                                         <TableRow 
@@ -344,6 +281,7 @@ export default function StockPriceListTable() {
                                         </TableCell>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell component="th" scope="row">{row.tickerSymbol}</TableCell>
+                                            <TableCell component="th" scope="row">{row.stockID}</TableCell>
                                             <TableCell align="right">{row.exchange}</TableCell>
                                             <TableCell align="right">
                                 
@@ -363,7 +301,7 @@ export default function StockPriceListTable() {
                                 })
                             }
                         </div>
-                    }
+                    )}
                 </Paper>
                 <br />
             </div>
@@ -371,21 +309,3 @@ export default function StockPriceListTable() {
     );
 }
 
-async function get_all_stocks_api() {
-    return fetch('/api/stock/get_all_stocks_with_hsp').then(res => {
-
-        if (res.status === 200) {
-            return res.json()
-                .then(inner_res => inner_res.result)
-                .catch(err => {
-                    console.log(err);
-                    return [];
-                })
-        } else {
-            return [];
-        }
-    }).catch(err => {
-        console.log(err);
-        return [];
-    });
-}
