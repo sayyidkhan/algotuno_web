@@ -176,25 +176,25 @@ export default function SuperUserTable() {
                                 <TableRow>
                                     <TableCell>No.</TableCell>
                                     <TableCell>Username</TableCell>
-                                    <TableCell align="right">SuperUser ID</TableCell>
-                                    <TableCell align="right">Date Created</TableCell>
-                                    <TableCell align="right">Granted Access Date</TableCell>
+                                    <TableCell>Email</TableCell>
+                                    <TableCell align="left">SuperUser ID</TableCell>
                                     <TableCell align="right">Operations</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {users.map((user, index) =>{
-                                    if ("superuserID" in user){
+                                    if (user.Superuser.length >0){
                                         return(
                                             <TableRow key={user.username}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell component="th" scope="row">
                                                 {user.username}
                                             </TableCell>
-                                            
-                                            <TableCell align="right">{user.superuserID}</TableCell>
-                                            <TableCell align="right">date_created</TableCell>
-                                            <TableCell align="right">date_granted_access</TableCell>
+                                            <TableCell component="th" scope="row">
+                                                {user.email}
+                                            </TableCell>
+                                            <TableCell align="left">{user.Superuser[0].superuserID}</TableCell>
+                            
                                             <TableCell align="right">
                                                 <Button variant="text" color="error" onClick={()=>revokeSuperUserAccess(user.username)}>Revoke Access</Button>
                                             </TableCell>

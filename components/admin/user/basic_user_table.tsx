@@ -281,8 +281,6 @@ export default function BasicUserTable() {
                                     <TableCell>No.</TableCell>
                                     <TableCell>Username</TableCell>
                                     <TableCell align="right">Email</TableCell>
-                                    <TableCell align="right">Date Created</TableCell>
-                                    <TableCell align="right">Subscription Type</TableCell>
                                     <TableCell align="right">Upgrade to SuperUser</TableCell>
                                     <TableCell align="right">Operations</TableCell>
                                 </TableRow>
@@ -295,13 +293,6 @@ export default function BasicUserTable() {
                                             {user.username}
                                         </TableCell>
                                         <TableCell align="right">{user.email}</TableCell>
-
-                                        <TableCell align="right">
-                                            date created
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            subscription 
-                                        </TableCell>
                                         <TableCell align="right">
                                             <Button 
                                             variant="text"
