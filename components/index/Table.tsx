@@ -57,7 +57,6 @@ export default function StocksList (props){
     setStocks(data.result);
     setLoading(false);
   };
-
   useEffect(() => {
     fetchStocks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,14 +100,14 @@ export default function StocksList (props){
       <Container style={{ textAlign: "left" }}>
           <Typography
             variant="h4"
-            style={{ margin: 10, fontFamily: "Montserrat" }}
+            style={{ margin: 18, fontFamily: "Montserrat" }}
           >
             Stock Prices by Market Cap
           </Typography>
 
           <Typography
           variant='subtitle1'
-            style={{ margin: 5, fontFamily: "Montserrat" }}
+            style={{ margin: 18, fontFamily: "Montserrat" }}
           >
           <WarningAmberIcon sx={{ fontSize: 15 }}/> Pricing data updated on daily basis. Currency in USD.
           </Typography>

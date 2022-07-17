@@ -1,14 +1,14 @@
 import Link from "next/link"
-import {signOut, useSession} from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import styles from "./header.module.css"
-import Router from "next/router";
 
 
 export default function Header() {
-    const {data: session, status} = useSession();
-    const loading = status === "loading";
-    const buttonSize = {"height": "4em", "width": "8em"};
+  const { data: session, status } = useSession()
+  const loading = status === "loading"
+  const buttonSize = { "height" : "4em" , "width" : "8em" };
 
+<<<<<<< .merge_file_a44340
     const signOutAndRedirect = async () => {
         await Router.push('/');
         await signOut();
@@ -50,8 +50,32 @@ export default function Header() {
             </div>
         </header>
     )
-}
-
-
-{/**/
+=======
+  return (
+    <header>
+      <div className={styles.navbar}>
+        <span className={styles.logo}>algotuno.io</span>
+        <nav>
+          <ul className={styles.navItems}>
+            <li className={styles.navItem}>
+              <Link href="/">
+                <a>Home</a>
+              </Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/charts">
+                <a>Charts</a>
+              </Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/about">
+                <a>About Us</a>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+  )
+>>>>>>> .merge_file_a50840
 }

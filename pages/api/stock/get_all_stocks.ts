@@ -19,14 +19,15 @@ export default async (req, res) => {
                 }
             });
 
+            var price_list, todays_price, yesterdays_price, difference, pctchange;
             try{
                 all_stocks.forEach(e=>{
-                    const price_list = e.historicalStockPrice;
-                    const todays_price = price_list[0]['Close'];
-                    const yesterdays_price = price_list[1]['Close'];
-                    const difference = todays_price - yesterdays_price;
+                    price_list = e.historicalStockPrice;
+                    todays_price = price_list[0]['Close'];
+                    yesterdays_price = price_list[1]['Close'];
+                    difference = todays_price - yesterdays_price;
 
-                    const pctchange = (Math.abs(yesterdays_price - todays_price))/yesterdays_price * 100;
+                    pctchange = (Math.abs(yesterdays_price - todays_price))/yesterdays_price * 100;
 
                     e['latestPrice'] = todays_price;
                     e['priceChange'] = difference;
