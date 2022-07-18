@@ -1,15 +1,14 @@
-// pages/index.tsx
-import Layout from '../components/layout'
-import styles from '../styles/Home.module.css'
-import * as React from "react"
-import loadable from '@loadable/component'
-import Head from 'next/head'
-import {BASE_URL} from "../config/db_prod_checker";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import Watchlist from '../components/watchlist/watchlist'
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Layout from "../components/layout";
+import bg from '../public/landing_page/lp_1.jpg';
+import global_styles from "../styles/Home.module.css";
 
+export default function SignInSide() {
 
-<<<<<<< .merge_file_a42032
     return (
         <Layout>
             
@@ -114,30 +113,3 @@ import Watchlist from '../components/watchlist/watchlist'
         </Layout>
     );
 }
-=======
-const StocksList = loadable(() => import('../components/index/Table'));
-
-
-export default function Page (props){
-  console.log(props)
-  return (
-    <Layout>
-      <Head>
-        <title>Home</title>
-      </Head>
-      <div className={styles.containers}>
-            <div className={styles.container_left}> 
-        
-                <StocksList/>
-            </div>
-            <div className={styles.container_right}>
-            <Watchlist/>     
-            </div>
-        
-      </div>
-    </Layout>
-  )
-}
-
-
->>>>>>> .merge_file_a20556
