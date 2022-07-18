@@ -20,8 +20,8 @@ import AlertComponent from "../../alert/alert_message";
 
 interface BasicUserInterface {
     settingID: string;
-    configName: string;
-    configValue: string;
+    settingName: string;
+    settingValue: string;
 }
 
 const SearchBar = ({setSearchQuery}) => (
@@ -37,7 +37,7 @@ const SearchBar = ({setSearchQuery}) => (
                     /* @ts-ignore */
                     setSearchQuery(e.target.value);
                 }}
-                label="settingID"
+                label="setting name"
                 variant="outlined"
                 placeholder="Search..."
                 size="small"
@@ -55,8 +55,8 @@ export default function SettingsTable() {
     const [rows, setRows] = useState<BasicUserInterface[]>([]);
     const [searched, setSearched] = useState<string>("");
 
-    const [configName, setConfigName] = useState('');
-    const [configValue, setConfigValue] = useState('');
+    const [settingName, setSettingName] = useState('');
+    const [settingValue, setSettingValue] = useState('');
 
     const [display, setDisplay] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean>(null);
@@ -82,8 +82,8 @@ export default function SettingsTable() {
         return settings.map(e => {
             const obj: BasicUserInterface = {
                 settingID: e.settingID,
-                configName: e.configName,
-                configValue: e.value
+                settingName: e.settingName,
+                settingValue: e.settingValue
             };
 
             return obj
@@ -101,9 +101,9 @@ export default function SettingsTable() {
                 }
             });
 
-            const delete_stock_result = await res.json();
-            const delete_stock_msg = delete_stock_result.message;
-            console.log(delete_stock_msg)
+            const delete_setting_result = await res.json();
+            const delete_setting_msg = delete_setting_result.message;
+            console.log(delete_setting_msg)
 
             // 1. set the display to true to show the UI
             setDisplay(true);
@@ -116,7 +116,7 @@ export default function SettingsTable() {
                 setStatus(false);
             }
 
-            setMessage(delete_stock_msg);
+            setMessage(delete_setting_msg);
             // 4. remove all the data
             setTimeout(() => {
                 setStatus(null);
@@ -140,8 +140,8 @@ export default function SettingsTable() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "config_name": configName,
-                    "config_value": configValue
+                    "setting_name": settingName,
+                    "setting_value": settingValue
                 })
             }).then(async res => {
                 const data = await res.json();
@@ -179,13 +179,13 @@ export default function SettingsTable() {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(configName, configValue);
+        console.log(settingName, settingValue);
         await upsertSetting();
     };
 
     const requestSearch = (searchedVal: string) => {
         const filteredRows = rows.filter((row) => {
-            return row.settingID.toString().includes(searchedVal);
+            return row.settingName.toString().includes(searchedVal);
         });
         setRows(filteredRows);
         if (searchedVal === "") {
@@ -214,12 +214,12 @@ export default function SettingsTable() {
                                         alignItems: 'center'
                                     }}>
                                         <TextField
-                                            id="configName"
+                                            id="settingName"
                                             className="text"
-                                            onChange={e => setConfigName(e.target.value)}
-                                            label="Config Name"
+                                            onChange={e => setSettingName(e.target.value)}
+                                            label="Setting Name"
                                             variant="outlined"
-                                            placeholder="Enter Config Name..."
+                                            placeholder="Enter Setting Name..."
                                             size="small"
                                             fullWidth
                                         />
@@ -231,12 +231,12 @@ export default function SettingsTable() {
                                         alignItems: 'center'
                                     }}>
                                         <TextField
-                                            id="configValue"
+                                            id="settingValue"
                                             className="text"
-                                            onChange={e => setConfigValue(e.target.value)}
-                                            label="Config Value"
+                                            onChange={e => setSettingValue(e.target.value)}
+                                            label="Setting Value"
                                             variant="outlined"
-                                            placeholder="Enter Config Value..."
+                                            placeholder="Enter Setting Value..."
                                             size="small"
                                             fullWidth
                                         />
@@ -270,8 +270,8 @@ export default function SettingsTable() {
                                         <TableRow>
                                             <TableCell>No.</TableCell>
                                             <TableCell>Setting ID</TableCell>
-                                            <TableCell align="right">Config Name</TableCell>
-                                            <TableCell align="right">Config Value</TableCell>
+                                            <TableCell align="right">Setting Name</TableCell>
+                                            <TableCell align="right">Setting Value</TableCell>
                                             <TableCell align="right">Operations</TableCell>
                                         </TableRow>
                                     </TableHead>
@@ -280,8 +280,8 @@ export default function SettingsTable() {
                                             <TableRow key={row.settingID}>
                                                 <TableCell>{index + 1}</TableCell>
                                                 <TableCell component="th" scope="row">{row.settingID}</TableCell>
-                                                <TableCell align="right">{row.configName}</TableCell>
-                                                <TableCell align="right">{row.configValue}</TableCell>
+                                                <TableCell align="right">{row.settingName}</TableCell>
+                                                <TableCell align="right">{row.settingValue}</TableCell>
                                                 <TableCell align="right">
                                                     <Button variant="text" color="error" onClick={() => deleteSetting(row.settingID)}>Remove</Button>
                                                 </TableCell>
