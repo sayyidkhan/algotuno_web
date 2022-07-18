@@ -63,17 +63,16 @@ Example:
 ```
 {
 	"ticker_symbol" : 	"GOOG",
-	"start_date"	:	"2006-01-01",
-	"end_date"	:	"2022-01-01"
+	"start_date"	:	"1500468798",
+	"end_date"	:	"1658148798"
 }
 ```
 
 Notes:
-- This endpoint requires the correct "authorization" Headers field.
 - The stock that you wish to populate historical prices with must already exist in the Stock table
 - The stock that you wish to populate historical prices with must not already have historical prices (historical_stock_price table has a PK constraint where PK=(StockID, Date))
 - [Yahoo! Finance ](https://sg.finance.yahoo.com/) must have the historical stock prices for the specified date range
-- The start and end dates **must** be specified in the format **YYYY-MM-DD**. Not specifying the start/end dates will result in an error. 
+- The start and end dates **must** be specified in the **epoch time** in **seconds**. Not specifying the start/end dates will result in an error. 
 
 ## get_hsp.ts
 To get the historical stock price for a stock, send a POST request to the **/api/stock/get_hsp** endpoint with the body contents:
