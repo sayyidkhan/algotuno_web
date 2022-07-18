@@ -283,7 +283,7 @@ export default function SettingsTable() {
                                                 <TableCell align="right">{row.settingName}</TableCell>
                                                 <TableCell align="right">{row.settingValue}</TableCell>
                                                 <TableCell align="right">
-                                                    <Button variant="text" color="error" onClick={() => deleteSetting(row.settingID)}>Remove</Button>
+                                                    <Button variant="text" color="error" onClick={() => deleteSetting(row.settingID)}>Delete</Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))}

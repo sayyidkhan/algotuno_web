@@ -96,10 +96,63 @@ export default function StockPriceListTable() {
         })
     }
 
+    async function updatePrices(ts){
+
+        // get current date as epoch time
+        let end = Math.floor(((new Date()).getTime())/1000);
+        let start = Math.floor(end - 157680000); // subtract 5 years from current date
+
+
+        try {
+            const res = await fetch(`/api/stock/populate_hsp`,{
+                method:"POST",
+                body:JSON.stringify({
+                    "ticker_symbol" : ts,
+                    "start_date": start,
+                    "end_date"  : end
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+                }).then(async res => {
+                    const data = await res.json();
+                    const message = data.message;
+                    console.log(message);
+    
+                    // 1. set the display to true to show the UI
+                    setDisplay(true);
+                    // 2. logic here
+                    const success = true;
+                    // 3. to show the update message
+                    if (success) {
+                        setStatus(true);
+                    }
+                    else {
+                        setStatus(false);
+                    }
+    
+                    setMessage(message);
+                    // 4. remove all the data
+                    setTimeout(() => {
+                        setStatus(null);
+                        setMessage("");
+                        setDisplay(false);
+                    }, 3000);
+
+                    getListFromDB();
+                    setLoading(true);
+    
+                });
+        } catch (error){
+            console.log(error)
+        }
+
+    }
+
     async function deleteStock(ts) {
         //delete stock 
         try {
-
             const res = await fetch(`/api/stock/delete_stock`, {
                 method: "POST",
                 body: JSON.stringify({ "ticker_symbol": ts }),
@@ -132,6 +185,10 @@ export default function StockPriceListTable() {
                 setMessage("");
                 setDisplay(false);
             }, 3000);
+
+            getListFromDB();
+            setLoading(true);
+
         } catch (Error) {
             console.log(Error)
         }
@@ -175,6 +232,9 @@ export default function StockPriceListTable() {
                     setMessage("");
                     setDisplay(false);
                 }, 3000);
+
+                getListFromDB();
+                setLoading(true);
 
             });
 
@@ -293,6 +353,7 @@ export default function StockPriceListTable() {
                                         <TableCell align="right">Stock Name</TableCell>
                                         <TableCell align="right">Earliest Stock Date</TableCell>
                                         <TableCell align="right">Latest Stock Date</TableCell>
+                                        <TableCell align="right">Get Stock Price</TableCell>
                                         <TableCell align="right">Operations</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -305,7 +366,10 @@ export default function StockPriceListTable() {
                                             <TableCell align="right">{row.earliest_stock_date}</TableCell>
                                             <TableCell align="right">{row.latest_stock_date}</TableCell>
                                             <TableCell align="right">
-                                                <Button variant="text" color="error" onClick={() => deleteStock(row.tickerSymbol)}>Remove</Button>
+                                                <Button variant="text" color="error" onClick={() => updatePrices(row.tickerSymbol)}>Get Prices</Button>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <Button variant="text" color="error" onClick={() => deleteStock(row.tickerSymbol)}>Delete</Button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
