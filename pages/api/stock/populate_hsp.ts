@@ -5,21 +5,7 @@ export default async (req, res) => {
 
     if (req.method === "POST"){
 
-        if (authorization_check(req.headers.authorization)) {
-
-            const date_time_now = new Date().toLocaleString("en-US", {
-                timeZone: 'Asia/Singapore',
-            });
-            console.log(date_time_now);
-        } else {
-            return res.status(400).json({
-                "message": `Not authorised`,
-            });
-        }
-
-        var ticker_symbol, stock_id;
-        var hsp_start_date, hsp_end_date;
-        var hsp_start_epoch, hsp_end_epoch;
+        let ticker_symbol, stock_id, hsp_start_date, hsp_end_date, hsp_start_epoch, hsp_end_epoch;
 
         // check if ticker symbol exists in body
         if(!req.body.ticker_symbol){

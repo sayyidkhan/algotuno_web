@@ -96,10 +96,35 @@ export default function StockPriceListTable() {
         })
     }
 
+    async function updatePrices(ts){
+        // const start_date =
+        const end = new Date();
+        const endFormattedDate = end.getDate()+'-'+(end.getMonth()+1)+'-'+end.getFullYear();
+        const start = Math.floor((end.getTime()) - 157680000000); // subtract 5 years from current date
+        const startDateObj = new Date(start);
+        const startFormattedDate = startDateObj.getDate()+'-'+(startDateObj.getMonth()+1)+'-'+startDateObj.getFullYear();
+
+        try {
+            const res = await fetch(`/api/stock/populate_hsp`,{
+                method:"POST",
+                body:JSON.stringify({
+                    "ticker_symbol" : ts,
+                    "start_date": startFormattedDate,
+                    "end_date"  : endFormattedDate
+                }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+        } catch (error){
+            console.log(error)
+        }
+
+    }
+
     async function deleteStock(ts) {
         //delete stock 
         try {
-
             const res = await fetch(`/api/stock/delete_stock`, {
                 method: "POST",
                 body: JSON.stringify({ "ticker_symbol": ts }),
@@ -293,6 +318,7 @@ export default function StockPriceListTable() {
                                         <TableCell align="right">Stock Name</TableCell>
                                         <TableCell align="right">Earliest Stock Date</TableCell>
                                         <TableCell align="right">Latest Stock Date</TableCell>
+                                        <TableCell align="right">Get Stock Price</TableCell>
                                         <TableCell align="right">Operations</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -304,6 +330,9 @@ export default function StockPriceListTable() {
                                             <TableCell align="right">{row.companyName}</TableCell>
                                             <TableCell align="right">{row.earliest_stock_date}</TableCell>
                                             <TableCell align="right">{row.latest_stock_date}</TableCell>
+                                            <TableCell align="right">
+                                                <Button variant="text" color="error" onClick={() => updatePrices(row.tickerSymbol)}>Get Prices</Button>
+                                            </TableCell>
                                             <TableCell align="right">
                                                 <Button variant="text" color="error" onClick={() => deleteStock(row.tickerSymbol)}>Remove</Button>
                                             </TableCell>
