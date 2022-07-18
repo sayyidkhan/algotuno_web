@@ -20,7 +20,7 @@
 
 ## Overview
 
-#### Demo: https://prefyp-v3.vercel.app/
+#### Demo: algotuno-web3.vercel.app
 
 NextAuth.js is a complete open source authentication solution for [Next.js](http://nextjs.org/) applications.
 
