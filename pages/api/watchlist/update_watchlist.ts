@@ -18,10 +18,17 @@ export default async (req, res) => {
                 });
 
                 for(let i = 0; i < list_of_stocks.length; i++){
-                    data.push({
-                        userID : userID,
-                        stockID : list_of_stocks[i]
-                    })
+
+                    try{
+
+                        data.push({
+                            userID : userID,
+                            stockID : Number(list_of_stocks[i])
+                        });
+    
+                    } catch(error){
+                        console.log(error)
+                    }
                 }
                 
                 const update_watchlist = await prisma.stock_Watchlist.createMany({data});
