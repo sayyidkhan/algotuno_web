@@ -4,27 +4,27 @@ export default async (req, res) => {
 
     if (req.method === "POST"){
 
-        const configName = req.body.config_name;
-        const value = req.body.config_value;
+        const settingName = req.body.setting_name;
+        const settingValue = req.body.setting_value;
 
-        if(configName && value){
+        if(settingName && settingValue){
 
             try{
                 const upsertSettings = await prisma.app_Settings.upsert({
                     where:{
-                        settingName : configName 
+                        settingName : settingName 
                     }, 
                     update:{
-                        settingValue : value
+                        settingValue : settingValue
                     },
                     create: {
-                        settingName: configName,
-                        settingValue: value
+                        settingName: settingName,
+                        settingValue: settingValue
                     }
                 });
                 
                 res.status(200).json({
-                    "message" : `Successfully inserted/updated ${configName}`,
+                    "message" : `Successfully inserted/updated ${settingName}`,
                     "result" : upsertSettings
                 });
             } catch (error) {
