@@ -10,16 +10,16 @@ export default async (req, res) => {
         if(configName && value){
 
             try{
-                const upsertSettings = await prisma.settings.upsert({
+                const upsertSettings = await prisma.app_Settings.upsert({
                     where:{
-                        configName : configName 
+                        settingName : configName 
                     }, 
                     update:{
-                        value : value
+                        settingValue : value
                     },
                     create: {
-                        configName: configName,
-                        value: value
+                        settingName: configName,
+                        settingValue: value
                     }
                 });
                 

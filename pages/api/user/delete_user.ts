@@ -12,22 +12,40 @@ export default async (req, res) => {
             return
         }
 
+        let user_id;
+
         try {
 
             const input_username = req.body.username;
 
             try{
-                const delete_user = await prisma.user.delete({
+                const user_record = await prisma.user.findFirst({
                     where: {
-                        username:input_username
+                        username : input_username
+                    }
+                });
+
+                if (user_record) {
+                    // return the corresponding user ID
+                    user_id = user_record.id;
+                } else {
+                    console.log(`User ${input_username} does not exist`)
+                    return res.status(406).json({
+                        "message": `Stock ${input_username} does not exist`
+                    });
+                }
+
+                const delete_superuser = await prisma.user.delete({
+                    where: {
+                        id : user_id
                     }
                 })
 
-                const successMsg = `Deleted ${input_username} from Superuser`;
+                const successMsg = `Deleted ${input_username} from User`;
                 console.log(successMsg);
                 res.status(200).json({
                     "message" : successMsg,
-                    "result" : delete_user
+                    "result" : delete_superuser
                 });
 
             } catch (error) {
@@ -41,7 +59,6 @@ export default async (req, res) => {
                 }
                 return
             }
-
 
         } catch (error) {
             const errorMsg = error.message;

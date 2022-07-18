@@ -92,7 +92,7 @@ export default function SettingsTable() {
 
     async function deleteSetting(sid) {
         try {
-            const res = await fetch(`/api/settings/delete_setting`, {
+            const res = await fetch(`/api/settings/delete_settings`, {
                 method: "POST",
                 body: JSON.stringify({"setting_id": sid}),
                 headers: {
@@ -133,7 +133,7 @@ export default function SettingsTable() {
 
     const upsertSetting = async () => {
         try {
-            await fetch(`/api/settings/add_or_update_setting`, {
+            await fetch(`/api/settings/add_or_update_settings`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -308,7 +308,7 @@ export default function SettingsTable() {
 }
 
 async function get_all_setting_api() {
-    return fetch('/api/settings/get_all_setting').then(res => {
+    return fetch('/api/settings/get_all_settings').then(res => {
         if (res.status === 200) {
             return res.json()
                 .then(inner_res => inner_res.result)

@@ -103,7 +103,7 @@ const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictio
             
             
             <div className={styles.container_right}>
-              <Watchlist/>
+              {/* <Watchlist/> */}
             </div> 
         </div>
         </div>

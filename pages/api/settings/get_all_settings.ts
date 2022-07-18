@@ -6,7 +6,7 @@ export default async (req, res) => {
 
         try{
 
-            const all_setting = await prisma.settings.findMany({});
+            const all_setting = await prisma.app_Settings.findMany({});
 
             const successMsg = `Found ${all_setting.length} settings`;
             console.log(successMsg);

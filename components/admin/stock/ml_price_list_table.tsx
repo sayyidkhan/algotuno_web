@@ -58,10 +58,6 @@ export default function MLPriceListTable() {
     const [rows, setRows] = useState<BasicUserInterface[]>();
     const [searched, setSearched] = useState<string>("");
 
-    const [tickersymbol, setTickerSymbol] = useState('');
-    const [companyname, setCompanyName] = useState('');
-    const [exchange, setExchangeName] = useState('');
-
     const [display, setDisplay] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
@@ -108,29 +104,6 @@ export default function MLPriceListTable() {
         requestSearch(searched);
     };
 
-    const myFunction = () => {
-        console.log("hello world");
-        // 1. set the display to true to show the UI
-        setDisplay(true);
-        // 2. logic here
-        const success = true;
-        // 3. to show the update message
-        if (success) {
-            setStatus(true);
-            setMessage("the operation is successful");
-        }
-        else {
-            setStatus(false);
-            setMessage("the operation is unsuccesful");
-        }
-        // 4. remove all the data
-        setTimeout(() => {
-            setStatus(null);
-            setMessage("");
-            setDisplay(false);
-        }, 3000);
-    };
-
     return (
         <div>
             <AlertComponent display={display} status={status} message={"enter message here"}/>
@@ -164,7 +137,6 @@ export default function MLPriceListTable() {
                                     <TableCell align="right">Stock Name</TableCell>
                                     <TableCell align="right">Earliest Stock Date</TableCell>
                                     <TableCell align="right">Latest Stock Date</TableCell>
-                                    <TableCell align="right">Operations</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -175,9 +147,6 @@ export default function MLPriceListTable() {
                                         <TableCell align="right">{row.companyName}</TableCell>
                                         <TableCell align="right">{row.earliest_stock_date}</TableCell>
                                         <TableCell align="right">{row.latest_stock_date}</TableCell>
-                                        <TableCell align="right">
-                                            <Button variant="text" color="error" onClick={() => myFunction()}>Remove</Button>
-                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

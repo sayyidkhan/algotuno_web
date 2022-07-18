@@ -32,7 +32,7 @@ export default function Page (props){
                 <StocksList/>
             </div>
             <div className={styles.container_right}>
-            <Watchlist/>     
+            {/* <Watchlist/>      */}
             </div>
         
       </div>

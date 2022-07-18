@@ -2,8 +2,6 @@ import {Box, Container, Tab, Tabs} from "@mui/material";
 import {TabContext, TabPanel} from "@mui/lab";
 import * as React from "react";
 import LayoutHeader from "../../../components/layout_header";
-import SuperUserTable from "../../../components/admin/user/super_user_table";
-import BasicUserTable from "../../../components/admin/user/basic_user_table";
 
 export default function Page() {
     const [activeStep, setActiveStep] = React.useState<number>(0);
@@ -25,10 +23,11 @@ export default function Page() {
     return (
         <LayoutHeader>
             <Container maxWidth="xl">
-                <Box style={{marginTop: "7.5em"}}/>
+                <Box style={{marginTop: "5.5em"}}/>
 
 
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
+                <h1 style={{textAlign:'center'}}>User Management</h1>
                     <Tabs value={value} onChange={handleChange}>
                         <Tab label="Super User" style={styles.tab_styling}/>
                         <Tab label="Basic User" style={styles.tab_styling}/>
@@ -37,11 +36,11 @@ export default function Page() {
                     <TabContext value={value.toString()}>
                         {/* navigation 1 */}
                         <TabPanel value="0">
-                            <SuperUserTable/>
+                            Item One
                         </TabPanel>
                         {/* navigation 1 */}
                         <TabPanel value="1">
-                            <BasicUserTable/>
+                            Item Two
                         </TabPanel>
                     </TabContext>
                 </Box>
