@@ -43,7 +43,7 @@ Example:
 ```
 # sample api endpoint
 http://localhost:3000/api/superuser/get_one_superuser?id=1
-
+~~~~
 # placeholder api endpoint
 http://localhost:3000/api/superuser/get_one_superuser?id=USER_ID_HERE
 ```

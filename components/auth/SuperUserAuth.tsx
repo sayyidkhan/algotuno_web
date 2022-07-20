@@ -1,14 +1,10 @@
-import cacheData from "memory-cache";
 import * as React from "react";
 import {useState} from "react";
 import {getSession} from "next-auth/react";
-import createPersistedState from 'use-persisted-state';
 
-
-const useCartState = createPersistedState('cart');
 
 const SuperUserAuth = ({children}) => {
-    const [cart, setCart ] = useCartState
+
 
     useState(() => {
         getSession().then(res => {
