@@ -31,4 +31,21 @@ Example:
 ```
 
 ## get_all_superuser.ts
-To get all superusers, send a GEt request to the **/api/superuser/get_all_superuser** endpoint.
+To get all superusers, send a GET request to the **/api/superuser/get_all_superuser** endpoint.
+
+
+## get_one_superuser.ts
+To get one superuser, send a GET request to the **/api/superuser/get_one_superuser** endpoint.
+
+
+Example:
+
+```
+# sample api endpoint
+http://localhost:3000/api/superuser/get_one_superuser?id=1
+
+# placeholder api endpoint
+http://localhost:3000/api/superuser/get_one_superuser?id=USER_ID_HERE
+```
+
+
