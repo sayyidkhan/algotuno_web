@@ -39,9 +39,4 @@ async function setItem(key, user_id) {
 }
 
 
-export async function deleteCache() {
-    const delete_status = cacheData.clear();
-    console.log(delete_status);
-}
-
 export default SuperUserAuth;
