@@ -2,7 +2,6 @@ import Link from "next/link"
 import {signOut, useSession} from "next-auth/react"
 import styles from "./header.module.css"
 import Router from "next/router";
-import {deleteCache} from "../auth/SuperUserAuth";
 
 
 export default function Header() {
@@ -11,7 +10,6 @@ export default function Header() {
     const buttonSize = {"height": "4em", "width": "8em"};
 
     const signOutAndRedirect = async () => {
-        await deleteCache();
         await Router.push('/');
         await signOut();
     };

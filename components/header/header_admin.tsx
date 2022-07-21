@@ -2,7 +2,6 @@ import Link from "next/link"
 import {signIn, signOut, useSession} from "next-auth/react"
 import styles from "./header.module.css"
 import Router from "next/router";
-import {deleteCache} from "../auth/SuperUserAuth";
 
 
 export default function HeaderAdmin() {
@@ -12,7 +11,6 @@ export default function HeaderAdmin() {
     //comment
     const signOutAndRedirect = async () => {
         await Router.push('/').then(async () => {
-            await deleteCache();
             ///this is test comment
             await signOut();
         });
