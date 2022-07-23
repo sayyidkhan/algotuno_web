@@ -59,8 +59,6 @@ export default function StockPriceListTable() {
     const [searched, setSearched] = useState<string>("");
 
     const [tickersymbol, setTickerSymbol] = useState('');
-    const [companyname, setCompanyName] = useState('');
-    const [exchange, setExchangeName] = useState('');
 
     const [display, setDisplay] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean>(null);
@@ -204,9 +202,7 @@ export default function StockPriceListTable() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "ticker_symbol": tickersymbol,
-                    "company_name": companyname,
-                    "exchange": exchange
+                    "ticker_symbol": tickersymbol
                 })
             }).then(async res => {
                 const data = await res.json();
@@ -245,7 +241,7 @@ export default function StockPriceListTable() {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(tickersymbol, companyname, exchange);
+        console.log(`Adding ${tickersymbol} stock`);
         addStock();
     }
 
@@ -289,41 +285,9 @@ export default function StockPriceListTable() {
                                     </div>
                                 </Grid>
                                 <Grid item xs={2}>
-                                    <div style={{
-                                        display: 'flex',
-                                        alignItems: 'center'
-                                    }}>
-                                        <TextField
-                                            id="company_name"
-                                            className="text"
-                                            onChange={e => setCompanyName(e.target.value)}
-                                            label="Company Name"
-                                            variant="outlined"
-                                            placeholder="Enter Company Name..."
-                                            size="small"
-                                            fullWidth
-                                        />
-                                    </div>
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <div style={{
-                                        display: 'flex',
-                                        alignItems: 'center'
-                                    }}>
-                                        <TextField
-                                            id="exchange_name"
-                                            className="text"
-                                            onChange={e => setExchangeName(e.target.value)}
-                                            label="Exchange Name"
-                                            variant="outlined"
-                                            placeholder="Enter Exchange Name..."
-                                            size="small"
-                                            fullWidth
-                                        />
-                                        <IconButton type="submit" aria-label="submit">
-                                            <AddCircleOutlineRoundedIcon style={{ fill: "blue" }} />
-                                        </IconButton>
-                                    </div>
+                                    <IconButton type="submit" aria-label="submit">
+                                        <AddCircleOutlineRoundedIcon style={{ fill: "blue" }} />
+                                    </IconButton>
                                 </Grid>
                             </Grid>
                         </form>
