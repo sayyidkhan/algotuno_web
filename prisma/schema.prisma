@@ -99,11 +99,13 @@ model Historical_Stock_Price {
 }
 
 model ML_Stock_Price {
-  stockID    Int
-  Date       DateTime
-  DateString String
-  Price      Float
-  MLModelID  Int
+  stockID     Int
+  Date        DateTime
+  DateString  String
+  Price       Float
+  MLModelID   Int
+  Confidence  Float
+  Error       Float
 
   stock Stock @relation(fields: [stockID], references: [stockID], onDelete: Cascade)
   @@id([stockID, Date, MLModelID])
