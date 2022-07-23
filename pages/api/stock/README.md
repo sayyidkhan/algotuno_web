@@ -28,8 +28,6 @@ Example:
 ```
 {
     "ticker_symbol" 	:   "GOOG",
-    "company_name"  	:   "Google",
-    "exchange"     	:   "NYSE"
 }
 ```
 
@@ -162,9 +160,9 @@ Example:
     "ticker_symbol"   : "GLD",
     "model_type"      : "1", 
     "prediction"      : [ 
-        {"epoch_time" : 1658552938000, "price" : 123.22, "confidence_score" : 95.01, "rate_of_error": 12.23},
-        {"epoch_time" : 1659157597000, "price" : 123.22, "confidence_score" : 95.01, "rate_of_error": 12.23},
-        {"epoch_time" : 1659848797000, "price" : 123.22, "confidence_score" : 95.01, "rate_of_error": 12.23}
+        {"epoch_time" : 1658552938000, "price" : 123.45, "confidence_score" : 95.01, "rate_of_error": 1.20},
+        {"epoch_time" : 1659157597000, "price" : 135.55, "confidence_score" : 90.01, "rate_of_error": 5.23},
+        {"epoch_time" : 1659848797000, "price" : 136.52, "confidence_score" : 85.01, "rate_of_error": 10.53}
     ]
 }
 ```
