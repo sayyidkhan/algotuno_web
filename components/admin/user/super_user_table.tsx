@@ -90,61 +90,75 @@ const AddUserBar = ({setSearchQuery}) => (
 
 export default function SuperUserTable() {
     const [searched, setSearched] = useState<string>("");
-    const [rows,setRows] = useState([]);
-    const [users,setUsers] = useState([]);
-    const [loading,setLoading]= useState<boolean>();
+    const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [loadingBar, setLoadingBar] = useState(true);
     const [display, setDisplay] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean>(null);
     const [message, setMessage] = useState("");
 
-    const fetchUsers = async () => {
-        setLoading(true);
-        const  {data} = await axios_api.get('/api/user/get_all_user');
-        setUsers(data.result);
-          setLoading(false);
-          
-      };
-
-    useEffect(() => {
-    fetchUsers();
-    }, []); 
-    
-    const requestSearch = (searchedVal: string) => {
-        const filteredRows = users.filter((row) => {
-            return row.username.toLowerCase().includes(searchedVal.toLowerCase());
+    const fetchUsers = () => {
+        axios_api.get('/api/user/get_all_user').then(res => {
+            const myUpdatedUserList = res.data.result;
+            setRows(myUpdatedUserList);
+        }).finally(() => {
+            setLoadingBar(false);
         });
-        setRows(filteredRows);
     };
 
-    const cancelSearch = () => {
+    useEffect(() => {
+        if (loading) {
+            fetchUsers();
+            setLoading(false);
+        }
+    }, [rows]);
+
+
+    const requestSearch = async (searchedVal: string) => {
+        if (searchedVal.trim().length === 0) {
+            await fetchUsers();
+        } else {
+            const filteredRows = rows.filter((row) => {
+                return row.username.toLowerCase().includes(searchedVal.toLowerCase());
+            });
+            // only if results greater than 0, then continue the search, otherwise do not update the list
+            if (filteredRows.length > 0) {
+                setRows(filteredRows);
+            } else {
+                setRows([]);
+            }
+        }
+    };
+
+    const cancelSearch = async () => {
         setSearched("");
-        requestSearch(searched);
+        await requestSearch(searched);
     };
 
     const revokeSuperUserAccess = async (username) => {
-        
+
         const res = await fetch(`/api/superuser/delete_superuser`, {
-            method : 'POST',
+            method: 'POST',
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              "username" : username
+                "username": username
             })
         })
-        .then(async res => {
-          const data = await res.json();
-          const message = data.message;
-          return message;
-        })
-        .then(message => {
-        setDisplay(true);
-        setMessage(message);
-        setStatus(true);
-          //sto(true);
-          //setIsLoading(false);
-        })
+            .then(async res => {
+                const data = await res.json();
+                const message = data.message;
+                return message;
+            })
+            .then(message => {
+                setDisplay(true);
+                setMessage(message);
+                setStatus(true);
+                //sto(true);
+                //setIsLoading(false);
+            })
         setTimeout(() => {
             fetchUsers();
             setStatus(null);
@@ -164,11 +178,11 @@ export default function SuperUserTable() {
                             <Grid item xs={3}>
                                 <SearchBar setSearchQuery={val => requestSearch(val)} />
                             </Grid>
-                            
+
                         </Grid>
                     </Box>
                     <TableContainer style={{maxHeight:400}}>
-                    {loading ? (
+                    {loadingBar ? (
                     <LinearProgress style={{ backgroundColor: "black" }} />
                      ) : (
                         <Table style={{minWidth: 650}} aria-label="simple table">
@@ -182,7 +196,7 @@ export default function SuperUserTable() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {users.map((user, index) =>{
+                                {rows.map((user, index) =>{
                                     if (user.Superuser.length >0){
                                         return(
                                             <TableRow key={user.username}>
@@ -194,7 +208,7 @@ export default function SuperUserTable() {
                                                 {user.email}
                                             </TableCell>
                                             <TableCell align="left">{user.Superuser[0].superuserID}</TableCell>
-                            
+
                                             <TableCell align="right">
                                                 <Button variant="text" color="error" onClick={()=>revokeSuperUserAccess(user.username)}>Revoke Access</Button>
                                             </TableCell>
@@ -202,7 +216,7 @@ export default function SuperUserTable() {
                                         )
                                     }
 
-                                    
+
                                 }
                                 )}
                             </TableBody>

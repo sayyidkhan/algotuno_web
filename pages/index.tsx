@@ -6,12 +6,14 @@ import Grid from '@mui/material/Grid';
 import Layout from "../components/layout";
 import bg from '../public/landing_page/lp_1.jpg';
 import global_styles from "../styles/Home.module.css";
+import {useSession} from "next-auth/react";
 
 export default function SignInSide() {
+    const {data: session, status} = useSession();
 
     return (
         <Layout>
-            
+
             <Grid container component="main" sx={{height: '120vh', marginTop: '3em'}}>
                 {/*<CssBaseline/>*/}
                 <Grid item xs={12} sm={6}>
@@ -19,7 +21,7 @@ export default function SignInSide() {
                         sx={{
                             my: 8,
                             mx: 4,
-                            
+
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -36,7 +38,7 @@ export default function SignInSide() {
                                         fontSize: '3em',
                                         textShadow: '1em',
                                         textDecorationColor: 'black',
-                                        
+
                                         // filter: 'drop-shadow(2px 2px 2.5px #000)',
                                     }}
                                     className={global_styles.landing_page_title}
@@ -61,7 +63,7 @@ export default function SignInSide() {
                                             variant="contained"
                                             sx={{m: 2, height: '3em'}}
                                         >
-                                            Get Started / Sign In
+                                            {session ? "Resume Session" : "Get Started / Sign In"}
                                         </Button>
                                     </Link>
                                 </Grid>
@@ -79,18 +81,20 @@ export default function SignInSide() {
                                     </Link>
                                 </Grid>
                             </Grid>
-                            <Grid container>
-                                <Grid item xs>
-                                    {/*<Link href="#" variant="body2">*/}
-                                    {/*Forgot password?*/}
-                                    {/*</Link>*/}
+                            {session ?
+                                <></> : <Grid container>
+                                    <Grid item xs>
+                                        {/*<Link href="#" variant="body2">*/}
+                                        {/*Forgot password?*/}
+                                        {/*</Link>*/}
+                                    </Grid>
+                                    <Grid item>
+                                        <Link href="/account/register" variant="body2">
+                                            {"Don't have an account? Sign Up"}
+                                        </Link>
+                                    </Grid>
                                 </Grid>
-                                <Grid item >
-                                    <Link href="/account/register" variant="body2">
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
+                            }
                         </Box>
                     </Box>
                 </Grid>
@@ -105,11 +109,11 @@ export default function SignInSide() {
                             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[100],
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                       
+
                     }}
                 />
             </Grid>
-                       
+
         </Layout>
     );
 }
