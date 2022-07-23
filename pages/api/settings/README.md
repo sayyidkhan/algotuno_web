@@ -14,11 +14,7 @@ To add/update a setting, send a POST request to the **/api/settings/add_or_updat
 Example:
 
 ```
-<<<<<<< .merge_file_a48164
 {
-=======
-
->>>>>>> .merge_file_a52240
     "config_name" : "testconf", 
     "config_value": "testval" 
 }
