@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
     Box,
     Button, Grid,
-    IconButton,
+    IconButton, LinearProgress,
     Paper,
     Table,
     TableBody,
@@ -55,6 +55,7 @@ const SearchBar = ({setSearchQuery}) => (
 
 export default function MLPriceListTable() {
     const [loading, setLoading] = useState(true);
+    const [loadingBar, setLoadingBar] = useState(true);
     const [rows, setRows] = useState<BasicUserInterface[]>();
     const [searched, setSearched] = useState<string>("");
 
@@ -74,6 +75,8 @@ export default function MLPriceListTable() {
             console.log(res);
             const myUpdatedStocksList = myFunc(res);
             setRows(myUpdatedStocksList);
+        }).finally(() => {
+            setLoadingBar(false);
         });
     }
 
@@ -92,11 +95,20 @@ export default function MLPriceListTable() {
         })
     }
 
-    const requestSearch = (searchedVal: string) => {
-        const filteredRows = rows.filter((row) => {
-            return row.tickerSymbol.toLowerCase().includes(searchedVal.toLowerCase());
-        });
-        setRows(filteredRows);
+    const requestSearch = async (searchedVal: string) => {
+        if (searchedVal.trim().length === 0) {
+            await getListFromDB();
+        } else {
+            const filteredRows = rows.filter((row) => {
+                return row.tickerSymbol.toLowerCase().includes(searchedVal.toLowerCase());
+            });
+            // only if results greater than 0, then continue the search, otherwise do not update the list
+            if (filteredRows.length > 0) {
+                setRows(filteredRows);
+            } else {
+                setRows([]);
+            }
+        }
     };
 
     const cancelSearch = () => {
@@ -110,58 +122,60 @@ export default function MLPriceListTable() {
             <br/>
             <div>
                 <Paper>
-                    { /*** if no items to display do not display the search bar ***/}
-                        {
-                            rows !== undefined && rows.length > 0 ?
-                                <div>
-                                    <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
-                                        <h5>Search for stock(s)</h5>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={3}>
-                                                <SearchBar setSearchQuery={val => requestSearch(val)}/>
-                                            </Grid>
-                                        </Grid>
-                                    </Box>
-                                </div> :
-                            <br/>
-                        }
-                    { /*** if no items to display do not display the table ***/}
-                    {
-                        rows !== undefined && rows.length > 0 ?
-                            <TableContainer style={{ maxHeight: 400 }}>
-                        <Table style={{minWidth: 650}} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>No.</TableCell>
-                                    <TableCell>Ticker Symbol</TableCell>
-                                    <TableCell align="right">Stock Name</TableCell>
-                                    <TableCell align="right">Earliest Stock Date</TableCell>
-                                    <TableCell align="right">Latest Stock Date</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row, index) => (
-                                    <TableRow key={row.tickerSymbol}>
-                                        <TableCell>{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row"> {row.tickerSymbol}</TableCell>
-                                        <TableCell align="right">{row.companyName}</TableCell>
-                                        <TableCell align="right">{row.earliest_stock_date}</TableCell>
-                                        <TableCell align="right">{row.latest_stock_date}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer> :
-                            <div style={{margin: "5em"}}>
-                                <h3 style={{textAlign: "center"}}><b>No data to display</b></h3>
-                                {
-                                    /*** add padding ***/
-                                    Array.from(Array(5).keys()).map((index) => {
-                                        return <br key={index}/>
-                                    })
-                                }
-                            </div>
-                    }
+
+                    <div>
+                        <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
+                            <h5>Search for stock(s)</h5>
+                            <Grid container spacing={2}>
+                                <Grid item xs={3}>
+                                    <SearchBar setSearchQuery={val => requestSearch(val)}/>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </div>
+
+                    <TableContainer style={{maxHeight: 335}}>
+                        {loadingBar ? (
+                                <LinearProgress style={{backgroundColor: "black"}}/>
+                            ) :
+                            (
+                                rows !== undefined && rows.length > 0 ?
+                                    <Table style={{minWidth: 650}} aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>No.</TableCell>
+                                                <TableCell>Ticker Symbol</TableCell>
+                                                <TableCell align="right">Stock Name</TableCell>
+                                                <TableCell align="right">Earliest Stock Date</TableCell>
+                                                <TableCell align="right">Latest Stock Date</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {rows.map((row, index) => (
+                                                <TableRow key={row.tickerSymbol}>
+                                                    <TableCell>{index + 1}</TableCell>
+                                                    <TableCell component="th"
+                                                               scope="row"> {row.tickerSymbol}</TableCell>
+                                                    <TableCell align="right">{row.companyName}</TableCell>
+                                                    <TableCell align="right">{row.earliest_stock_date}</TableCell>
+                                                    <TableCell align="right">{row.latest_stock_date}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                    :
+                                    <div style={{margin: "5em"}}>
+                                        <h3 style={{textAlign: "center"}}><b>No data to display</b></h3>
+                                        {
+                                            /*** add padding ***/
+                                            Array.from(Array(5).keys()).map((index) => {
+                                                return <br key={index}/>
+                                            })
+                                        }
+                                    </div>
+                            )}
+                    </TableContainer>
+
                 </Paper>
             </div>
         </div>
