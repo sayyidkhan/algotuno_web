@@ -2,9 +2,9 @@
 <p align="center">
    <br/>
    <a href="https://next-auth.js.org" target="_blank"><img width="150px" src="https://next-auth.js.org/img/logo/logo-sm.png" /></a>
-   <h3 align="center">NextAuth.js Example App</h3>
+   <h3 align="center">Algotuno Web3 AI Webservice</h3>
    <p align="center">
-   Open Source. Full Stack. Own Your Data.
+   Full Stack. Twin AI Engine.
    </p>
    <p align="center" style="align: center;">
       <a href="https://npm.im/next-auth">
