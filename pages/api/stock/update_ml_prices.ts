@@ -8,11 +8,13 @@ export default async (req, res) => {
         const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
         // input =  {
-        //     "ticker_symbol" : "GLD",
-        //     "model_type"  : "1", 
-        //     "prediction"   : [ {"epochtime"  : 10.12},
-        //                         {"epochtime" : 15.23},
-        //                         {"epochtime" : 20.42} ]
+        //     "ticker_symbol"   : "GLD",
+        //     "model_type"      : "1", 
+        //     "prediction"      : [ 
+        //         {"epoch_time" : 10123132412, "price" : 123.22, "confidence_score" : 95.01, "rate_of_error": 12.23},
+        //         {"epoch_time" : 10123132412, "price" : 123.22, "confidence_score" : 95.01, "rate_of_error": 12.23},
+        //         {"epoch_time" : 10123132412, "price" : 123.22, "confidence_score" : 95.01, "rate_of_error": 12.23}
+        //     ]
         // }
 
         // check if ticker symbol exists in body
@@ -70,24 +72,27 @@ export default async (req, res) => {
             let formatted_results = []
 
             for(let i = 0; i < predicted_prices.length; i++){
-                //current format: predicted_prices[i] = {"epochtime" : 123.0}
+                //current format >
+                    // predicted_prices[i] = {
+                    //     "epoch_time"        : 10.12,
+                    //     "price"             : 123.22,
+                    //     "confidence_score"  : 95.01,
+                    //     "rate_of_error"     : 12.23
+                    // }
                 
                 let prediction_obj = {}
+                const dateIntRep = parseInt(predicted_prices[i]["epoch_time"])
+                const formatted_DateObj = new Date(dateIntRep); // convert epoch time to Date obj
+                const formattedDateString = formatted_DateObj.getDate() + "-" + months[formatted_DateObj.getMonth()] + "-" + formatted_DateObj.getFullYear();
+
+                prediction_obj["stockID"]    = stock_id;
+                prediction_obj["Date"]       = formatted_DateObj;
+                prediction_obj["DateString"] = formattedDateString;
+                prediction_obj["Price"]      = predicted_prices[i]["price"];
+                prediction_obj["Confidence"] = predicted_prices[i]["confidence_score"];
+                prediction_obj["Error"]      = predicted_prices[i]["rate_of_error"];
                 
-                // reassign Date field into the DateObj for storage
-                // var formatted_DateObj = new Date(predicted_prices[i]["Date"]*1000);
-                for (const [key, value] of Object.entries(predicted_prices[i])){
-                    prediction_obj["stockID"] = stock_id;
-
-                    const dateIntRep = parseInt(key); // date obj in epoch time (milliseconds), Int representation
-                    const formatted_DateObj = new Date(dateIntRep); // convert epoch time to Date obj
-                    const formattedDateString = formatted_DateObj.getDate() + "-" + months[formatted_DateObj.getMonth()] + "-" + formatted_DateObj.getFullYear();
-
-                    prediction_obj["Date"] = formatted_DateObj;
-                    prediction_obj["DateString"] = formattedDateString;
-                    prediction_obj["Price"] = value;
-                    prediction_obj["MLModelID"] = model_type;
-                }
+                prediction_obj["MLModelID"] = model_type;
 
                 formatted_results.push(prediction_obj);
             }
@@ -96,10 +101,11 @@ export default async (req, res) => {
 
             // after manipulation, formatted_results will look like this:
             // formatted_results = [
-            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "MLModelID" : 1},
-            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "MLModelID" : 1}
-            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "MLModelID" : 1}]
-
+            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "Confidence" : 95.01, "Error" : 12.01, "MLModelID" : 1},
+            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "Confidence" : 95.01, "Error" : 12.01, "MLModelID" : 1},
+            //      {"stockID" : 1, "Date" : DateObj, "DateString":"22-MAY-2022", "Price" : 123.00, "Confidence" : 95.01, "Error" : 12.01, "MLModelID" : 1}
+            //     ]
+            
             // repopulate with all predicted prices
             const insert_predictions = await prisma.mL_Stock_Price.createMany({data:formatted_results});
             const successMsg = `Updated ${insert_predictions.count} records from Model ${model_type} for ${ticker_symbol}`
@@ -116,6 +122,5 @@ export default async (req, res) => {
     } else {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
-    
 
 }

@@ -1,18 +1,10 @@
 import Head from 'next/head'
 import Layout from '../components/layout';
 import styles from '../styles/Home.module.css'
-<<<<<<< .merge_file_a46004
 import { AdvancedRealTimeChart } from "react-ts-tradingview-widgets";
 import { MarketOverview } from "react-ts-tradingview-widgets";
 
 
-=======
-// import {
-//   MarketOverview,
-//   TechnicalAnalysis
-// } from "react-ts-tradingview-widgets";
-// import TradingViewWidget, { Themes } from "react-tradingview-widget";
->>>>>>> .merge_file_a35740
 
 
 export default function Home() {
@@ -28,25 +20,16 @@ export default function Home() {
         <div className={styles.main}>
           {/* {session ? <button onClick={() => signOut()}> Log Out</button> : <button onClick={() => router.push("/api/auth/signin")}>Sign In</button>} */}
         <h2>Real Time Analysis </h2> 
-        <div style={{ height: 500,width:1000 }}>
-        {/* <TradingViewWidget
-          symbol="NASDAQ:AAPL"
-          theme={Themes.LIGHT}
-          locale="en"
-          autosize
-        /> */}
+        <div style={{ height: "35rem",width:"90%",padding:30 }}>
+        <AdvancedRealTimeChart autosize></AdvancedRealTimeChart>
       </div>
-
-      {/* <TechnicalAnalysis symbol={"NASDAQ:AAPL"} dark locale="en" /> */}
       <div>
         <h2>Market Overview</h2>
       </div>
-      {/* <MarketOverview locale="en" /> */}
-
+      <MarketOverview  height={600} width={500} showFloatingTooltip></MarketOverview>
         </div>
 
       </Layout>
     </div>
   )
 }
-

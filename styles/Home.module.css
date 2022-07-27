@@ -1,28 +1,17 @@
 .container {
   /* padding: 0 2rem; */
   padding: 0 0;
- 
+
 }
 
 .main {
-<<<<<<< .merge_file_a27668
-    min-height: 100vh;
-    padding: 3rem 3rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: baseline;
-    align-items: center;
-=======
   min-height: 100vh;
   padding: 3rem 3rem;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content:baseline;
-  
+  justify-content: baseline;
   align-items: center;
->>>>>>> .merge_file_a38876
 
 }
 
@@ -39,7 +28,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
 }
 
 .title a {
@@ -71,7 +60,7 @@
   padding: 0.75rem;
   font-size: 1.1rem;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+  Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
 .grid {
@@ -83,43 +72,43 @@
 }
 
 
-
-
-
 .myh {
   text-align: left;
   font-size: 0.7rem;
-  
+
 }
-.containers{
-  min-height: 100vh;
-  padding: 4rem 3rem;
+
+.containers {
+  min-height: 90vh;
+  padding: 0rem 3rem;
   display: grid;
   grid-template-columns: 3fr 1fr;
   grid-gap: 10px;
 }
 
-.container_left{
+.container_left {
   align-items: left;
+
 }
 
 
-.container_right{
+.container_right {
   display: inline;
-  
   position: relative;
   top: 4rem;
-  
   margin-left: 2rem;
   /* padding: 5rem 4rem; */
 }
-<<<<<<< .merge_file_a27668
+
+
+.landing_page_title {
+  color: #FFFFFF;
+  /*background: #996D6D;*/
+  text-shadow: #474747 3px 5px 2px;
+}
 
 .stockwidget{
-    margin-top: 5rem;
-    width:70%;
-    padding: 0rem 5rem;
+  margin-top: 5rem;
+  width:70%;
+  padding: 0rem 5rem;
 }
-=======
-  
->>>>>>> .merge_file_a38876
