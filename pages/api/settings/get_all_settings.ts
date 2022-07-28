@@ -31,7 +31,6 @@ export default async (req, res) => {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts GET methods`});
     }
 
-
 }
 
 export interface App_Settings {

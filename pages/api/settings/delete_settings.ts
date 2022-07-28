@@ -5,7 +5,7 @@ export default async (req, res) => {
     if (req.method === "POST"){
 
         const settingID = req.body.setting_id;
-        const configName = req.body.config_name;
+        const settingName = req.body.setting_name;
 
         try{
             if(settingID){
@@ -19,28 +19,28 @@ export default async (req, res) => {
                     "message" : `Deleted setting ${settingID}`,
                     "result"  : delete_setting
                 });
-            } else if (configName){
+            } else if (settingName){
                 const delete_setting = await prisma.app_Settings.deleteMany({
                     where:{
-                        settingName : configName
+                        settingName : settingName
                     }
                 })
 
                 if (delete_setting.count > 0){
                     res.status(200).json({
-                        "message" : `Deleted setting ${configName}`,
+                        "message" : `Deleted setting ${settingName}`,
                         "result"  : delete_setting
                     });
                 } else {
                     res.status(406).json({
-                        "message" : `Failed to delete setting ${configName}`,
+                        "message" : `Failed to delete setting ${settingName}`,
                         "result"  : delete_setting
                     });
                 }
 
             } else {
                 res.status(200).json({
-                    "message" : "Please specify either the setting_id OR config_name"
+                    "message" : "Please specify either the setting_id OR setting_name"
                 });
             }
 

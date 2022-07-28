@@ -15,8 +15,8 @@ Example:
 
 ```
 {
-    "config_name" : "testconf", 
-    "config_value": "testval" 
+    "setting_name" : "testconf", 
+    "setting_value": "testval" 
 }
 ```
 
@@ -35,7 +35,7 @@ OR
 
 ```
 {
-    "config_name"   :   "testconf"
+    "setting_name"   :   "testconf"
 }
 ```
 
