@@ -1,12 +1,14 @@
-import handler from "../../../pages/api/settings/add_or_update_settings";
 import {App_Settings} from "../../../pages/api/settings/get_all_settings";
 import prisma from "../../../config/prisma";
+import handler from "../../../pages/api/settings/delete_settings";
 import {createMocks} from "node-mocks-http";
 
+describe("Test delete_settings.ts", () =>{
 
-describe("Test add_or_update_settings.ts", () => {
+    test("Deleting with setting_id", async () => {
 
-    test("PRISMA DB MOCKING", async () => {
+        const settingID = 1;
+
         // 1. mock the data
         const app_result: App_Settings = {
             settingID: 1,
@@ -14,18 +16,15 @@ describe("Test add_or_update_settings.ts", () => {
             settingValue: "value_1"
         };
 
-        prisma.app_Settings.upsert = jest.fn().mockReturnValueOnce(app_result);
+        prisma.app_Settings.delete = jest.fn().mockReturnValueOnce(app_result);
 
         // 2. input api call
         const {req, res} = createMocks({
             method: 'POST',
             body: {
-                'setting_name': 'setting_1',
-                'setting_value': 'value_1'
+                'setting_id': settingID
             }
         });
-
-        const settingName = req.body.setting_name;
 
         // 3. call the api
         await handler(req, res);
@@ -35,31 +34,27 @@ describe("Test add_or_update_settings.ts", () => {
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
-            "message": `Successfully inserted/updated ${settingName}`,
-            "result": app_result
+            "message" : `Deleted setting ${settingID}`,
+            "result"  : app_result
         });
     });
 
-    test("Inserting/Updating setting name", async () => {
-        // 1. mock the data
-        const app_result: App_Settings = {
-            settingID: 1,
-            settingName: "setting_1",
-            settingValue: "value_1"
-        };
+    test("Deleting with setting_name", async () => {
 
-        prisma.app_Settings.upsert = jest.fn().mockReturnValueOnce(app_result);
+        const settingName = "setting_1";
+
+        // 1. mock the data
+        const result = {"count" : 1}
+
+        prisma.app_Settings.deleteMany = jest.fn().mockReturnValueOnce(result);
 
         // 2. input api call
         const {req, res} = createMocks({
             method: 'POST',
             body: {
-                'setting_name': 'setting_1',
-                'setting_value': 'value_1'
+                'setting_name': settingName
             }
         });
-
-        const settingName = req.body.setting_name;
 
         // 3. call the api
         await handler(req, res);
@@ -69,25 +64,27 @@ describe("Test add_or_update_settings.ts", () => {
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
-            "message": `Successfully inserted/updated ${settingName}`,
-            "result": app_result
+            "message" : `Deleted setting ${settingName}`,
+            "result"  : result
         });
     });
 
-    test("Mock Error", async () => {
+    test("Deleting with invalid setting_id as non-integer input", async () => {
+
+        const setting_id = "non-integer input";
+
         // 1. mock the data
         const errorMsg = {
-            "message" : "mocked error"
-        }
+            "message" : `Setting_id must be integer`
+        };
 
-        prisma.app_Settings.upsert = jest.fn().mockRejectedValueOnce(errorMsg);
+        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
         const {req, res} = createMocks({
             method: 'POST',
             body: {
-                'setting_name': 'setting_1',
-                'setting_value': 'value_1'
+                'setting_id': setting_id
             }
         });
 
@@ -99,42 +96,26 @@ describe("Test add_or_update_settings.ts", () => {
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
-            "message": errorMsg.message
+            "message" : "Setting_id must be integer"
         });
     });
 
-    test("When using GET instead of POST", async () => {
-        // 1. mock the data
-        // 2. input api call
-        const {req, res} = createMocks({
-            method: 'GET'
-        });
+    test("Deleting with invalid setting_id as record not found", async () => {
 
-        // 3. call the api
-        await handler(req, res);
-        expect(res._getStatusCode()).toBe(406);
+        const setting_id = 12345;
 
-        // 4. verify its output
-        const res_output = JSON.parse(res._getData());
-        console.log(res_output);
-        expect(res_output).toEqual({
-            "message" : `ERROR: ${req.method} method used; this endpoint only accepts POST methods`
-        });
-    });
-
-    test("When omitting setting_value in POST request", async () => {
         // 1. mock the data
         const errorMsg = {
-            "message" : "Specify the config_name and config_value"
-        }
+            "message": "Failed to delete setting; record not found"
+        };
 
-        prisma.app_Settings.upsert = jest.fn().mockRejectedValueOnce(errorMsg);
+        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
         const {req, res} = createMocks({
             method: 'POST',
             body: {
-                'setting_name': 'setting_1'
+                'setting_id': setting_id
             }
         });
 
@@ -146,23 +127,29 @@ describe("Test add_or_update_settings.ts", () => {
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
-            "message": errorMsg.message
+            "message": "Failed to delete setting; record not found"
         });
     });
 
-    test("When omitting setting_name in POST request", async () => {
-        // 1. mock the data
-        const errorMsg = {
-            "message" : "Specify the config_name and config_value"
-        }
 
-        prisma.app_Settings.upsert = jest.fn().mockRejectedValueOnce(errorMsg);
+    test("Deleting with invalid setting_name, failing and returning count=0", async () => {
+
+        const settingName = "some_fake_setting_name";
+
+        // 1. mock the data
+        const result = {"count" : 0}
+        const errorMsg = {
+            "message" : `Failed to delete setting ${settingName}`,
+            "result"  : result
+        };
+
+        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
         const {req, res} = createMocks({
             method: 'POST',
             body: {
-                'setting_value': 'value_1'
+                'setting_name': settingName
             }
         });
 
@@ -174,7 +161,32 @@ describe("Test add_or_update_settings.ts", () => {
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
-            "message": errorMsg.message
+            "message" : `Failed to delete setting ${settingName}`,
+            "result"  : result
+        });
+    });
+
+    test("When omitting setting_id and setting_name in POST request", async () => {
+
+        // 1. mock the data
+        const errorMsg = "Please specify either the setting_id OR setting_name";
+
+        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
+
+        // 2. input api call
+        const {req, res} = createMocks({
+            method: 'POST'
+        });
+
+        // 3. call the api
+        await handler(req, res);
+        expect(res._getStatusCode()).toBe(406);
+
+        // 4. verify its output
+        const res_output = JSON.parse(res._getData());
+        console.log(res_output);
+        expect(res_output).toEqual({
+            "message" : errorMsg
         });
     });
 
