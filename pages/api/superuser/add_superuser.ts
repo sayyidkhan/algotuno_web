@@ -25,13 +25,15 @@ export default async (req, res) => {
                 }
             });
 
+            console.log(user_record);
+
             if (user_record) {
                 // return the corresponding user ID
                 user_id = user_record.id;
             } else {
                 console.log(`User ${input_username} does not exist`)
                 return res.status(406).json({
-                    "message": `Stock ${input_username} does not exist`
+                    "message": `User ${input_username} does not exist`
                 });
             }
 

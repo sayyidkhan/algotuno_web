@@ -10,14 +10,12 @@ export default async (req, res) => {
         try{
             if(settingID){
 
-                try {
-                    settingID = parseInt(settingID);
-                }
-                catch (error) {
+                if(isNaN(parseInt(settingID))) {
                     res.status(406).json({
                         "message" : `Setting_id must be integer`
                     });
-                }
+                }              
+
                 const delete_setting = await prisma.app_Settings.delete({
                     where:{
                         settingID : settingID

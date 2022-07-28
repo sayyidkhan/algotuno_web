@@ -5,7 +5,7 @@ import {createMocks} from "node-mocks-http";
 
 describe("Test delete_settings.ts", () =>{
 
-    test("Deleting with setting_id", async () => {
+    test("Deleting with setting_id expecting success", async () => {
 
         const settingID = 1;
 
@@ -39,7 +39,7 @@ describe("Test delete_settings.ts", () =>{
         });
     });
 
-    test("Deleting with setting_name", async () => {
+    test("Deleting with setting_name expecting success", async () => {
 
         const settingName = "setting_1";
 
@@ -69,16 +69,16 @@ describe("Test delete_settings.ts", () =>{
         });
     });
 
-    test("Deleting with invalid setting_id as non-integer input", async () => {
+    test("Deleting with setting_id as non-integer input expecting error", async () => {
 
-        const setting_id = "non-integer input";
+        const setting_id = "asfas";
 
         // 1. mock the data
         const errorMsg = {
-            "message" : `Setting_id must be integer`
+            "message" : "Setting_id must be integer"
         };
 
-        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
+        // prisma.app_Settings.delete = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
         const {req, res} = createMocks({
@@ -100,7 +100,7 @@ describe("Test delete_settings.ts", () =>{
         });
     });
 
-    test("Deleting with invalid setting_id as record not found", async () => {
+    test("Deleting with invalid setting_id as record not found expecting error", async () => {
 
         const setting_id = 12345;
 
@@ -109,7 +109,7 @@ describe("Test delete_settings.ts", () =>{
             "message": "Failed to delete setting; record not found"
         };
 
-        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
+        prisma.app_Settings.delete = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
         const {req, res} = createMocks({
@@ -131,42 +131,7 @@ describe("Test delete_settings.ts", () =>{
         });
     });
 
-
-    test("Deleting with invalid setting_name, failing and returning count=0", async () => {
-
-        const settingName = "some_fake_setting_name";
-
-        // 1. mock the data
-        const result = {"count" : 0}
-        const errorMsg = {
-            "message" : `Failed to delete setting ${settingName}`,
-            "result"  : result
-        };
-
-        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
-
-        // 2. input api call
-        const {req, res} = createMocks({
-            method: 'POST',
-            body: {
-                'setting_name': settingName
-            }
-        });
-
-        // 3. call the api
-        await handler(req, res);
-        expect(res._getStatusCode()).toBe(406);
-
-        // 4. verify its output
-        const res_output = JSON.parse(res._getData());
-        console.log(res_output);
-        expect(res_output).toEqual({
-            "message" : `Failed to delete setting ${settingName}`,
-            "result"  : result
-        });
-    });
-
-    test("When omitting setting_id and setting_name in POST request", async () => {
+    test("When omitting setting_id and setting_name in POST request expecting error", async () => {
 
         // 1. mock the data
         const errorMsg = "Please specify either the setting_id OR setting_name";
@@ -189,5 +154,24 @@ describe("Test delete_settings.ts", () =>{
             "message" : errorMsg
         });
     });
+
+    test("When using GET instead of POST expecting error", async () => {
+        // 1. input api call
+        const {req, res} = createMocks({
+            method: 'GET'
+        });
+
+        // 2. call the api
+        await handler(req, res);
+        expect(res._getStatusCode()).toBe(406);
+
+        // 3. verify its output
+        const res_output = JSON.parse(res._getData());
+        console.log(res_output);
+        expect(res_output).toEqual({
+            "message" : `ERROR: ${req.method} method used; this endpoint only accepts POST methods`
+        });
+    });
+
 
 });

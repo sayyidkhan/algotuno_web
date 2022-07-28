@@ -40,7 +40,7 @@ describe("Test add_or_update_settings.ts", () => {
         });
     });
 
-    test("Inserting/Updating setting name", async () => {
+    test("Inserting/Updating setting name expecting success", async () => {
         // 1. mock the data
         const app_result: App_Settings = {
             settingID: 1,
@@ -103,18 +103,17 @@ describe("Test add_or_update_settings.ts", () => {
         });
     });
 
-    test("When using GET instead of POST", async () => {
-        // 1. mock the data
-        // 2. input api call
+    test("When using GET instead of POST expecting error", async () => {
+        // 1. input api call
         const {req, res} = createMocks({
             method: 'GET'
         });
 
-        // 3. call the api
+        // 2. call the api
         await handler(req, res);
         expect(res._getStatusCode()).toBe(406);
 
-        // 4. verify its output
+        // 3. verify its output
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
@@ -122,10 +121,10 @@ describe("Test add_or_update_settings.ts", () => {
         });
     });
 
-    test("When omitting setting_value in POST request", async () => {
+    test("When omitting setting_value in POST request expecting error", async () => {
         // 1. mock the data
         const errorMsg = {
-            "message" : "Specify the config_name and config_value"
+            "message" : "Specify the setting_name and setting_value"
         }
 
         prisma.app_Settings.upsert = jest.fn().mockRejectedValueOnce(errorMsg);
@@ -150,10 +149,10 @@ describe("Test add_or_update_settings.ts", () => {
         });
     });
 
-    test("When omitting setting_name in POST request", async () => {
+    test("When omitting setting_name in POST request expecting error", async () => {
         // 1. mock the data
         const errorMsg = {
-            "message" : "Specify the config_name and config_value"
+            "message" : "Specify the setting_name and setting_value"
         }
 
         prisma.app_Settings.upsert = jest.fn().mockRejectedValueOnce(errorMsg);
