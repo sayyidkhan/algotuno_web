@@ -35,7 +35,7 @@ export default async (req, res) => {
 
         } else{
             res.status(406).json({
-                "message" : "Specify the config_name and config_value"
+                "message" : "Specify the setting_name and setting_value"
             });
         }
 
