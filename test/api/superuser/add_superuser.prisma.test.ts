@@ -46,11 +46,7 @@ describe("Test add_or_update_settings.ts", () => {
         // 1. mock the data
         const input_username = "user1"
 
-        const errorMsg = {
-            "message": `User ${input_username} does not exist`
-        }
-
-        prisma.user.findFirst = jest.fn().mockRejectedValueOnce(errorMsg);
+        prisma.user.findFirst = jest.fn().mockReturnValueOnce(null);
 
         // 2. input api call
         const {req, res} = createMocks({
@@ -109,7 +105,7 @@ describe("Test add_or_update_settings.ts", () => {
         });
     });
 
-    test("Add Superuser with valid username input but Superuser already exists expecting some error", async () => {
+    test("Add Superuser with valid username input but Superuser already exists expecting generic error", async () => {
         // 1. mock the data
         const input_username = "user1"
         const superuserID = 1;
@@ -155,9 +151,7 @@ describe("Test add_or_update_settings.ts", () => {
         prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
-        const {req, res} = createMocks({
-            method: 'POST'
-        });
+        const {req, res} = createMocks({method: 'POST'});
 
         // 3. call the api
         await handler(req, res);
@@ -204,9 +198,7 @@ describe("Test add_or_update_settings.ts", () => {
 
     test("When using GET instead of POST expecting error", async () => {
         // 1. input api call
-        const {req, res} = createMocks({
-            method: 'GET'
-        });
+        const {req, res} = createMocks({method: 'GET'});
 
         // 2. call the api
         await handler(req, res);

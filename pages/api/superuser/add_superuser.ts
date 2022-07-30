@@ -31,7 +31,7 @@ export default async (req, res) => {
                 // return the corresponding user ID
                 user_id = user_record.id;
             } else {
-                console.log(`User ${input_username} does not exist`)
+                console.error(`User ${input_username} does not exist`)
                 return res.status(406).json({
                     "message": `User ${input_username} does not exist`
                 });
@@ -62,7 +62,6 @@ export default async (req, res) => {
                 }
                 return
             }
-
 
         } catch (error) {
             const errorMsg = error.message;

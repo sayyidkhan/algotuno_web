@@ -4,17 +4,11 @@ export default async (req, res) => {
 
     if (req.method === "POST"){
 
-        let settingID = req.body.setting_id;
+        const settingID = req.body.setting_id;
         const settingName = req.body.setting_name;
 
         try{
             if(settingID){
-
-                if(isNaN(parseInt(settingID))) {
-                    res.status(406).json({
-                        "message" : `Setting_id must be integer`
-                    });
-                }              
 
                 const delete_setting = await prisma.app_Settings.delete({
                     where:{
@@ -26,6 +20,7 @@ export default async (req, res) => {
                     "message" : `Deleted setting ${settingID}`,
                     "result"  : delete_setting
                 });
+
             } else if (settingName){
                 const delete_setting = await prisma.app_Settings.deleteMany({
                     where:{

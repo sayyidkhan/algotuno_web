@@ -30,7 +30,7 @@ export default async (req, res) => {
             } else {
                 console.log(`User ${input_username} does not exist`)
                 return res.status(406).json({
-                    "message": `Stock ${input_username} does not exist`
+                    "message": `User ${input_username} does not exist`
                 });
             }
 
@@ -60,7 +60,6 @@ export default async (req, res) => {
                 return
             }
 
-
         } catch (error) {
             const errorMsg = error.message;
             console.error(errorMsg)
@@ -70,6 +69,4 @@ export default async (req, res) => {
     } else {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
-
-
 }

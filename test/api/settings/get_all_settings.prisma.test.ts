@@ -31,9 +31,7 @@ describe("Test get_all_settings.ts", () => {
         prisma.app_Settings.findMany = jest.fn().mockReturnValueOnce(settingsList);
 
         // 2. input api call
-        const {req, res} = createMocks({
-            method: 'GET',
-        });
+        const {req, res} = createMocks({method: 'GET'});
 
         // 3. call the api
         await handler(req, res);
@@ -54,9 +52,7 @@ describe("Test get_all_settings.ts", () => {
         prisma.app_Settings.findMany = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
-        const {req, res} = createMocks({
-            method: 'GET',
-        });
+        const {req, res} = createMocks({method: 'GET'});
 
         // 3. call the api
         await handler(req, res);
@@ -78,9 +74,7 @@ describe("Test get_all_settings.ts", () => {
         prisma.app_Settings.findMany = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
-        const {req, res} = createMocks({
-            method: 'GET',
-        });
+        const {req, res} = createMocks({method: 'GET'});
 
         // 3. call the api
         await handler(req, res);

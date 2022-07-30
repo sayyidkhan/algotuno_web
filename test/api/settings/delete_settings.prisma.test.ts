@@ -7,8 +7,6 @@ describe("Test delete_settings.ts", () =>{
 
     test("Deleting with setting_id expecting success", async () => {
 
-        const settingID = 1;
-
         // 1. mock the data
         const app_result: App_Settings = {
             settingID: 1,
@@ -22,7 +20,7 @@ describe("Test delete_settings.ts", () =>{
         const {req, res} = createMocks({
             method: 'POST',
             body: {
-                'setting_id': settingID
+                'setting_id': 1
             }
         });
 
@@ -34,7 +32,7 @@ describe("Test delete_settings.ts", () =>{
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
-            "message" : `Deleted setting ${settingID}`,
+            "message" : `Deleted setting 1`,
             "result"  : app_result
         });
     });
@@ -75,10 +73,10 @@ describe("Test delete_settings.ts", () =>{
 
         // 1. mock the data
         const errorMsg = {
-            "message" : "Setting_id must be integer"
+            "message" : "setting_id must be int, not string"
         };
 
-        // prisma.app_Settings.delete = jest.fn().mockRejectedValueOnce(errorMsg);
+        prisma.app_Settings.delete = jest.fn().mockRejectedValueOnce(errorMsg);
 
         // 2. input api call
         const {req, res} = createMocks({
@@ -96,16 +94,17 @@ describe("Test delete_settings.ts", () =>{
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
-            "message" : "Setting_id must be integer"
+            "message" : "setting_id must be int, not string"
         });
     });
 
-    test("Deleting with invalid setting_id as record not found expecting error", async () => {
+    test("Deleting with invalid setting_id expecting P2025 error", async () => {
 
         const setting_id = 12345;
 
         // 1. mock the data
         const errorMsg = {
+            "code"   : "P2025",
             "message": "Failed to delete setting; record not found"
         };
 
@@ -128,6 +127,39 @@ describe("Test delete_settings.ts", () =>{
         console.log(res_output);
         expect(res_output).toEqual({
             "message": "Failed to delete setting; record not found"
+        });
+    });
+
+
+
+    test("Deleting with invalid setting_id expecting generic error", async () => {
+
+        const setting_id = 12345;
+
+        // 1. mock the data
+        const errorMsg = {
+            "message": "mock error"
+        };
+
+        prisma.app_Settings.delete = jest.fn().mockRejectedValueOnce(errorMsg);
+
+        // 2. input api call
+        const {req, res} = createMocks({
+            method: 'POST',
+            body: {
+                'setting_id': setting_id
+            }
+        });
+
+        // 3. call the api
+        await handler(req, res);
+        expect(res._getStatusCode()).toBe(406);
+
+        // 4. verify its output
+        const res_output = JSON.parse(res._getData());
+        console.log(res_output);
+        expect(res_output).toEqual({
+            "message": "mock error"
         });
     });
 
