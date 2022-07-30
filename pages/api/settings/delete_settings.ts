@@ -9,7 +9,6 @@ export default async (req, res) => {
 
         try{
             if(settingID){
-
                 const delete_setting = await prisma.app_Settings.delete({
                     where:{
                         settingID : settingID
@@ -20,7 +19,6 @@ export default async (req, res) => {
                     "message" : `Deleted setting ${settingID}`,
                     "result"  : delete_setting
                 });
-
             } else if (settingName){
                 const delete_setting = await prisma.app_Settings.deleteMany({
                     where:{
@@ -41,7 +39,7 @@ export default async (req, res) => {
                 }
 
             } else {
-                res.status(406).json({
+                res.status(200).json({
                     "message" : "Please specify either the setting_id OR setting_name"
                 });
             }

@@ -7,12 +7,10 @@ import Typography from '@mui/material/Typography';
 
 import {createTheme} from '@mui/material/styles';
 import LayoutHeader from "../../components/layout_header";
-import {Grid, Tab, Tabs, TextField} from "@mui/material";
+import {Tab, Tabs} from "@mui/material";
 import {TabContext, TabPanel} from "@mui/lab";
 import EnhancedTable from '../../components/user/subscription';
 import StockPriceListTable from '../../components/user/stockconfig';
-
-
 
 
 const theme = createTheme();
