@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 
 const BasicUserAuth = ({children}) => {
     const {data: session, status} = useSession();
-    const [isLoggedIn, setLoggedIn] = useState(false);
+    const [isLoggedIn, setLoggedIn] = useState<boolean>(null);
 
     const RedirectIfNotLoggedIn = async () => {
         setTimeout(async () => {
@@ -14,9 +14,17 @@ const BasicUserAuth = ({children}) => {
     };
 
     useEffect(() => {
+        if (status === "authenticated") {
+            setLoggedIn(true);
+        }
+        else if(status === "unauthenticated") {
+            setLoggedIn(false);
+        }
+    }, [status]);
+
+    useEffect(() => {
         if (isLoggedIn === false) {
             RedirectIfNotLoggedIn().then(res => res);
-            setLoggedIn(true);
         }
     }, [isLoggedIn]);
 
